@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'custom_appbar.dart';
@@ -14,6 +16,8 @@ class MainLayout extends ConsumerStatefulWidget {
   final List<BottomNavItem>? bottomNavItems;
   final ValueChanged<int>? onBottomNavTap;
   final int currentBottomNavIndex;
+  final Widget? floatingActionButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
 
   const MainLayout({
     Key? key,
@@ -27,6 +31,8 @@ class MainLayout extends ConsumerStatefulWidget {
     this.bottomNavItems,
     this.onBottomNavTap,
     this.currentBottomNavIndex = 0,
+    this.floatingActionButton,
+    this.floatingActionButtonLocation,
   }) : super(key: key);
 
   @override
@@ -55,6 +61,11 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
               onTap: widget.onBottomNavTap ?? (_) {},
             )
           : null,
+      floatingActionButton: widget.floatingActionButton,
+      floatingActionButtonLocation: widget.floatingActionButtonLocation ??
+          (widget.floatingActionButton != null
+              ? FloatingActionButtonLocation.centerDocked
+              : null),
     );
   }
 }

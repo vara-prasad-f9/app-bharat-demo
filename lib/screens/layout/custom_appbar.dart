@@ -1,6 +1,11 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: use_super_parameters
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../providers/theme_provider.dart';
+
+class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String title;
   final List<Widget>? actions;
   final bool showBackButton;
@@ -15,26 +20,45 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return AppBar(
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
+      title: Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
-      centerTitle: true,
+      centerTitle: false,
+      titleSpacing: 0,
       leading: showBackButton
           ? IconButton(
               icon: const Icon(Icons.arrow_back_ios, size: 20),
               onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
             )
-          : null,
-      actions: actions,
+          : Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipOval(
+                child: Image.asset('assets/images/logo.png'),
+              ),
+            ),
+      actions: [
+        IconButton(
+          icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+          onPressed: () {
+            ref.read(themeProvider.notifier).toggleTheme();
+          },
+        ),
+        ...?actions,
+      ],
       elevation: 0,
       backgroundColor: Theme.of(context).colorScheme.primary,
-      foregroundColor: Colors.white,
+      foregroundColor: Theme.of(context).colorScheme.onPrimary,
     );
   }
 

@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters
+
 import 'package:flutter/material.dart';
 
 class BottomNavItem {
@@ -26,48 +28,52 @@ class CustomBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
-      onTap: onTap,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Theme.of(context).colorScheme.primary,
-      unselectedItemColor: Colors.grey,
-      selectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-      unselectedLabelStyle: const TextStyle(fontSize: 12),
-      items: items.map((item) {
-        return BottomNavigationBarItem(
-          icon: Container(
-            padding: const EdgeInsets.symmetric(vertical: 6),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  _getIconData(item.icon),
-                  size: 24,
-                ),
-                const SizedBox(height: 4),
-                Text(item.label),
-              ],
-            ),
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 10,
+            offset: const Offset(0, -2),
+            spreadRadius: 0,
           ),
-          label: '',
-        );
-      }).toList(),
+        ],
+      ),
+      child: BottomNavigationBar(
+        elevation: 8,
+        currentIndex: currentIndex,
+        onTap: onTap,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
+        unselectedItemColor: Colors.grey,
+        selectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+        unselectedLabelStyle: const TextStyle(fontSize: 12),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        items: items.map((item) {
+          return BottomNavigationBarItem(
+            icon: Icon(
+              _getIconData(item.icon),
+              size: 24,
+            ),
+            label: item.label,
+          );
+        }).toList(),
+      ),
     );
   }
 
   IconData _getIconData(String iconName) {
     switch (iconName) {
-      case 'home':
-        return Icons.home_outlined;
-      case 'search':
-        return Icons.search;
-      case 'add':
-        return Icons.add_circle_outline;
-      case 'notifications':
-        return Icons.notifications_outlined;
+      case 'dashboard':
+        return Icons.dashboard_outlined;
+      case 'projects':
+        return Icons.assignment_outlined;
+      case 'visits':
+        return Icons.location_on_outlined;
       case 'profile':
         return Icons.person_outline;
+      case 'add':
+        return Icons.add_circle_outline;
       default:
         return Icons.help_outline;
     }

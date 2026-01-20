@@ -9,6 +9,7 @@ import 'screens/otp_verification_screen.dart';
 import 'screens/role_selection_screen.dart';
 import 'screens/home_screen.dart';
 import 'providers/auth_provider.dart';
+import 'providers/theme_provider.dart';
 
 void main() {
   runApp(
@@ -63,25 +64,18 @@ final _router = GoRouter(
   ],
 );
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeProvider);
+    
     return MaterialApp.router(
       title: 'BharatPlus',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6C63FF),
-          primary: const Color(0xFF6C63FF),
-          secondary: const Color(0xFF4CAF50),
-        ),
-        useMaterial3: true,
-        appBarTheme: const AppBarTheme(
-          centerTitle: true,
-          elevation: 0,
-        ),
-      ),
+      theme: theme,
+      darkTheme: theme, // Use the same theme for dark mode since we're handling it manually
+      themeMode: ThemeMode.system, // This will be overridden by our theme provider
       routerConfig: _router,
       debugShowCheckedModeBanner: false,
     );
