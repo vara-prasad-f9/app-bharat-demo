@@ -46,14 +46,20 @@ class CustomBottomBar extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Theme.of(context).colorScheme.primary,
         unselectedItemColor: Colors.grey,
-        selectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-        unselectedLabelStyle: const TextStyle(fontSize: 12),
+        selectedLabelStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500, height: 1.5),
+        unselectedLabelStyle: const TextStyle(fontSize: 10, height: 1.5),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        iconSize: 20,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
         items: items.map((item) {
           return BottomNavigationBarItem(
-            icon: Icon(
-              _getIconData(item.icon),
-              size: 24,
+            icon: Container(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Icon(
+                _getIconData(item.icon),
+                size: 20,
+              ),
             ),
             label: item.label,
           );

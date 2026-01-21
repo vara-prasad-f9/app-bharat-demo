@@ -43,6 +43,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFFFEDF7),
       appBar: widget.showAppBar
           ? CustomAppBar(
               title: widget.title,

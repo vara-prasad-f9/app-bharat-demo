@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_to_list_in_spreads
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bharatplus/screens/layout/main_layout.dart';
@@ -43,7 +45,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  late String _selectedLocation;
   int _currentIndex = 0;
   final List<BottomNavItem> _bottomNavItems = const [
     BottomNavItem(icon: 'dashboard', label: 'Dashboard', index: 0),
@@ -218,201 +219,170 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }).toList();
   }
 
-  Widget _buildStatCard(PropertyStats stats) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 18.0),
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: BorderSide(color: Colors.red, width: 1),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-           children: [
-             Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: stats.color.withAlpha(64),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(stats.icon, color: stats.color, size: 20,),
-                      ),
-                         const SizedBox(width: 16),
-                          Text(
-                    stats.name,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-           ],
-         ),
+  Widget _buildPropertyCard(PropertyStats stats) {
+    return Container(
    
-     
-         const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                 _buildStatRow('Completed', stats.completed, Colors.green),
-                  const SizedBox(width: 12),
-                     _buildStatRow('In Progress', stats.inProgress, Colors.orange),
-                  const SizedBox(width: 12),
-                  _buildStatRow('Ready to Start', stats.readyToStart, Colors.blue),
-                ],
-              ),
-             
-             
+      margin: const EdgeInsets.all(6),
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withAlpha(128),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+
+
+
+          
+          Icon(
+            stats.icon,
+            size: 32,
+            color: stats.color,
+          ),
+
+   Text(
+            stats.name,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+             const SizedBox(height: 18),
+
+          Row(
+            children: [
+   
+              _buildStatChip('C:${stats.completed}', Colors.green),
+              const SizedBox(width : 4),
+              _buildStatChip('P:${stats.inProgress}', Colors.orange),
+              const SizedBox(width : 4),
+              _buildStatChip('R:${stats.readyToStart}', Colors.red),
+            
             ],
           ),
+       
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatChip(String text, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withAlpha(50),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: color,
+          fontSize: 8,
+          fontWeight: FontWeight.w700,
         ),
       ),
     );
   }
 
-  Widget _buildStatRow(String label, int count, Color color) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-          decoration: BoxDecoration(
-            color: color.withAlpha(64),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Text(
-            count.toString(),
-            style: TextStyle(
-              color: color,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 12),
-        ),
-       
-      ],
-    );
-  }
 
   @override
   void initState() {
     super.initState();
-    _selectedLocation = 'Vizag MVP';
   }
   
-  Widget _buildLocationChips() {
-    final locations = _getLocationCategories().map((e) => e.name).toList();
+  
+  Widget _buildLocationCategories(BuildContext context) {
+    final locationCategories = _getLocationCategories();
     
-    return SizedBox(
-      height: 80,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: locations.length,
-        itemBuilder: (context, index) {
-          final location = locations[index];
-          final isSelected = _selectedLocation == location;
-          
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                _selectedLocation = location;
-              });
-            },
-            child: Container(
-              width: 80,
-              margin: const EdgeInsets.only(right: 12),
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: isSelected ? Colors.red : Colors.grey[200],
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: isSelected ? Colors.red : Colors.transparent,
-                  width: 2,
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        // Search Bar
+        Container(
+          height: 48,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Search',
+              prefixIcon: const Icon(Icons.search, size: 20, color: Colors.grey),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 12),
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+        
+        // Location Categories
+        ...locationCategories.map((category) {
+          final properties = category.properties;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
-                    Icons.location_on,
-                    color: isSelected ? Colors.white : Colors.grey,
-                    size: 20,
-                  ),
-                  const SizedBox(height: 4),
                   Text(
-                    location,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.grey[800],
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                      fontSize: 9,
+                    category.name,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // Handle view all
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child:  Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'View all',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 12,
+                          ),
+                        ),
+                        Icon(Icons.arrow_forward_ios, size: 12, color: Theme.of(context).primaryColor),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-  
-  Widget _buildLocationCategories() {
-    final locationCategories = _getLocationCategories();
-    final selectedCategory = locationCategories.firstWhere(
-      (cat) => cat.name == _selectedLocation,
-      orElse: () => locationCategories.first,
-    );
-    
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 0,
-          toolbarHeight: 105,
-          flexibleSpace: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: _buildLocationChips(),
+              const SizedBox(height: 12),
+              SizedBox(
+                height: 120,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: properties.length,
+                  itemBuilder: (context, index) {
+                    return _buildPropertyCard(properties[index]);
+                  },
+                ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 24),
             ],
-          ),
-          pinned: true,
-          floating: true,
-        ),
-        SliverList(
-          delegate: SliverChildListDelegate([
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                childAspectRatio: 2.5,
-                mainAxisSpacing: 12,
-              ),
-              itemCount: selectedCategory.properties.length,
-              itemBuilder: (context, index) {
-                return _buildStatCard(selectedCategory.properties[index]);
-              },
-            ),
-          ]),
-        ),
+          );
+        }).toList(),
       ],
     );
   }
@@ -427,9 +397,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       onBottomNavTap: _onItemTapped,
       floatingActionButton: FloatingActionButton(
         onPressed: _onAddPressed,
-        child: const Icon(Icons.add),
+        backgroundColor: Colors.red,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
-      child: _buildLocationCategories(),
+      child: _buildLocationCategories(context),
     );
   }
 }
