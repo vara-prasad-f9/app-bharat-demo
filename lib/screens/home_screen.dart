@@ -225,7 +225,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          side: BorderSide(color: Colors.red!, width: 1),
+          side: BorderSide(color: Colors.red, width: 1),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
