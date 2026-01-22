@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bharatplus/screens/layout/main_layout.dart';
 import 'package:bharatplus/screens/layout/custom_bottombar.dart';
-import 'package:bharatplus/screens/project/add_project_screen.dart';
+import 'package:bharatplus/screens/project/steps/add_project_screen.dart';
 
 class PropertyStats {
   final String name;
