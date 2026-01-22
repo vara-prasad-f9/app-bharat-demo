@@ -71,68 +71,84 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
       title: 'Add New Project',
       child: Column(
         children: [
-          // Stepper Header
+          // Stepper Header with horizontal scrolling
           Container(
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: _steps.asMap().entries.map((entry) {
-                final index = entry.key;
-                final step = entry.value;
-                final isActive = index == _currentStep;
-                final isCompleted = index < _currentStep;
+            height: 90, // Fixed height for the stepper
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: _steps.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final step = entry.value;
+                  final isActive = index == _currentStep;
+                  final isCompleted = index < _currentStep;
 
-                return GestureDetector(
-                  onTap: () => _onStepTapped(index),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: isActive
-                              ? Theme.of(context).primaryColor
-                              : isCompleted
-                                  ? Colors.green
-                                  : Colors.grey[300],
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: isCompleted
-                              ? const Icon(Icons.check, color: Colors.white, size: 16)
-                              : Text(
-                                  '${index + 1}',
-                                  style: TextStyle(
-                                    color: isActive ? Colors.white : Colors.grey[700],
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                        ),
+                  return Container(
+                    width: 100, // Fixed width for each step
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    child: GestureDetector(
+                      onTap: () => _onStepTapped(index),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: isActive
+                                  ? Theme.of(context).primaryColor
+                                  : isCompleted
+                                      ? Colors.green
+                                      : Colors.grey[300],
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: isCompleted
+                                  ? const Icon(Icons.check, color: Colors.white, size: 16)
+                                  : Text(
+                                      '${index + 1}',
+                                      style: TextStyle(
+                                        color: isActive ? Colors.white : Colors.grey[700],
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            step['title'],
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                              color: isActive || isCompleted
+                                  ? Theme.of(context).primaryColor
+                                  : Colors.grey[600],
+                            ),
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        step['title'],
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                          color: isActive || isCompleted
-                              ? Theme.of(context).primaryColor
-                              : Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           ),
           
           // Progress Bar
-          LinearProgressIndicator(
-            value: (_currentStep + 1) / _steps.length,
-            backgroundColor: Colors.grey[200],
-            valueColor: AlwaysStoppedAnimation<Color>(
-              Theme.of(context).primaryColor,
+          Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            child: LinearProgressIndicator(
+              value: (_currentStep + 1) / _steps.length,
+              backgroundColor: Colors.grey[200],
+              minHeight: 4,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                Theme.of(context).primaryColor,
+              ),
             ),
           ),
           
