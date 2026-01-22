@@ -29,8 +29,19 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
     {'title': 'Review', 'subtitle': 'Review and submit project'},
   ];
 
+  bool get _isNextButtonEnabled {
+    if (_currentStep == 0) { // Basic Details step
+      // For the first step, validate the form and check if project name is not empty
+      final isFormValid = _formKeys[_currentStep].currentState?.validate() ?? false;
+      final hasProjectName = _projectData.projectName?.trim().isNotEmpty ?? false;
+      return isFormValid && hasProjectName;
+    }
+    // For other steps, just validate the form
+    return _formKeys[_currentStep].currentState?.validate() ?? false;
+  }
+
   void _nextStep() {
-    if (_formKeys[_currentStep].currentState?.validate() ?? false) {
+    if (_isNextButtonEnabled) {
       if (_currentStep < _steps.length - 1) {
         _pageController.nextPage(
           duration: const Duration(milliseconds: 300),
