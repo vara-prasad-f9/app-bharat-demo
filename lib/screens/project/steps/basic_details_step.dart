@@ -214,10 +214,10 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
             const SizedBox(height: 16),
             DropdownButtonFormField<ProjectStatus>(
               value: provider.project.projectStatus,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Project Status *',
                 border: OutlineInputBorder(),
-                prefixIcon: const Icon(Icons.info_outline),
+                prefixIcon: Icon(Icons.info_outline),
               ),
               items: ProjectStatus.values.map((status) {
                 return DropdownMenuItem<ProjectStatus>(
