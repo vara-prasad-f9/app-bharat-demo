@@ -18,9 +18,6 @@ class ReviewStep extends StatefulWidget {
 }
 
 class _ReviewStepState extends State<ReviewStep> {
-  bool _isSaving = false;
-  bool _isSubmitting = false;
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -103,49 +100,7 @@ class _ReviewStepState extends State<ReviewStep> {
               ]),
             ],
           
-          const SizedBox(height: 32),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: _isSaving || _isSubmitting ? null : _saveAsDraft,
-                  icon: _isSaving 
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Icon(Icons.save_outlined, size: 20),
-                  label: const Text('SAVE AS DRAFT'),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    side: BorderSide(color: Theme.of(context).primaryColor),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: _isSaving || _isSubmitting ? null : _submitProject,
-                  icon: _isSubmitting
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                        )
-                      : const Icon(Icons.check_circle_outline, size: 20),
-                  label: const Text('SUBMIT PROJECT', style: TextStyle(fontWeight: FontWeight.bold)),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-        ],
+                ],
       ),
     );
   }
@@ -211,18 +166,6 @@ class _ReviewStepState extends State<ReviewStep> {
       ),
     );
   }
-
-  Future<void> _saveAsDraft() async {
-    setState(() => _isSaving = true);
-    
-    try {
-    
-      await Future.delayed(const Duration(seconds: 1)); // Simulate API call
-      
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Project saved as draft')),
-        );
       }
     } catch (e) {
       if (mounted) {

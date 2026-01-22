@@ -336,11 +336,125 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
             ),
           ),
           
+          // Navigation Buttons
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: const Color.fromRGBO(0, 0, 0, 0.1),
+                  blurRadius: 5,
+                  offset: const Offset(0, -2),
+                ),
+              ],
+            ),
+            child: _currentStep == _steps.length - 1 
+              ? _buildReviewButtons() 
+              : _buildDefaultButtons(),
+          ),
         ],
       ),
     );
   }
 
+
+  Widget _buildDefaultButtons() {
+    return Row(
+      children: [
+        // Back Button (only shown when not on first step)
+        if (_currentStep > 0) ...[
+          Expanded(
+            child: OutlinedButton(
+              onPressed: _previousStep,
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                side: const BorderSide(color: Colors.red),
+              ),
+              child: const Text(
+                'BACK',
+                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          const SizedBox(width: 16), // Space between buttons
+        ],
+        // Next Button
+        Expanded(
+          child: ElevatedButton(
+            onPressed: _isNextButtonEnabled ? _nextStep : null,
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              backgroundColor: Colors.red,
+            ),
+            child: const Text(
+              'NEXT',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildReviewButtons() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            // Back Button
+            Expanded(
+              child: OutlinedButton(
+                onPressed: _previousStep,
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  side: const BorderSide(color: Colors.red),
+                ),
+                child: const Text(
+                  'BACK',
+                  style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            // Save as Draft Button
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  // TODO: Implement save as draft functionality
+                  _submitForm();
+                },
+                icon: const Icon(Icons.save_outlined, size: 20),
+                label: const Text('SAVE'),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  side: const BorderSide(color: Colors.red),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        // Submit Button
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed: _isNextButtonEnabled ? _nextStep : null,
+            icon: const Icon(Icons.check_circle_outline, size: 20),
+            label: const Text('SUBMIT', style: TextStyle(fontWeight: FontWeight.bold)),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   void dispose() {
