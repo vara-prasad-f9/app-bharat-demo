@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../models/project_model.dart';
+import '../../../widgets/photo_picker.dart';
 
 class BasicDetailsStep extends StatefulWidget {
   final ProjectModel projectData;
@@ -61,7 +62,8 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
               'Basic Project Details',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 20),
+          
+            const SizedBox(height: 16),
             // Project Name (Required)
             TextFormField(
               decoration: const InputDecoration(
@@ -82,6 +84,19 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                   widget.onChanged(widget.projectData);
                 });
               },
+            ),
+              const SizedBox(height: 16),
+            // Project Photo (Optional)
+            PhotoPicker(
+              initialPhotos: widget.projectData.sitePhotos,
+              onPhotosChanged: (photos) {
+                setState(() {
+                  widget.projectData.sitePhotos = photos;
+                  widget.onChanged(widget.projectData);
+                });
+              },
+              maxPhotos: 5,
+              label: 'Project Photo (Optional)',
             ),
             const SizedBox(height: 16),
             // Project Code / ID (Optional)
