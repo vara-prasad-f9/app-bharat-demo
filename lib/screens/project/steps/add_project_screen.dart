@@ -5,6 +5,7 @@ import 'package:bharatplus/screens/project/widgets/basic_details_step.dart';
 import 'package:bharatplus/screens/project/widgets/location_details_step.dart';
 import 'package:bharatplus/screens/project/widgets/owner_details_step.dart';
 import 'package:bharatplus/screens/project/widgets/construction_details_step.dart';
+import 'package:bharatplus/screens/project/widgets/team_assignment_step.dart';
 
 class AddProjectScreen extends StatefulWidget {
   const AddProjectScreen({super.key});
@@ -288,8 +289,21 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                   ),
                 ),
                 
-                // Step 5: Team Assignment (Placeholder)
-                _buildPlaceholderStep('Team Assignment'),
+                // Step 5: Team Assignment
+                Form(
+                  key: _formKeys[4],
+                  child: TeamAssignmentStep(
+                    projectData: _projectData,
+                    onChanged: (data) {
+                      setState(() {
+                        _projectData.assignedContractors = data.assignedContractors;
+                        _projectData.assignedSuppliers = data.assignedSuppliers;
+                        _projectData.siteEngineer = data.siteEngineer;
+                        _projectData.adminInCharge = data.adminInCharge;
+                      });
+                    },
+                  ),
+                ),
                 
                 // Step 6: Documents (Placeholder)
                 _buildPlaceholderStep('Documents'),

@@ -49,6 +49,9 @@ dependencies:
   # Form Validation
   # form_validators: ^5.0.0  # Removed as it's not available on pub.dev
   
+  # Searchable dropdown
+  searchfield: ^1.4.0
+  
   # Date/Time formatting
   intl: ^0.19.0
   
