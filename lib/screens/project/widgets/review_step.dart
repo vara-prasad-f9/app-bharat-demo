@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:bharatplus/models/project_model.dart';
+import 'package:flutter/material.dart';
 
 class ReviewStep extends StatefulWidget {
   final ProjectModel projectData;
@@ -18,6 +19,10 @@ class ReviewStep extends StatefulWidget {
 }
 
 class _ReviewStepState extends State<ReviewStep> {
+  bool _isSaving = false;
+  bool _isSubmitting = false;
+  
+  @override
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -166,6 +171,15 @@ class _ReviewStepState extends State<ReviewStep> {
       ),
     );
   }
+  
+  Future<void> _saveDraft() async {
+    setState(() => _isSaving = true);
+    try {
+      // TODO: Implement actual draft saving logic here
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Draft saved successfully')),
+        );
       }
     } catch (e) {
       if (mounted) {
