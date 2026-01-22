@@ -6,6 +6,7 @@ import 'package:bharatplus/screens/project/widgets/location_details_step.dart';
 import 'package:bharatplus/screens/project/widgets/owner_details_step.dart';
 import 'package:bharatplus/screens/project/widgets/construction_details_step.dart';
 import 'package:bharatplus/screens/project/widgets/team_assignment_step.dart';
+import 'package:bharatplus/screens/project/widgets/documents_step.dart';
 
 class AddProjectScreen extends StatefulWidget {
   const AddProjectScreen({super.key});
@@ -298,18 +299,30 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                       setState(() {
                         _projectData.assignedContractors = data.assignedContractors;
                         _projectData.assignedSuppliers = data.assignedSuppliers;
-                        _projectData.siteEngineer = data.siteEngineer;
-                        _projectData.adminInCharge = data.adminInCharge;
+                        _projectData.documents = data.documents;
+                      });
+                    },
+                  ),
+                ),
+
+                // Step 6: Documentation & Media
+                Form(
+                  key: _formKeys[5],
+                  child: DocumentsStep(
+                    projectData: _projectData,
+                    onChanged: (data) {
+                      setState(() {
+                        _projectData.documents = data.documents;
                       });
                     },
                   ),
                 ),
                 
-                // Step 6: Documents (Placeholder)
-                _buildPlaceholderStep('Documents'),
-                
-                // Step 7: Review (Placeholder)
-                _buildPlaceholderStep('Review & Submit'),
+                // Step 7: Review
+                Form(
+                  key: _formKeys[6],
+                  child: _buildPlaceholderStep('Review Project'),
+                ),
               ],
             ),
           ),
@@ -321,7 +334,7 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withAlpha(51),
+                  color: const Color.fromRGBO(0, 0, 0, 0.1),
                   blurRadius: 5,
                   offset: const Offset(0, -2),
                 ),

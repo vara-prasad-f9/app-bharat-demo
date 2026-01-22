@@ -46,8 +46,10 @@ class ProjectModel {
   String? adminInCharge;
 
   // Step 6: Documentation & Media
+  Map<String, dynamic>? documents; // For storing document references
   List<String>? sitePlans;
   List<String>? sitePhotos;
+  List<String>? governmentApprovals;
   List<String>? approvalDocuments;
 
   ProjectModel();
@@ -114,6 +116,7 @@ class ProjectModel {
     List<String>? assignedSuppliers,
     String? siteEngineer,
     String? adminInCharge,
+    Map<String, dynamic>? documents,
     List<String>? sitePlans,
     List<String>? sitePhotos,
     List<String>? approvalDocuments,
@@ -155,6 +158,7 @@ class ProjectModel {
       ..assignedSuppliers = assignedSuppliers != null ? List.from(assignedSuppliers) : this.assignedSuppliers != null ? List.from(this.assignedSuppliers!) : null
       ..siteEngineer = siteEngineer ?? this.siteEngineer
       ..adminInCharge = adminInCharge ?? this.adminInCharge
+      ..documents = documents != null ? Map.from(documents) : this.documents != null ? Map.from(this.documents!) : null
       ..sitePlans = sitePlans != null ? List.from(sitePlans) : this.sitePlans != null ? List.from(this.sitePlans!) : null
       ..sitePhotos = sitePhotos != null ? List.from(sitePhotos) : this.sitePhotos != null ? List.from(this.sitePhotos!) : null
       ..approvalDocuments = approvalDocuments != null ? List.from(approvalDocuments) : this.approvalDocuments != null ? List.from(this.approvalDocuments!) : null;
