@@ -149,18 +149,21 @@ class _PhotoPickerState extends State<PhotoPicker> {
                 onTap: _showImageSourceActionSheet,
                 child: Center(
                   child: Container(
-                    width: 80,
+                    width: double.infinity,
                     height: 80,
                     decoration: BoxDecoration(
                       border: Border.all(color: Theme.of(context).dividerColor),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        SizedBox(height: 12),
                         Icon(Icons.add_photo_alternate_outlined, size: 24),
-                        SizedBox(height: 4),
-                        Text('Add', style: TextStyle(fontSize: 12)),
+                        Spacer(),
+                        Text('Upload Photo' , style: TextStyle(fontSize: 12)),
+                        SizedBox(height: 12),
                       ],
                     ),
                   ),

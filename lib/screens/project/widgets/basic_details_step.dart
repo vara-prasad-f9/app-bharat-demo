@@ -96,7 +96,7 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                 });
               },
               maxPhotos: 5,
-              label: 'Project Photo (Optional)',
+              
             ),
             const SizedBox(height: 16),
             // Project Code / ID (Optional)
