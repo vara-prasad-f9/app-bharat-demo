@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ConstructionDetailsStep extends StatefulWidget {
-  const ConstructionDetailsStep({super.key});
+  final Function(Map<String, dynamic>) onSaved;
+  final Map<String, dynamic>? initialData;
+  
+  const ConstructionDetailsStep({
+    super.key,
+    required this.onSaved,
+    this.initialData,
+  });
 
   @override
   State<ConstructionDetailsStep> createState() => _ConstructionDetailsStepState();

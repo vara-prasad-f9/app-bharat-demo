@@ -5,7 +5,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class DocumentationStep extends StatefulWidget {
-  const DocumentationStep({super.key});
+  final Function(Map<String, dynamic>) onSaved;
+  final Map<String, dynamic>? initialData;
+  
+  const DocumentationStep({
+    super.key,
+    required this.onSaved,
+    this.initialData,
+  });
 
   @override
   State<DocumentationStep> createState() => _DocumentationStepState();

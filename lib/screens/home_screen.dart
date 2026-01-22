@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bharatplus/screens/layout/main_layout.dart';
 import 'package:bharatplus/screens/layout/custom_bottombar.dart';
+import 'package:bharatplus/screens/project/add_project_screen.dart';
 
 class PropertyStats {
   final String name;
@@ -54,8 +55,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ];
 
   void _onAddPressed() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Add button pressed')),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const AddProjectScreen(),
+      ),
     );
   }
 

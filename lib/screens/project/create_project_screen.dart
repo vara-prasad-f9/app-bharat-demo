@@ -12,7 +12,7 @@ import 'package:bharatplus/screens/project/steps/documentation_step.dart';
 import 'package:bharatplus/screens/project/steps/review_step.dart';
 
 class CreateProjectScreen extends StatefulWidget {
-  const CreateProjectScreen({Key? key}) : super(key: key);
+  const CreateProjectScreen({super.key});
 
   @override
   _CreateProjectScreenState createState() => _CreateProjectScreenState();
@@ -54,14 +54,51 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                     child: PageView(
                       controller: provider.pageController,
                       physics: const NeverScrollableScrollPhysics(),
-                      children: const [
-                        BasicDetailsStep(),
-                        LocationDetailsStep(),
-                        OwnerDetailsStep(),
-                        ConstructionDetailsStep(),
-                        AssignmentDetailsStep(),
-                        DocumentationStep(),
-                        ReviewStep(),
+                      children: [
+                        BasicDetailsStep(
+                          onSaved: (data) {
+                            // Update each field from the data map
+                            data.forEach((key, value) {
+                              provider.updateField(key, value);
+                            });
+                          },
+                        ),
+                        LocationDetailsStep(
+                          onSaved: (data) {
+                            data.forEach((key, value) {
+                              provider.updateField(key, value);
+                            });
+                          },
+                        ),
+                        OwnerDetailsStep(
+                          onSaved: (data) {
+                            data.forEach((key, value) {
+                              provider.updateField(key, value);
+                            });
+                          },
+                        ),
+                        ConstructionDetailsStep(
+                          onSaved: (data) {
+                            data.forEach((key, value) {
+                              provider.updateField(key, value);
+                            });
+                          },
+                        ),
+                        AssignmentDetailsStep(
+                          onSaved: (data) {
+                            data.forEach((key, value) {
+                              provider.updateField(key, value);
+                            });
+                          },
+                        ),
+                        DocumentationStep(
+                          onSaved: (data) {
+                            data.forEach((key, value) {
+                              provider.updateField(key, value);
+                            });
+                          },
+                        ),
+                        const ReviewStep(),
                       ],
                     ),
                   ),

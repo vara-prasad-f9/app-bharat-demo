@@ -3,7 +3,14 @@
 import 'package:flutter/material.dart';
 
 class OwnerDetailsStep extends StatefulWidget {
-  const OwnerDetailsStep({super.key});
+  final Function(Map<String, dynamic>) onSaved;
+  final Map<String, dynamic>? initialData;
+  
+  const OwnerDetailsStep({
+    super.key,
+    required this.onSaved,
+    this.initialData,
+  });
 
   @override
   State<OwnerDetailsStep> createState() => _OwnerDetailsStepState();

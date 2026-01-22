@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AssignmentDetailsStep extends StatefulWidget {
-  const AssignmentDetailsStep({super.key});
+  final Function(Map<String, dynamic>) onSaved;
+  final Map<String, dynamic>? initialData;
+  
+  const AssignmentDetailsStep({
+    super.key,
+    required this.onSaved,
+    this.initialData,
+  });
 
   @override
   State<AssignmentDetailsStep> createState() => _AssignmentDetailsStepState();
