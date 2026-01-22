@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_super_parameters
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../models/project_model.dart';
@@ -47,7 +49,7 @@ class _OwnerDetailsStepState extends State<OwnerDetailsStep> {
                 labelText: 'Owner Type *',
                 border: OutlineInputBorder(),
               ),
-              value: widget.projectData.ownerType,
+              initialValue: widget.projectData.ownerType,
               items: _ownerTypes.map((type) {
                 return DropdownMenuItem(
                   value: type,
@@ -215,7 +217,7 @@ class _OwnerDetailsStepState extends State<OwnerDetailsStep> {
                 labelText: 'ID Proof Type',
                 border: OutlineInputBorder(),
               ),
-              value: widget.projectData.idProofType,
+              initialValue: widget.projectData.idProofType,
               items: _idProofTypes.map((type) {
                 return DropdownMenuItem(
                   value: type,

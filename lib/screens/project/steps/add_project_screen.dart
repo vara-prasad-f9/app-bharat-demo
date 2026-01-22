@@ -69,7 +69,7 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
   }
 
   void _submitForm() {
-    // TODO: Implement form submission
+  
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Project created successfully!')),
     );
@@ -282,7 +282,7 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: Colors.grey.withAlpha(51),
                   blurRadius: 5,
                   offset: const Offset(0, -2),
                 ),

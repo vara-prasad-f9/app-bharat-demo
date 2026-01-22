@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field, library_private_types_in_public_api, use_super_parameters, unnecessary_string_interpolations
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -135,7 +137,7 @@ class _ConstructionDetailsStepState extends State<ConstructionDetailsStep> {
                       labelText: 'Construction Method *',
                       border: OutlineInputBorder(),
                     ),
-                    value: widget.projectData.constructionMethod,
+                    initialValue: widget.projectData.constructionMethod,
                     items: _constructionMethods.map((method) {
                       return DropdownMenuItem(
                         value: method,
@@ -191,7 +193,7 @@ class _ConstructionDetailsStepState extends State<ConstructionDetailsStep> {
                 labelText: 'Project Priority *',
                 border: OutlineInputBorder(),
               ),
-              value: widget.projectData.projectPriority,
+              initialValue: widget.projectData.projectPriority,
               items: _projectPriorities.map((priority) {
                 return DropdownMenuItem(
                   value: priority,
