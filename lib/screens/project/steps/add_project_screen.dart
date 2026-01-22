@@ -30,14 +30,39 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
   ];
 
   bool get _isNextButtonEnabled {
-    if (_currentStep == 0) { // Basic Details step
-      // For the first step, validate the form and check if project name is not empty
-      final isFormValid = _formKeys[_currentStep].currentState?.validate() ?? false;
-      final hasProjectName = _projectData.projectName?.trim().isNotEmpty ?? false;
-      return isFormValid && hasProjectName;
+    // Get the current form state
+    final formState = _formKeys[_currentStep].currentState;
+    
+    // If form state is null, button should be disabled
+    if (formState == null) return false;
+    
+    // For the first step, check project name is not empty
+    if (_currentStep == 0) {
+      return _projectData.projectName?.trim().isNotEmpty == true;
     }
-    // For other steps, just validate the form
-    return _formKeys[_currentStep].currentState?.validate() ?? false;
+    
+    // For location step (index 1), manually validate required fields
+    if (_currentStep == 1) {
+      final hasState = _projectData.state?.trim().isNotEmpty == true;
+      final hasCity = _projectData.city?.trim().isNotEmpty == true;
+      final hasArea = _projectData.area?.trim().isNotEmpty == true;
+      final hasPincode = _projectData.pincode?.trim().isNotEmpty == true && 
+                        _projectData.pincode!.length == 6 && 
+                        int.tryParse(_projectData.pincode!) != null;
+      
+      return hasState && hasCity && hasArea && hasPincode;
+    }
+    
+    // For Owner Details step (index 2), validate required fields
+    if (_currentStep == 2) {
+      final hasOwnerName = _projectData.ownerName?.trim().isNotEmpty == true;
+      final hasMobileNumber = _projectData.mobileNumber?.trim().isNotEmpty == true;
+      
+      return hasOwnerName && hasMobileNumber;
+    }
+    
+    // For other steps, use form validation
+    return formState.validate();
   }
 
   void _nextStep() {
@@ -303,7 +328,7 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                 if (_currentStep > 0) const SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: _nextStep,
+                    onPressed: _isNextButtonEnabled ? _nextStep : null,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),

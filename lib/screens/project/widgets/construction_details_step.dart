@@ -50,7 +50,7 @@ class _ConstructionDetailsStepState extends State<ConstructionDetailsStep> {
                 Expanded(
                   child: TextFormField(
                     decoration: const InputDecoration(
-                      labelText: 'Total Plot Area *',
+                      labelText: 'Total Plot Area',
                       border: OutlineInputBorder(),
                       suffixText: 'sq.ft',
                     ),
@@ -59,20 +59,13 @@ class _ConstructionDetailsStepState extends State<ConstructionDetailsStep> {
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                     ],
                     initialValue: widget.projectData.totalPlotArea?.toString(),
-                    validator: (value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'Plot area is required';
-                      }
-                      if (double.tryParse(value!) == null) {
-                        return 'Enter a valid number';
-                      }
-                      return null;
-                    },
                     onChanged: (value) {
                       if (value.isNotEmpty) {
                         widget.projectData.totalPlotArea = double.tryParse(value);
-                        widget.onChanged(widget.projectData);
+                      } else {
+                        widget.projectData.totalPlotArea = null;
                       }
+                      widget.onChanged(widget.projectData);
                     },
                   ),
                 ),
@@ -190,7 +183,7 @@ class _ConstructionDetailsStepState extends State<ConstructionDetailsStep> {
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(
-                labelText: 'Project Priority *',
+                labelText: 'Project Priority',
                 border: OutlineInputBorder(),
               ),
               initialValue: widget.projectData.projectPriority,
@@ -206,8 +199,6 @@ class _ConstructionDetailsStepState extends State<ConstructionDetailsStep> {
                   widget.onChanged(widget.projectData);
                 });
               },
-              validator: (value) =>
-                  value == null ? 'Please select project priority' : null,
             ),
             const SizedBox(height: 24),
             const Text(

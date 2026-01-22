@@ -144,10 +144,12 @@ class _LocationDetailsStepState extends State<LocationDetailsStep> {
             const SizedBox(height: 16),
             TextFormField(
               decoration: const InputDecoration(
-                labelText: 'District',
+                labelText: 'District *',
                 border: OutlineInputBorder(),
               ),
               initialValue: widget.projectData.district ?? '',
+              validator: (value) =>
+                  value?.isEmpty ?? true ? 'District is required' : null,
               onChanged: (value) {
                 widget.projectData.district = value;
                 widget.onChanged(widget.projectData);
@@ -210,22 +212,6 @@ class _LocationDetailsStepState extends State<LocationDetailsStep> {
               },
               onChanged: (value) {
                 widget.projectData.pincode = value;
-                widget.onChanged(widget.projectData);
-              },
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Full Site Address *',
-                border: OutlineInputBorder(),
-                alignLabelWithHint: true,
-              ),
-              maxLines: 3,
-              initialValue: widget.projectData.fullAddress ?? '',
-              validator: (value) =>
-                  value?.isEmpty ?? true ? 'Full address is required' : null,
-              onChanged: (value) {
-                widget.projectData.fullAddress = value;
                 widget.onChanged(widget.projectData);
               },
             ),
