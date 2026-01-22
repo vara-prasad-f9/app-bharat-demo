@@ -7,6 +7,7 @@ import 'package:bharatplus/screens/project/widgets/owner_details_step.dart';
 import 'package:bharatplus/screens/project/widgets/construction_details_step.dart';
 import 'package:bharatplus/screens/project/widgets/team_assignment_step.dart';
 import 'package:bharatplus/screens/project/widgets/documents_step.dart';
+import 'package:bharatplus/screens/project/widgets/review_step.dart';
 
 class AddProjectScreen extends StatefulWidget {
   const AddProjectScreen({super.key});
@@ -321,7 +322,15 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                 // Step 7: Review
                 Form(
                   key: _formKeys[6],
-                  child: _buildPlaceholderStep('Review Project'),
+                  child: ReviewStep(
+                    projectData: _projectData,
+                    onChanged: (data) {
+                      // Update project data if needed
+                      setState(() {
+                        // No need to update anything as this is just a review step
+                      });
+                    },
+                  ),
                 ),
               ],
             ),
@@ -373,30 +382,6 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
     );
   }
 
-  Widget _buildPlaceholderStep(String title) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.construction,
-            size: 64,
-            color: Colors.grey[400],
-          ),
-          const SizedBox(height: 16),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'This step is under development',
-            style: TextStyle(color: Colors.grey[600]),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   void dispose() {
