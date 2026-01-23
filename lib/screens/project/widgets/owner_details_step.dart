@@ -41,50 +41,58 @@ class _OwnerDetailsStepState extends State<OwnerDetailsStep> {
           children: [
             const Text(
               'Owner Details',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 20),
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
-                labelText: 'Owner Type *',
-                border: OutlineInputBorder(),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 50,
+              child: DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  labelText: 'Owner Type *',
+                  border: OutlineInputBorder(),
+                  labelStyle: TextStyle(fontSize: 13),
+                ),
+                initialValue: widget.projectData.ownerType,
+                items: _ownerTypes.map((type) {
+                  return DropdownMenuItem(
+                    value: type,
+                    child: Text(type, style: const TextStyle(fontSize: 13)),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    widget.projectData.ownerType = value;
+                    if (value == 'Company') {
+                      widget.projectData.ownerName = null;
+                    }
+                    widget.onChanged(widget.projectData);
+                  });
+                },
+                validator: (value) =>
+                    value == null ? 'Please select owner type' : null,
               ),
-              initialValue: widget.projectData.ownerType,
-              items: _ownerTypes.map((type) {
-                return DropdownMenuItem(
-                  value: type,
-                  child: Text(type),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  widget.projectData.ownerType = value;
-                  if (value == 'Company') {
-                    widget.projectData.ownerName = null;
-                  }
-                  widget.onChanged(widget.projectData);
-                });
-              },
-              validator: (value) =>
-                  value == null ? 'Please select owner type' : null,
             ),
             const SizedBox(height: 16),
             if (widget.projectData.ownerType == 'Individual')
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Owner Full Name *',
-                  border: OutlineInputBorder(),
+              SizedBox(
+                height: 50,
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Owner Full Name *',
+                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(fontSize: 13)
+                  ),
+                  initialValue: widget.projectData.ownerName ?? '',
+                  validator: (value) =>
+                      (widget.projectData.ownerType == 'Individual' &&
+                              (value?.isEmpty ?? true))
+                          ? 'Owner name is required'
+                          : null,
+                  onChanged: (value) {
+                    widget.projectData.ownerName = value;
+                    widget.onChanged(widget.projectData);
+                  },
                 ),
-                initialValue: widget.projectData.ownerName ?? '',
-                validator: (value) =>
-                    (widget.projectData.ownerType == 'Individual' &&
-                            (value?.isEmpty ?? true))
-                        ? 'Owner name is required'
-                        : null,
-                onChanged: (value) {
-                  widget.projectData.ownerName = value;
-                  widget.onChanged(widget.projectData);
-                },
               ),
             if (widget.projectData.ownerType == 'Company') ...[
               const SizedBox(height: 16),
@@ -106,55 +114,66 @@ class _OwnerDetailsStepState extends State<OwnerDetailsStep> {
               ),
             ],
             const SizedBox(height: 16),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Mobile Number *',
-                border: OutlineInputBorder(),
-                prefixText: '+91 ',
+            SizedBox(
+              height:50,
+              child: TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Mobile Number *',
+                  border: OutlineInputBorder(),
+                  prefixText: '+91 ',
+                  labelStyle: TextStyle(fontSize: 13)
+                ),
+                keyboardType: TextInputType.phone,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(10),
+                ],
+                initialValue: widget.projectData.mobileNumber ?? '',
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Mobile number is required';
+                  }
+                  if (value!.length != 10) {
+                    return 'Enter a valid 10-digit mobile number';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  widget.projectData.mobileNumber = value;
+                  widget.onChanged(widget.projectData);
+                },
               ),
-              keyboardType: TextInputType.phone,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(10),
-              ],
-              initialValue: widget.projectData.mobileNumber ?? '',
-              validator: (value) {
-                if (value?.isEmpty ?? true) {
-                  return 'Mobile number is required';
-                }
-                if (value!.length != 10) {
-                  return 'Enter a valid 10-digit mobile number';
-                }
-                return null;
-              },
-              onChanged: (value) {
-                widget.projectData.mobileNumber = value;
-                widget.onChanged(widget.projectData);
-              },
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Alternate Mobile Number',
-                border: OutlineInputBorder(),
-                prefixText: '+91 ',
+            SizedBox(
+              height:50,
+              child: TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Alternate Mobile Number',
+                  border: OutlineInputBorder(),
+                  prefixText: '+91 ',
+                  labelStyle: TextStyle(fontSize: 13)
+                ),
+                keyboardType: TextInputType.phone,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(10),
+                ],
+                initialValue: widget.projectData.alternateMobileNumber ?? '',
+                onChanged: (value) {
+                  widget.projectData.alternateMobileNumber = value;
+                  widget.onChanged(widget.projectData);
+                },
               ),
-              keyboardType: TextInputType.phone,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(10),
-              ],
-              initialValue: widget.projectData.alternateMobileNumber ?? '',
-              onChanged: (value) {
-                widget.projectData.alternateMobileNumber = value;
-                widget.onChanged(widget.projectData);
-              },
             ),
             const SizedBox(height: 16),
-            TextFormField(
+            SizedBox(
+              height:50,
+              child: TextFormField(
               decoration: const InputDecoration(
                 labelText: 'Email Address',
                 border: OutlineInputBorder(),
+                labelStyle: TextStyle(fontSize: 13)
               ),
               keyboardType: TextInputType.emailAddress,
               initialValue: widget.projectData.email ?? '',
@@ -173,9 +192,10 @@ class _OwnerDetailsStepState extends State<OwnerDetailsStep> {
                 widget.onChanged(widget.projectData);
               },
             ),
-            const SizedBox(height: 16),
+            ),
+            const SizedBox(height: 6),
             SwitchListTile(
-              title: const Text('Owner Address same as Site Address'),
+              title: const Text('Owner Address same as Site Address', style: TextStyle(fontSize: 12)),
               value: _isSameAsSiteAddress,
               onChanged: (value) {
                 setState(() {
@@ -186,94 +206,110 @@ class _OwnerDetailsStepState extends State<OwnerDetailsStep> {
               },
             ),
             if (!_isSameAsSiteAddress) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: 6),
               const Text(
                 'Owner Address',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
               ),
               const SizedBox(height: 8),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Full Address',
-                  border: OutlineInputBorder(),
-                  alignLabelWithHint: true,
+              SizedBox(
+                height: 50,
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Full Address',
+                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(fontSize: 13)
+                  ),
+                  maxLines: 3,
+                  onChanged: (value) {
+                    // Handle owner address change
+                    widget.projectData.ownerAddress = value;
+                    widget.onChanged(widget.projectData);
+                  },
+                  initialValue: widget.projectData.ownerAddress ?? '',
                 ),
-                maxLines: 3,
-                onChanged: (value) {
-                  // Handle owner address change
-                },
               ),
             ],
-            const SizedBox(height: 16),
+            const SizedBox(height: 6),
             const Divider(),
             const SizedBox(height: 8),
             const Text(
               'ID Proof Details',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 16),
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
-                labelText: 'ID Proof Type',
-                border: OutlineInputBorder(),
+            const SizedBox(height: 6),
+            SizedBox(
+              height: 50,
+              child: DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  labelText: 'ID Proof Type',
+                  border: OutlineInputBorder(),
+                  labelStyle: TextStyle(fontSize: 13)
+                ),
+                initialValue: widget.projectData.idProofType,
+                items: _idProofTypes.map((type) {
+                  return DropdownMenuItem(
+                    value: type,
+                    child: Text(type),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    widget.projectData.idProofType = value;
+                    widget.onChanged(widget.projectData);
+                  });
+                },
               ),
-              initialValue: widget.projectData.idProofType,
-              items: _idProofTypes.map((type) {
-                return DropdownMenuItem(
-                  value: type,
-                  child: Text(type),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  widget.projectData.idProofType = value;
+            ),
+            const SizedBox(height: 6),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 50,
+              child: TextFormField(
+                decoration: InputDecoration(
+                  labelText: widget.projectData.idProofType == 'Aadhaar'
+                      ? 'Aadhaar Number'
+                      : widget.projectData.idProofType == 'PAN'
+                          ? 'PAN Number'
+                          : 'ID Number',
+                  border: const OutlineInputBorder(),
+                  labelStyle: const TextStyle(fontSize: 13),
+                  hintText: widget.projectData.idProofType == 'Aadhaar'
+                      ? 'XXXX XXXX XXXX'
+                      : widget.projectData.idProofType == 'PAN'
+                          ? 'ABCDE1234F'
+                          : 'Enter ID number',
+                ),
+                keyboardType: TextInputType.text,
+                inputFormatters: [
+                  if (widget.projectData.idProofType == 'Aadhaar')
+                    FilteringTextInputFormatter.digitsOnly,
+                  if (widget.projectData.idProofType == 'Aadhaar')
+                    LengthLimitingTextInputFormatter(12),
+                  if (widget.projectData.idProofType == 'PAN')
+                    LengthLimitingTextInputFormatter(10),
+                ],
+                initialValue: widget.projectData.idProofNumber ?? '',
+                onChanged: (value) {
+                  widget.projectData.idProofNumber = value;
                   widget.onChanged(widget.projectData);
-                });
-              },
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: widget.projectData.idProofType == 'Aadhaar'
-                    ? 'Aadhaar Number'
-                    : widget.projectData.idProofType == 'PAN'
-                        ? 'PAN Number'
-                        : 'ID Number',
-                border: const OutlineInputBorder(),
-                hintText: widget.projectData.idProofType == 'Aadhaar'
-                    ? 'XXXX XXXX XXXX'
-                    : widget.projectData.idProofType == 'PAN'
-                        ? 'ABCDE1234F'
-                        : 'Enter ID number',
+                },
+                validator: (value) {
+                  if (value?.isNotEmpty == true) {
+                    if (widget.projectData.idProofType == 'Aadhaar' &&
+                        value!.length != 12) {
+                      return 'Aadhaar must be 12 digits';
+                    }
+                    if (widget.projectData.idProofType == 'PAN' &&
+                        value!.length != 10) {
+                      return 'PAN must be 10 characters';
+                    }
+                  }
+                  return null;
+                },
               ),
-              keyboardType: TextInputType.text,
-              inputFormatters: [
-                if (widget.projectData.idProofType == 'Aadhaar')
-                  FilteringTextInputFormatter.digitsOnly,
-                if (widget.projectData.idProofType == 'Aadhaar')
-                  LengthLimitingTextInputFormatter(12),
-                if (widget.projectData.idProofType == 'PAN')
-                  LengthLimitingTextInputFormatter(10),
-              ],
-              initialValue: widget.projectData.idProofNumber ?? '',
-              onChanged: (value) {
-                widget.projectData.idProofNumber = value;
-                widget.onChanged(widget.projectData);
-              },
-              validator: (value) {
-                if (value?.isNotEmpty == true) {
-                  if (widget.projectData.idProofType == 'Aadhaar' &&
-                      value!.length != 12) {
-                    return 'Aadhaar must be 12 digits';
-                  }
-                  if (widget.projectData.idProofType == 'PAN' &&
-                      value!.length != 10) {
-                    return 'PAN must be 10 characters';
-                  }
-                }
-                return null;
-              },
             ),
+            const SizedBox(height: 100),
           ],
         ),
       ),

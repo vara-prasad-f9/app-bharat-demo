@@ -28,6 +28,7 @@ class ProjectModel {
   String? alternateMobileNumber;
   String? email;
   bool isSameAsSiteAddress = false;
+  String? ownerAddress;
   String? idProofType;
   String? idProofNumber;
 
@@ -98,6 +99,7 @@ class ProjectModel {
     double? latitude,
     double? longitude,
     String? ownerType,
+    String? ownerAddress,
     String? ownerName,
     String? companyName,
     String? mobileNumber,
@@ -140,6 +142,7 @@ class ProjectModel {
       ..latitude = latitude ?? this.latitude
       ..longitude = longitude ?? this.longitude
       ..ownerType = ownerType ?? this.ownerType
+      ..ownerAddress = ownerAddress ?? this.ownerAddress
       ..ownerName = ownerName ?? this.ownerName
       ..companyName = companyName ?? this.companyName
       ..mobileNumber = mobileNumber ?? this.mobileNumber
