@@ -370,39 +370,44 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
             child: OutlinedButton(
               onPressed: _previousStep,
               style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                side: const BorderSide(color: Colors.red),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                side: BorderSide(color: Theme.of(context).primaryColor),
               ),
-              child: const Text(
+              child: Text(
                 'BACK',
-                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 12, fontWeight: FontWeight.bold),
               ),
             ),
           ),
           const SizedBox(width: 8), // Reduced space between buttons
         ],
-        // Cancel Button
-        Expanded(
-          child: OutlinedButton(
-            onPressed: () {
-              // Navigate back to home page
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            },
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              side: const BorderSide(color: Colors.grey),
-            ),
-            child: const Text(
-              'CANCEL',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
+        // Cancel Button (only shown on first step)
+        if (_currentStep == 0) ...[
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () {
+                // Navigate back to home page
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                side: BorderSide(color: Theme.of(context).primaryColor),
+              ),
+              child: Text(
+                'CANCEL',
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
               ),
             ),
           ),
-        ),
-        const SizedBox(width: 8), // Space between buttons
+          const SizedBox(width: 8), // Space between buttons
+        ] else ...[
+          // Empty widget when not on first step
+          const SizedBox.shrink(),
+        ],
         // Next Button
         Expanded(
           child: ElevatedButton(
