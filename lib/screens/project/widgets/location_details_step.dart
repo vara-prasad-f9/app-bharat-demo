@@ -116,32 +116,42 @@ class _LocationDetailsStepState extends State<LocationDetailsStep> {
           children: [
             const Text(
               'Location Details',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Country',
-                border: OutlineInputBorder(),
+            SizedBox(
+              height: 50,
+              child: TextFormField(
+                style: const TextStyle(fontSize: 13, height: 1.0),
+                decoration: const InputDecoration(
+                  labelText: 'Country',
+                  border: OutlineInputBorder(),
+                ),
+                initialValue: widget.projectData.country,
+                readOnly: true,
               ),
-              initialValue: widget.projectData.country,
-              readOnly: true,
             ),
-            const SizedBox(height: 16),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'State *',
-                border: OutlineInputBorder(),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 50,
+              child: TextFormField(
+                style: const TextStyle(fontSize: 13, height: 1.0),
+                decoration: const InputDecoration(
+                  labelText: 'State *',
+                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  labelStyle: TextStyle(fontSize: 13),
+                ),
+                initialValue: widget.projectData.state,
+                validator: (value) =>
+                    value?.isEmpty ?? true ? 'State is required' : null,
+                onChanged: (value) {
+                  widget.projectData.state = value;
+                  widget.onChanged(widget.projectData);
+                },
               ),
-              initialValue: widget.projectData.state,
-              validator: (value) =>
-                  value?.isEmpty ?? true ? 'State is required' : null,
-              onChanged: (value) {
-                widget.projectData.state = value;
-                widget.onChanged(widget.projectData);
-              },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             TextFormField(
               decoration: const InputDecoration(
                 labelText: 'District *',
