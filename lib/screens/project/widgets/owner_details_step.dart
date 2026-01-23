@@ -122,41 +122,51 @@ class _OwnerDetailsStepState extends State<OwnerDetailsStep> {
               ),
             ],
             const SizedBox(height: 16),
-            SizedBox(
-              height:50,
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Mobile Number *',
-                  border: OutlineInputBorder(),
-                  prefixText: '+91 ',
-                  labelStyle: TextStyle(fontSize: 13)
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Mobile Number *',
+                border: const OutlineInputBorder(),
+                prefixText: '+91 ',
+                labelStyle: const TextStyle(fontSize: 13),
+                contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                errorStyle: const TextStyle(fontSize: 11, height: 0.8),
+                errorMaxLines: 2,
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red.shade400, width: 1.0),
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
-                keyboardType: TextInputType.phone,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(10),
-                ],
-                initialValue: widget.projectData.mobileNumber ?? '',
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Mobile number is required';
-                  }
-                  if (value!.length != 10) {
-                    return 'Enter a valid 10-digit mobile number';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  widget.projectData.mobileNumber = value;
-                  widget.onChanged(widget.projectData);
-                  // Validate the form to update the error state
-                  _formKey.currentState?.validate();
-                },
-                onFieldSubmitted: (_) {
-                  // Validate the form when the field is submitted
-                  _formKey.currentState?.validate();
-                },
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red.shade400, width: 1.5),
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
               ),
+              style: const TextStyle(fontSize: 13),
+              keyboardType: TextInputType.phone,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(10),
+              ],
+              initialValue: widget.projectData.mobileNumber ?? '',
+              validator: (value) {
+                if (value?.isEmpty ?? true) {
+                  return 'Mobile number is required';
+                }
+                if (value!.length != 10) {
+                  return 'Enter a valid 10-digit mobile number';
+                }
+                return null;
+              },
+              onChanged: (value) {
+                widget.projectData.mobileNumber = value;
+                widget.onChanged(widget.projectData);
+                // Clear error when user starts typing
+                if (value.isNotEmpty) {
+                  _formKey.currentState?.validate();
+                }
+              },
+              onFieldSubmitted: (_) {
+                _formKey.currentState?.validate();
+              },
             ),
             const SizedBox(height: 16),
             SizedBox(
