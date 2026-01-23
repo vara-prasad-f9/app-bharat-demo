@@ -194,43 +194,56 @@ class _TeamAssignmentStepState extends ConsumerState<TeamAssignmentStep> {
             suffixIcon: const Icon(Icons.search),
           ),
           onTap: () {
-            // Show a dialog with searchable list
+            // Create a local copy of selected items for the dialog
+            List<String> localSelectedItems = List.from(selectedItems);
+            
             showDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                title: Text('Select $hint'),
-                content: SizedBox(
-                  width: double.maxFinite,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      final item = items[index];
-                      return CheckboxListTile(
-                        title: Text(item),
-                        value: selectedItems.contains(item),
-                        onChanged: (bool? selected) {
-                          final newSelection = List<String>.from(selectedItems);
-                          if (selected == true) {
-                            if (!newSelection.contains(item)) {
-                              newSelection.add(item);
-                            }
-                          } else {
-                            newSelection.remove(item);
-                          }
-                          onChanged(newSelection);
-                        },
-                      );
-                    },
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Done'),
-                  ),
-                ],
-              ),
+              builder: (context) {
+                return StatefulBuilder(
+                  builder: (context, setDialogState) {
+                    return AlertDialog(
+                      title: Text('Select $hint'),
+                      content: SizedBox(
+                        width: double.maxFinite,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: items.length,
+                          itemBuilder: (context, index) {
+                            final item = items[index];
+                            return CheckboxListTile(
+                              controlAffinity: ListTileControlAffinity.leading,
+                              title: Text(item),
+                              value: localSelectedItems.contains(item),
+                              onChanged: (bool? selected) {
+                                setDialogState(() {
+                                  if (selected == true) {
+                                    if (!localSelectedItems.contains(item)) {
+                                      localSelectedItems.add(item);
+                                    }
+                                  } else {
+                                    localSelectedItems.remove(item);
+                                  }
+                                });
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            // Update the parent widget's state with the final selection
+                            onChanged(localSelectedItems);
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Done'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
             );
           },
         ),

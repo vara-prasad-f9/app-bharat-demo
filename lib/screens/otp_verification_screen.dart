@@ -221,14 +221,14 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: List.generate(6, (index) {
                       return Container(
-                        width: 48,
-                        height: 56,
+                        width: 40,
+                        height: 50,
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: _focusNodes[index].hasFocus 
                                 ? Theme.of(context).primaryColor 
-                                : Colors.grey.shade300,
-                            width: 1.5,
+                                : Colors.black,
+                            width: 1,
                           ),
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -239,7 +239,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                           textAlign: TextAlign.center,
                           maxLength: 1,
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
                           decoration: const InputDecoration(
