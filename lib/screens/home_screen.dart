@@ -5,26 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bharatplus/screens/layout/main_layout.dart';
 import 'package:bharatplus/screens/layout/custom_bottombar.dart';
 import 'package:bharatplus/screens/project/steps/add_project_screen.dart';
-
-class PropertyStats {
-  final String name;
-  final int completed;
-  final int inProgress;
-  final int readyToStart;
-  final IconData icon;
-  final Color color;
-  final String location;
-
-  PropertyStats({
-    required this.name,
-    required this.completed,
-    required this.inProgress,
-    required this.readyToStart,
-    required this.icon,
-    required this.color,
-    required this.location,
-  });
-}
+import 'package:bharatplus/providers/project_provider.dart';
+import 'package:bharatplus/models/property_stats.dart';
 
 class LocationCategory {
   final String name;
@@ -68,148 +50,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
-  List<LocationCategory> _getLocationCategories() {
-    final allProperties = [
-      PropertyStats(
-        name: 'Community',
-        completed: 4,
-        inProgress: 2,
-        readyToStart: 1,
-        icon: Icons.people,
-        color: Colors.blue,
-        location: 'Vizag MVP',
-      ),
-      PropertyStats(
-        name: 'Villa',
-        completed: 3,
-        inProgress: 1,
-        readyToStart: 2,
-        icon: Icons.villa,
-        color: Colors.green,
-        location: 'Vizag MVP',
-      ),
-      PropertyStats(
-        name: 'Building',
-        completed: 5,
-        inProgress: 3,
-        readyToStart: 2,
-        icon: Icons.apartment,
-        color: Colors.orange,
-        location: 'Vizag MVP',
-      ),
-      PropertyStats(
-        name: 'Flat',
-        completed: 8,
-        inProgress: 2,
-        readyToStart: 3,
-        icon: Icons.home_work,
-        color: Colors.purple,
-        location: 'Vizag Beach',
-      ),
-      PropertyStats(
-        name: 'Individual',
-        completed: 2,
-        inProgress: 1,
-        readyToStart: 0,
-        icon: Icons.person,
-        color: Colors.red,
-        location: 'Vizag Beach',
-      ),
-      PropertyStats(
-        name: 'Group Housing',
-        completed: 3,
-        inProgress: 2,
-        readyToStart: 1,
-        icon: Icons.groups,
-        color: Colors.teal,
-        location: 'Vizianagaram',
-      ),
-      PropertyStats(
-        name: 'Industrial',
-        completed: 4,
-        inProgress: 1,
-        readyToStart: 2,
-        icon: Icons.factory,
-        color: Colors.brown,
-        location: 'Vizianagaram',
-      ),
-      PropertyStats(
-        name: 'Business',
-        completed: 2,
-        inProgress: 1,
-        readyToStart: 0,
-        icon: Icons.business,
-        color: Colors.indigo,
-        location: 'Bhogapuram',
-      ),
-      PropertyStats(
-        name: 'Commercial Complex',
-        completed: 3,
-        inProgress: 1,
-        readyToStart: 1,
-        icon: Icons.business_center,
-        color: Colors.pink,
-        location: 'Bhogapuram',
-      ),
-      PropertyStats(
-        name: 'SEZ',
-        completed: 1,
-        inProgress: 0,
-        readyToStart: 1,
-        icon: Icons.business_outlined,
-        color: Colors.blueGrey,
-        location: 'Vizag MVP',
-      ),
-      PropertyStats(
-        name: 'Small House',
-        completed: 5,
-        inProgress: 2,
-        readyToStart: 1,
-        icon: Icons.house,
-        color: Colors.lightBlue,
-        location: 'Vizag Beach',
-      ),
-      PropertyStats(
-        name: 'Farm House',
-        completed: 2,
-        inProgress: 1,
-        readyToStart: 0,
-        icon: Icons.agriculture,
-        color: Colors.lightGreen,
-        location: 'Vizianagaram',
-      ),
-      PropertyStats(
-        name: 'Stadium',
-        completed: 1,
-        inProgress: 0,
-        readyToStart: 0,
-        icon: Icons.stadium,
-        color: Colors.deepPurple,
-        location: 'Bhogapuram',
-      ),
-      PropertyStats(
-        name: 'Parks',
-        completed: 3,
-        inProgress: 1,
-        readyToStart: 1,
-        icon: Icons.park,
-        color: Colors.green,
-        location: 'Vizag MVP',
-      ),
-      PropertyStats(
-        name: 'Government',
-        completed: 2,
-        inProgress: 1,
-        readyToStart: 1,
-        icon: Icons.account_balance,
-        color: Colors.redAccent,
-        location: 'Vizianagaram',
-      ),
-    ];
-
+  List<LocationCategory> _getLocationCategories(List<PropertyStats> stats) {
     // Group properties by location
     final locationMap = <String, List<PropertyStats>>{};
-    for (var property in allProperties) {
+    for (var property in stats) {
       locationMap.putIfAbsent(property.location, () => []).add(property);
     }
 
@@ -307,7 +151,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   
   
   Widget _buildLocationCategories(BuildContext context) {
-    final locationCategories = _getLocationCategories();
+    // Watch for changes in the project stats
+    final statsAsync = ref.watch(projectStatsProvider);
+    
+    // Show loading indicator while data is being loaded
+    if (statsAsync.isEmpty) {
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 16),
+            Text('Loading projects...'),
+          ],
+        ),
+      );
+    }
+    
+    // Group projects by location
+    final locationCategories = _getLocationCategories(statsAsync);
     
     return ListView(
       padding: const EdgeInsets.all(16),
@@ -392,6 +254,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Refresh the projects when the screen is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // This will trigger a rebuild if the projects change
+      ref.read(projectProvider);
+    });
+    
     return MainLayout(
       title: 'BharatPlus',
       showBottomNav: true,

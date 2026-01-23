@@ -13,12 +13,19 @@ import 'screens/role_selection_screen.dart';
 import 'screens/home_screen.dart';
 import 'providers/auth_provider.dart';
 import 'providers/theme_provider.dart';
+import 'providers/project_provider.dart';
 import 'services/onboarding_service.dart';
 
-void main() {
+void main() async {
+  // Ensure Flutter is initialized
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize shared preferences
+  final prefs = await SharedPreferences.getInstance();
+  
   runApp(
-    const ProviderScope(
-      child: MyApp(),
+    ProviderScope(
+      child: MyApp(prefs: prefs),
     ),
   );
 }
@@ -95,11 +102,18 @@ final _router = GoRouter(
 );
 
 class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
+  final SharedPreferences prefs;
+  
+  const MyApp({super.key, required this.prefs});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
+    final projects = ref.watch(projectProvider);
+    if (projects.isEmpty) {
+      // You might want to load initial data here if needed
+      // For example: ref.read(projectProvider.notifier).loadInitialData();
+    }
     
     return MaterialApp.router(
       title: 'BharatPlus',

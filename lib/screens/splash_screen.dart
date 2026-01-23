@@ -26,11 +26,27 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Center(
-        child: Image.asset(
-          'assets/images/logo.png',
+        child: Container(
           width: 200,
           height: 200,
-          fit: BoxFit.contain,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(51),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: ClipOval(
+            child: Image.asset(
+              'assets/images/logo.png',
+              width: 180,
+              height: 180,
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
       ),
     );

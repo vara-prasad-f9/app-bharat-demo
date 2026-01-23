@@ -1,5 +1,9 @@
+// ignore_for_file: dead_code
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bharatplus/models/project_model.dart';
+import 'package:bharatplus/providers/project_provider.dart';
 import 'package:bharatplus/screens/project/widgets/basic_details_step.dart';
 import 'package:bharatplus/screens/project/widgets/location_details_step.dart';
 import 'package:bharatplus/screens/project/widgets/owner_details_step.dart';
@@ -8,14 +12,14 @@ import 'package:bharatplus/screens/project/widgets/team_assignment_step.dart';
 import 'package:bharatplus/screens/project/widgets/documents_step.dart';
 import 'package:bharatplus/screens/project/widgets/review_step.dart';
 
-class AddProjectScreen extends StatefulWidget {
+class AddProjectScreen extends ConsumerStatefulWidget {
   const AddProjectScreen({super.key});
 
   @override
-  State<AddProjectScreen> createState() => _AddProjectScreenState();
+  ConsumerState<AddProjectScreen> createState() => _AddProjectScreenState();
 }
 
-class _AddProjectScreenState extends State<AddProjectScreen> {
+class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
   final ProjectModel _projectData = ProjectModel();
   final PageController _pageController = PageController();
   int _currentStep = 0;
@@ -96,11 +100,47 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
   }
 
   void _submitForm() {
-  
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Project created successfully!')),
-    );
-    Navigator.of(context).pop();
+    try {
+      // Get the project provider
+      final projectNotifier = ref.read(projectProvider.notifier);
+      
+      // Set default values for required fields
+      final now = DateTime.now();
+      
+      // Create a new project instance with all required fields
+      final projectToAdd = ProjectModel()
+        ..projectName = _projectData.projectName ?? 'New Project'
+        ..projectCode = _projectData.projectCode ?? 'PRJ-${now.millisecondsSinceEpoch}'
+        ..projectType = _projectData.projectType ?? 'Residential'
+        ..constructionStartDate = _projectData.constructionStartDate ?? now
+        ..expectedCompletionDate = _projectData.expectedCompletionDate ?? now.add(const Duration(days: 365))
+        ..currentStage = _projectData.currentStage ?? 'Planning'
+        ..projectStatus = _projectData.projectStatus ?? 'Not Started'
+        ..country = _projectData.country
+        ..state = _projectData.state
+        ..city = _projectData.city
+        ..area = _projectData.area
+        ..pincode = _projectData.pincode;
+      
+      // Add the project to the provider
+      projectNotifier.addProject(projectToAdd);
+      
+      // Show success message and navigate back
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Project created successfully!')),
+        );
+        
+        // Navigate back to home screen
+        Navigator.of(context).pop(true); // Pass true to indicate success
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error creating project: $e')),
+        );
+      }
+    }
   }
 
   @override
