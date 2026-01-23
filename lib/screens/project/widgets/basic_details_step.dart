@@ -143,7 +143,10 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                 items: _projectTypes.map((type) {
                   return DropdownMenuItem(
                     value: type,
-                    child: Text(type),
+                    child: Text(
+                      type,
+                      style: const TextStyle(color: Colors.black), // Set text color to black
+                    ),
                   );
                 }).toList(),
                 onChanged: (value) {
@@ -241,7 +244,10 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                 items: _projectStages.map((stage) {
                   return DropdownMenuItem(
                     value: stage,
-                    child: Text(stage),
+                    child: Text(
+                      stage,
+                      style: const TextStyle(color: Colors.black), // Set text color to black
+                    ),
                   );
                 }).toList(),
                 onChanged: (value) {
@@ -269,7 +275,10 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                 items: _projectStatuses.map((status) {
                   return DropdownMenuItem(
                     value: status,
-                    child: Text(status),
+                    child: Text(
+                      status,
+                      style: const TextStyle(color: Colors.black), // Set text color to black
+                    ),
                   );
                 }).toList(),
                 onChanged: (value) {
