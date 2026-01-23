@@ -114,9 +114,11 @@ class _LocationDetailsStepState extends State<LocationDetailsStep> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Location Details',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            Center(
+              child: const Text(
+                'Location Details',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 20),
             SizedBox(

@@ -26,13 +26,13 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
   final List<GlobalKey<FormState>> _formKeys = List.generate(7, (_) => GlobalKey<FormState>());
 
   final List<Map<String, dynamic>> _steps = [
-    {'title': 'Basic Details', 'subtitle': 'Enter project basic information'},
-    {'title': 'Location', 'subtitle': 'Add project location details'},
-    {'title': 'Owner', 'subtitle': 'Enter owner information'},
-    {'title': 'Construction', 'subtitle': 'Add construction details'},
-    {'title': 'Team', 'subtitle': 'Assign team members'},
-    {'title': 'Documents', 'subtitle': 'Upload required documents'},
-    {'title': 'Review', 'subtitle': 'Review and submit project'},
+    {'title': 'Step 1', 'subtitle': 'Enter project basic information'},
+    {'title': 'Step 2', 'subtitle': 'Add project location details'},
+    {'title': 'Step 3', 'subtitle': 'Enter owner information'},
+    {'title': 'Step 4', 'subtitle': 'Add construction details'},
+    {'title': 'Step 5', 'subtitle': 'Assign team members'},
+    {'title': 'Step 6', 'subtitle': 'Upload required documents'},
+    {'title': 'Step 7', 'subtitle': 'Review and submit project'},
   ];
 
   bool get _isNextButtonEnabled {
@@ -168,7 +168,7 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
             // Stepper Header with horizontal scrolling
             Container(
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-              height: 80, // Fixed height for the stepper
+              height: 75, // Fixed height for the stepper
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -180,7 +180,7 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                     final isCompleted = index < _currentStep;
         
                     return Container(
-                      width: 80, // Fixed width for each step
+                      width: 45, // Fixed width for each step
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       child: GestureDetector(
                         onTap: () => _onStepTapped(index),
@@ -201,10 +201,10 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                               child: Center(
                                 child: isCompleted
                                     ? const Icon(Icons.check, color: Colors.white, size: 12)
-                                    : Text(
-                                        '${index + 1}',
+                                    : const Text(
+                                          '✓',
                                         style: TextStyle(
-                                          color: isActive ? Colors.white : Colors.grey[700],
+                                          color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 10,
                                         ),
@@ -236,7 +236,7 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
             
             // Progress Bar
             Container(
-              margin: const EdgeInsets.only(bottom: 16),
+              margin: const EdgeInsets.only(bottom: 0),
               child: LinearProgressIndicator(
                 value: (_currentStep + 1) / _steps.length,
                 backgroundColor: Colors.grey[200],

@@ -39,9 +39,11 @@ class _ConstructionDetailsStepState extends State<ConstructionDetailsStep> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Construction Details',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            Center(
+              child: const Text(
+                'Construction Details',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 12),
             Row(

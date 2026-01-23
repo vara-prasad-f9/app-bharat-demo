@@ -39,9 +39,11 @@ class _OwnerDetailsStepState extends State<OwnerDetailsStep> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Owner Details',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            Center(
+              child: const Text(
+                'Owner Details',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 12),
             SizedBox(

@@ -26,9 +26,11 @@ class _DocumentsStepState extends State<DocumentsStep> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'Documentation & Media',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          Center(
+            child: const Text(
+              'Documentation & Media',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
           ),
           const SizedBox(height: 20),
           

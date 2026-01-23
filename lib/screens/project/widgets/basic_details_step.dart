@@ -58,12 +58,14 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Basic Project Details',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            Center(
+              child: const Text(
+                'Basic Project Details',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
             ),
           
-            const SizedBox(height: 10),
+            const SizedBox(height: 16),
             // Project Name (Required)
             SizedBox(
               height: 50,
