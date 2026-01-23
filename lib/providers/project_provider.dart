@@ -113,6 +113,13 @@ final projectStatsProvider = Provider<List<PropertyStats>>((ref) {
       final color = _getColorForProjectType(type);
       
       if (type.isNotEmpty && location.isNotEmpty) {
+        // Debug print to check city values
+        final project = projects.first;
+        print('Project city: ${project.city}, location: $location');
+        
+        // Use the first project's city, or fall back to location if city is not available
+        final city = project.city?.isNotEmpty == true ? project.city! : location;
+        
         stats.add(PropertyStats(
           name: type,
           completed: completed,
@@ -121,7 +128,10 @@ final projectStatsProvider = Provider<List<PropertyStats>>((ref) {
           icon: iconData,
           color: color,
           location: location,
+          city: city,
         ));
+        
+        print('Created PropertyStats with city: $city');
         
         print('Added stat for $type in $location: C:$completed, P:$inProgress, R:$readyToStart');
       }

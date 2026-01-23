@@ -51,19 +51,39 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   List<LocationCategory> _getLocationCategories(List<PropertyStats> stats) {
-    // Group properties by location
-    final locationMap = <String, List<PropertyStats>>{};
+    // Debug print to check incoming stats
+    print('Total stats received: ${stats.length}');
+    for (var stat in stats) {
+      print('Stat - City: "${stat.city}", Location: "${stat.location}"');
+    }
+    
+    // First, group properties by city
+    final cityMap = <String, List<PropertyStats>>{};
+    
     for (var property in stats) {
-      locationMap.putIfAbsent(property.location, () => []).add(property);
+      // Use city if not empty, otherwise fall back to location
+      final city = property.city.isNotEmpty 
+          ? property.city 
+          : (property.location.isNotEmpty ? property.location : 'Unknown Location');
+          
+      if (!cityMap.containsKey(city)) {
+        print('Creating new city group: $city');
+      }
+      
+      cityMap.putIfAbsent(city, () => []).add(property);
     }
 
-    // Create location categories
-    return locationMap.entries.map((entry) {
+    // Create location categories grouped by city
+    final categories = cityMap.entries.map((entry) {
+      print('Category created - Name: "${entry.key}" with ${entry.value.length} properties');
       return LocationCategory(
         name: entry.key,
         properties: entry.value,
       );
     }).toList();
+    
+    print('Total categories created: ${categories.length}');
+    return categories;
   }
 
   Widget _buildPropertyCard(PropertyStats stats) {
@@ -201,6 +221,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+
+
+
+
+
+
                   Text(
                     category.name,
                     style: const TextStyle(

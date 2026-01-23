@@ -55,6 +55,11 @@ class ProjectModel {
 
   ProjectModel();
 
+  // Helper method to get city with default value
+  String getCityDisplay() {
+    return city ?? 'City not specified';
+  }
+
   // Methods to handle form validation
   bool validateBasicDetails() {
     return projectName?.isNotEmpty == true &&

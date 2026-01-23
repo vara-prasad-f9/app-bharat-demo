@@ -8,6 +8,7 @@ class PropertyStats {
   final IconData icon;
   final Color color;
   final String location;
+  final String city;
 
   PropertyStats({
     required this.name,
@@ -17,5 +18,6 @@ class PropertyStats {
     required this.icon,
     required this.color,
     required this.location,
+    this.city = '',
   });
 }
