@@ -61,10 +61,25 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
     
     // For Owner Details step (index 2), validate required fields
     if (_currentStep == 2) {
-      final hasOwnerName = _projectData.ownerName?.trim().isNotEmpty == true;
-      final hasMobileNumber = _projectData.mobileNumber?.trim().isNotEmpty == true;
+      // Check if owner type is selected
+      if (_projectData.ownerType == null) {
+        return false;
+      }
       
-      return hasOwnerName && hasMobileNumber;
+      // For Individual owner
+      if (_projectData.ownerType == 'Individual') {
+        final hasOwnerName = _projectData.ownerName?.trim().isNotEmpty == true;
+        final hasMobileNumber = _projectData.mobileNumber?.trim().isNotEmpty == true;
+        return hasOwnerName && hasMobileNumber;
+      } 
+      // For Company owner
+      else if (_projectData.ownerType == 'Company') {
+        final hasCompanyName = _projectData.companyName?.trim().isNotEmpty == true;
+        final hasMobileNumber = _projectData.mobileNumber?.trim().isNotEmpty == true;
+        return hasCompanyName && hasMobileNumber;
+      }
+      
+      return false;
     }
     
     // For other steps, use form validation
@@ -295,20 +310,26 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                     child: OwnerDetailsStep(
                       projectData: _projectData,
                       onChanged: (data) {
+                      // Update the project data
+                      _projectData.ownerType = data.ownerType;
+                      _projectData.ownerName = data.ownerName;
+                      _projectData.companyName = data.companyName;
+                      _projectData.mobileNumber = data.mobileNumber;
+                      _projectData.alternateMobileNumber = data.alternateMobileNumber;
+                      _projectData.email = data.email;
+                      _projectData.isSameAsSiteAddress = data.isSameAsSiteAddress;
+                      _projectData.idProofType = data.idProofType;
+                      _projectData.idProofNumber = data.idProofNumber;
+                      
+                      // Trigger a rebuild and validate the form
+                      if (mounted) {
                         setState(() {
-                          _projectData.copyWith(
-                            ownerType: data.ownerType,
-                            ownerName: data.ownerName,
-                            companyName: data.companyName,
-                            mobileNumber: data.mobileNumber,
-                            alternateMobileNumber: data.alternateMobileNumber,
-                            email: data.email,
-                            isSameAsSiteAddress: data.isSameAsSiteAddress,
-                            idProofType: data.idProofType,
-                            idProofNumber: data.idProofNumber,
-                          );
+                          // The state update will trigger a rebuild
                         });
-                      },
+                        // Validate the form after the state has been updated
+                        _formKeys[_currentStep].currentState?.validate();
+                      }
+                    },
                     ),
                   ),
                   

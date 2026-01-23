@@ -1,3 +1,7 @@
+// ignore_for_file: unused_import
+
+import 'dart:convert';
+
 class ProjectModel {
   // Step 1: Basic Project Details
   String? projectName;
@@ -170,5 +174,114 @@ class ProjectModel {
       ..sitePlans = sitePlans != null ? List.from(sitePlans) : this.sitePlans != null ? List.from(this.sitePlans!) : null
       ..sitePhotos = sitePhotos != null ? List.from(sitePhotos) : this.sitePhotos != null ? List.from(this.sitePhotos!) : null
       ..approvalDocuments = approvalDocuments != null ? List.from(approvalDocuments) : this.approvalDocuments != null ? List.from(this.approvalDocuments!) : null;
+  }
+
+  // Convert ProjectModel to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'projectName': projectName,
+      'projectCode': projectCode,
+      'projectType': projectType,
+      'constructionStartDate': constructionStartDate?.toIso8601String(),
+      'expectedCompletionDate': expectedCompletionDate?.toIso8601String(),
+      'currentStage': currentStage,
+      'projectStatus': projectStatus,
+      'country': country,
+      'state': state,
+      'district': district,
+      'city': city,
+      'area': area,
+      'landmark': landmark,
+      'pincode': pincode,
+      'fullAddress': fullAddress,
+      'latitude': latitude,
+      'longitude': longitude,
+      'ownerType': ownerType,
+      'ownerName': ownerName,
+      'companyName': companyName,
+      'mobileNumber': mobileNumber,
+      'alternateMobileNumber': alternateMobileNumber,
+      'email': email,
+      'isSameAsSiteAddress': isSameAsSiteAddress,
+      'ownerAddress': ownerAddress,
+      'idProofType': idProofType,
+      'idProofNumber': idProofNumber,
+      'totalPlotArea': totalPlotArea,
+      'builtUpArea': builtUpArea,
+      'numberOfFloors': numberOfFloors,
+      'constructionMethod': constructionMethod,
+      'estimatedBudget': estimatedBudget,
+      'projectPriority': projectPriority,
+      'assignedContractors': assignedContractors,
+      'assignedSuppliers': assignedSuppliers,
+      'siteEngineer': siteEngineer,
+      'adminInCharge': adminInCharge,
+      'documents': documents,
+      'sitePlans': sitePlans,
+      'sitePhotos': sitePhotos,
+      'approvalDocuments': approvalDocuments,
+    };
+  }
+
+  // Create ProjectModel from JSON
+  factory ProjectModel.fromJson(Map<String, dynamic> json) {
+    return ProjectModel()
+      ..projectName = json['projectName']
+      ..projectCode = json['projectCode']
+      ..projectType = json['projectType']
+      ..constructionStartDate = json['constructionStartDate'] != null 
+          ? DateTime.parse(json['constructionStartDate'])
+          : null
+      ..expectedCompletionDate = json['expectedCompletionDate'] != null
+          ? DateTime.parse(json['expectedCompletionDate'])
+          : null
+      ..currentStage = json['currentStage']
+      ..projectStatus = json['projectStatus']
+      ..country = json['country'] ?? 'India'
+      ..state = json['state']
+      ..district = json['district']
+      ..city = json['city']
+      ..area = json['area']
+      ..landmark = json['landmark']
+      ..pincode = json['pincode']
+      ..fullAddress = json['fullAddress']
+      ..latitude = (json['latitude'] as num?)?.toDouble()
+      ..longitude = (json['longitude'] as num?)?.toDouble()
+      ..ownerType = json['ownerType']
+      ..ownerName = json['ownerName']
+      ..companyName = json['companyName']
+      ..mobileNumber = json['mobileNumber']
+      ..alternateMobileNumber = json['alternateMobileNumber']
+      ..email = json['email']
+      ..isSameAsSiteAddress = json['isSameAsSiteAddress'] ?? false
+      ..ownerAddress = json['ownerAddress']
+      ..idProofType = json['idProofType']
+      ..idProofNumber = json['idProofNumber']
+      ..totalPlotArea = (json['totalPlotArea'] as num?)?.toDouble()
+      ..builtUpArea = (json['builtUpArea'] as num?)?.toDouble()
+      ..numberOfFloors = json['numberOfFloors']
+      ..constructionMethod = json['constructionMethod']
+      ..estimatedBudget = (json['estimatedBudget'] as num?)?.toDouble()
+      ..projectPriority = json['projectPriority']
+      ..assignedContractors = json['assignedContractors'] != null
+          ? List<String>.from(json['assignedContractors'])
+          : null
+      ..assignedSuppliers = json['assignedSuppliers'] != null
+          ? List<String>.from(json['assignedSuppliers'])
+          : null
+      ..siteEngineer = json['siteEngineer']
+      ..adminInCharge = json['adminInCharge']
+      ..documents = json['documents'] != null
+          ? Map<String, dynamic>.from(json['documents'])
+          : null
+      ..sitePlans = json['sitePlans'] != null
+          ? List<String>.from(json['sitePlans'])
+          : null
+      ..sitePhotos = json['sitePhotos'] != null
+          ? List<String>.from(json['sitePhotos'])
+          : null
+      ..approvalDocuments = json['approvalDocuments'] != null
+          ? List<String>.from(json['approvalDocuments'])
+          : null;
   }
 }

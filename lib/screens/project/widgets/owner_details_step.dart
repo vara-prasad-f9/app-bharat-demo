@@ -91,6 +91,10 @@ class _OwnerDetailsStepState extends State<OwnerDetailsStep> {
                   onChanged: (value) {
                     widget.projectData.ownerName = value;
                     widget.onChanged(widget.projectData);
+                    _formKey.currentState?.validate();
+                  },
+                  onFieldSubmitted: (_) {
+                    _formKey.currentState?.validate();
                   },
                 ),
               ),
@@ -110,6 +114,10 @@ class _OwnerDetailsStepState extends State<OwnerDetailsStep> {
                 onChanged: (value) {
                   widget.projectData.companyName = value;
                   widget.onChanged(widget.projectData);
+                  _formKey.currentState?.validate();
+                },
+                onFieldSubmitted: (_) {
+                  _formKey.currentState?.validate();
                 },
               ),
             ],
@@ -141,6 +149,12 @@ class _OwnerDetailsStepState extends State<OwnerDetailsStep> {
                 onChanged: (value) {
                   widget.projectData.mobileNumber = value;
                   widget.onChanged(widget.projectData);
+                  // Validate the form to update the error state
+                  _formKey.currentState?.validate();
+                },
+                onFieldSubmitted: (_) {
+                  // Validate the form when the field is submitted
+                  _formKey.currentState?.validate();
                 },
               ),
             ),
