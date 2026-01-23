@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_to_list_in_spreads
+// ignore_for_file: unnecessary_to_list_in_spreads, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -57,27 +57,47 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       print('Stat - City: "${stat.city}", Location: "${stat.location}"');
     }
     
-    // First, group properties by city
+    // Group properties by normalized city name
     final cityMap = <String, List<PropertyStats>>{};
     
-    for (var property in stats) {
-      // Use city if not empty, otherwise fall back to location
-      final city = property.city.isNotEmpty 
-          ? property.city 
-          : (property.location.isNotEmpty ? property.location : 'Unknown Location');
-          
-      if (!cityMap.containsKey(city)) {
-        print('Creating new city group: $city');
+    // Helper function to normalize city names
+    String normalizeCityName(String city) {
+      // Convert to lowercase and remove extra spaces
+      var normalized = city.toLowerCase().trim();
+      // Common normalization for known variations
+      normalized = normalized.replaceAll('vishakapatnam', 'visakhapatnam');
+      // Add more normalizations as needed
+      return normalized;
+    }
+    
+    for (final property in stats) {
+      final city = property.city.trim();
+      final normalizedCity = normalizeCityName(city);
+      
+      if (!cityMap.containsKey(normalizedCity)) {
+        print('Creating/Updating city group: "$normalizedCity" (original: "$city")');
       }
       
-      cityMap.putIfAbsent(city, () => []).add(property);
+      cityMap.putIfAbsent(normalizedCity, () => []).add(property);
     }
 
-    // Create location categories grouped by city
+    // Create location categories grouped by normalized city name
     final categories = cityMap.entries.map((entry) {
-      print('Category created - Name: "${entry.key}" with ${entry.value.length} properties');
+      // Use the most common city name from the properties as the display name
+      final cityCounts = <String, int>{};
+      for (final prop in entry.value) {
+        final city = prop.city.trim();
+        cityCounts[city] = (cityCounts[city] ?? 0) + 1;
+      }
+      
+      // Get the most common city name
+      final mostCommonCity = cityCounts.entries
+          .reduce((a, b) => a.value > b.value ? a : b)
+          .key;
+      
+      print('Category created - Name: "$mostCommonCity" with ${entry.value.length} properties');
       return LocationCategory(
-        name: entry.key,
+        name: mostCommonCity,
         properties: entry.value,
       );
     }).toList();
