@@ -119,8 +119,8 @@ class _PhotoPickerState extends State<PhotoPicker> {
                       borderRadius: BorderRadius.circular(8),
                       child: Image.file(
                         File(_photos![i]),
-                        width: 80,
-                        height: 80,
+                        width: 70,
+                        height: 70,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -137,7 +137,7 @@ class _PhotoPickerState extends State<PhotoPicker> {
                           child: const Icon(
                             Icons.close,
                             color: Colors.white,
-                            size: 20,
+                            size: 18,
                           ),
                         ),
                       ),
@@ -150,7 +150,7 @@ class _PhotoPickerState extends State<PhotoPicker> {
                 child: Center(
                   child: Container(
                     width: double.infinity,
-                    height: 80,
+                    height: 70,
                     decoration: BoxDecoration(
                       border: Border.all(color: Theme.of(context).dividerColor),
                       borderRadius: BorderRadius.circular(8),
@@ -160,7 +160,7 @@ class _PhotoPickerState extends State<PhotoPicker> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(height: 12),
-                        Icon(Icons.add_photo_alternate_outlined, size: 24),
+                        Icon(Icons.add_photo_alternate_outlined, size: 20),
                         Spacer(),
                         Text('Upload Photo' , style: TextStyle(fontSize: 12)),
                         SizedBox(height: 12),

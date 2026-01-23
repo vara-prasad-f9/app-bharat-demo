@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:bharatplus/screens/layout/main_layout.dart';
 import 'package:bharatplus/models/project_model.dart';
 import 'package:bharatplus/screens/project/widgets/basic_details_step.dart';
 import 'package:bharatplus/screens/project/widgets/location_details_step.dart';
@@ -114,7 +113,7 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
             // Stepper Header with horizontal scrolling
             Container(
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-              height: 90, // Fixed height for the stepper
+              height: 80, // Fixed height for the stepper
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -126,7 +125,7 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                     final isCompleted = index < _currentStep;
         
                     return Container(
-                      width: 100, // Fixed width for each step
+                      width: 80, // Fixed width for each step
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       child: GestureDetector(
                         onTap: () => _onStepTapped(index),
@@ -134,8 +133,8 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
-                              width: 30,
-                              height: 30,
+                              width: 25,
+                              height: 25,
                               decoration: BoxDecoration(
                                 color: isActive
                                     ? Theme.of(context).primaryColor
@@ -146,12 +145,13 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                               ),
                               child: Center(
                                 child: isCompleted
-                                    ? const Icon(Icons.check, color: Colors.white, size: 16)
+                                    ? const Icon(Icons.check, color: Colors.white, size: 12)
                                     : Text(
                                         '${index + 1}',
                                         style: TextStyle(
                                           color: isActive ? Colors.white : Colors.grey[700],
                                           fontWeight: FontWeight.bold,
+                                          fontSize: 10,
                                         ),
                                       ),
                               ),
@@ -160,7 +160,7 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                             Text(
                               step['title'],
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 9,
                                 fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                                 color: isActive || isCompleted
                                     ? Theme.of(context).primaryColor
@@ -379,21 +379,44 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
               ),
             ),
           ),
-          const SizedBox(width: 16), // Space between buttons
+          const SizedBox(width: 8), // Reduced space between buttons
         ],
+        // Cancel Button
+        Expanded(
+          child: OutlinedButton(
+            onPressed: () {
+              // Navigate back to home page
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              side: const BorderSide(color: Colors.grey),
+            ),
+            child: const Text(
+              'CANCEL',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8), // Space between buttons
         // Next Button
         Expanded(
           child: ElevatedButton(
             onPressed: _isNextButtonEnabled ? _nextStep : null,
             style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: Colors.red,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              backgroundColor: Theme.of(context).primaryColor,
             ),
             child: const Text(
               'NEXT',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
+                fontSize: 12,
               ),
             ),
           ),
@@ -413,11 +436,11 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                 onPressed: _previousStep,
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  side: const BorderSide(color: Colors.red),
+                  side:  BorderSide(color: Theme.of(context).primaryColor),
                 ),
-                child: const Text(
+                child: Text(
                   'BACK',
-                  style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -433,7 +456,7 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                 label: const Text('SAVE'),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  side: const BorderSide(color: Colors.red),
+                  side: BorderSide(color: Theme.of(context).primaryColor),
                 ),
               ),
             ),
@@ -446,10 +469,10 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
           child: ElevatedButton.icon(
             onPressed: _isNextButtonEnabled ? _nextStep : null,
             icon: const Icon(Icons.check_circle_outline, size: 20),
-            label: const Text('SUBMIT', style: TextStyle(fontWeight: FontWeight.bold)),
+            label: const Text('SUBMIT', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 12),
-              backgroundColor: Colors.red,
+              backgroundColor: Theme.of(context).primaryColor,
               foregroundColor: Colors.white,
             ),
           ),

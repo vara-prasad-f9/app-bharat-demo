@@ -60,32 +60,38 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
           children: [
             const Text(
               'Basic Project Details',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
           
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
             // Project Name (Required)
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Project Name *',
-                border: OutlineInputBorder(),
-                hintText: 'Enter project name',
+            SizedBox(
+              height: 50,
+              child: TextFormField(
+                style: const TextStyle(fontSize: 13, height: 1.0),
+                decoration: const InputDecoration(
+                  labelText: 'Project Name *',
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter project name',
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  labelStyle: TextStyle(fontSize: 13),
+                ),
+                initialValue: widget.projectData.projectName,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Project name is required';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  setState(() {
+                    widget.projectData.projectName = value.trim();
+                    widget.onChanged(widget.projectData);
+                  });
+                },
               ),
-              initialValue: widget.projectData.projectName,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Project name is required';
-                }
-                return null;
-              },
-              onChanged: (value) {
-                setState(() {
-                  widget.projectData.projectName = value.trim();
-                  widget.onChanged(widget.projectData);
-                });
-              },
             ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 10),
             // Project Photo (Optional)
             PhotoPicker(
               initialPhotos: widget.projectData.sitePhotos,
@@ -100,144 +106,181 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
             ),
             const SizedBox(height: 16),
             // Project Code / ID (Optional)
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Project Code / ID',
-                border: OutlineInputBorder(),
-                hintText: 'Auto-generated / Manual',
+            SizedBox(
+              height: 50,
+              child: TextFormField(
+                style: const TextStyle(fontSize: 13, height: 1.0),
+                decoration: const InputDecoration(
+                  labelText: 'Project Code / ID',
+                  border: OutlineInputBorder(),
+                  hintText: 'Auto-generated / Manual',
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  labelStyle: TextStyle(fontSize: 13),
+                ),
+                initialValue: widget.projectData.projectCode,
+                onChanged: (value) {
+                  setState(() {
+                    widget.projectData.projectCode = value;
+                    widget.onChanged(widget.projectData);
+                  });
+                },
               ),
-              initialValue: widget.projectData.projectCode,
-              onChanged: (value) {
-                setState(() {
-                  widget.projectData.projectCode = value;
-                  widget.onChanged(widget.projectData);
-                });
-              },
             ),
             const SizedBox(height: 16),
             // Project Type (Optional)
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
-                labelText: 'Project Type',
-                border: OutlineInputBorder(),
+            SizedBox(
+              height: 50,
+              child: DropdownButtonFormField<String>(
+                style: const TextStyle(fontSize: 13, height: 1.0),
+                decoration: const InputDecoration(
+                  labelText: 'Project Type',
+                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  labelStyle: TextStyle(fontSize: 13),
+                ),
+                hint: const Text('Select project type', style: TextStyle(fontSize: 13)),
+                initialValue: widget.projectData.projectType,
+                items: _projectTypes.map((type) {
+                  return DropdownMenuItem(
+                    value: type,
+                    child: Text(type),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    widget.projectData.projectType = value;
+                    widget.onChanged(widget.projectData);
+                  });
+                },
               ),
-              hint: const Text('Select project type'),
-              initialValue: widget.projectData.projectType,
-              items: _projectTypes.map((type) {
-                return DropdownMenuItem(
-                  value: type,
-                  child: Text(type),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  widget.projectData.projectType = value;
-                  widget.onChanged(widget.projectData);
-                });
-              },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             // Construction Start Date (Optional)
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Construction Start Date',
-                border: OutlineInputBorder(),
-                suffixIcon: Icon(Icons.calendar_today),
+            SizedBox(
+              height: 50,
+              child: TextFormField(
+                style: const TextStyle(fontSize: 13, height: 1.0),
+                decoration: const InputDecoration(
+                  labelText: 'Construction Start Date',
+                  suffixIcon: Icon(Icons.calendar_today, size: 13),
+                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  labelStyle: TextStyle(fontSize: 13),
+                ),
+                readOnly: true,
+                controller: TextEditingController(
+                  text: widget.projectData.constructionStartDate != null
+                      ? DateFormat('MMM dd, yyyy').format(widget.projectData.constructionStartDate!)
+                      : '',
+                ),
+                onTap: () async {
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: widget.projectData.constructionStartDate ?? DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
+                  if (date != null) {
+                    setState(() {
+                      widget.projectData.constructionStartDate = date;
+                      widget.onChanged(widget.projectData);
+                    });
+                  }
+                },
               ),
-              readOnly: true,
-              controller: TextEditingController(
-                text: widget.projectData.constructionStartDate != null
-                    ? DateFormat('MMM dd, yyyy').format(widget.projectData.constructionStartDate!)
-                    : '',
-              ),
-              onTap: () async {
-                final date = await showDatePicker(
-                  context: context,
-                  initialDate: widget.projectData.constructionStartDate ?? DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2100),
-                );
-                if (date != null) {
-                  setState(() {
-                    widget.projectData.constructionStartDate = date;
-                    widget.onChanged(widget.projectData);
-                  });
-                }
-              },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             // Expected Completion Date (Optional)
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Expected Completion Date',
-                border: OutlineInputBorder(),
-                suffixIcon: Icon(Icons.calendar_today),
+            SizedBox(
+              height: 50,
+              child: TextFormField(
+                style: const TextStyle(fontSize: 13, height: 1.0),
+                decoration: const InputDecoration(
+                  labelText: 'Expected Completion Date',
+                  suffixIcon: Icon(Icons.calendar_today, size: 13),
+                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  labelStyle: TextStyle(fontSize: 13),
+                ),
+                readOnly: true,
+                controller: TextEditingController(
+                  text: widget.projectData.expectedCompletionDate != null
+                      ? DateFormat('MMM dd, yyyy').format(widget.projectData.expectedCompletionDate!)
+                      : '',
+                ),
+                onTap: () async {
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: widget.projectData.expectedCompletionDate ?? DateTime.now().add(const Duration(days: 30)),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
+                  if (date != null) {
+                    setState(() {
+                      widget.projectData.expectedCompletionDate = date;
+                      widget.onChanged(widget.projectData);
+                    });
+                  }
+                },
               ),
-              readOnly: true,
-              controller: TextEditingController(
-                text: widget.projectData.expectedCompletionDate != null
-                    ? DateFormat('MMM dd, yyyy').format(widget.projectData.expectedCompletionDate!)
-                    : '',
-              ),
-              onTap: () async {
-                final date = await showDatePicker(
-                  context: context,
-                  initialDate: widget.projectData.expectedCompletionDate ?? DateTime.now().add(const Duration(days: 30)),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2100),
-                );
-                if (date != null) {
-                  setState(() {
-                    widget.projectData.expectedCompletionDate = date;
-                    widget.onChanged(widget.projectData);
-                  });
-                }
-              },
             ),
             const SizedBox(height: 16),
             // Current Stage (Optional)
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
-                labelText: 'Current Stage',
-                border: OutlineInputBorder(),
+            SizedBox(
+              height: 50,
+              child: DropdownButtonFormField<String>(
+                style: const TextStyle(fontSize: 13, height: 1.0),
+                decoration: const InputDecoration(
+                  hintStyle: TextStyle(fontSize: 13, height: 1.0),
+                  labelText: 'Current Stage',
+                  border: OutlineInputBorder(),
+                  suffixIcon: Icon(Icons.arrow_drop_down, size: 16),
+                ),
+                hint: const Text('Select current stage'),
+                initialValue: widget.projectData.currentStage,
+                items: _projectStages.map((stage) {
+                  return DropdownMenuItem(
+                    value: stage,
+                    child: Text(stage),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    widget.projectData.currentStage = value;
+                    widget.onChanged(widget.projectData);
+                  });
+                },
               ),
-              hint: const Text('Select current stage'),
-              initialValue: widget.projectData.currentStage,
-              items: _projectStages.map((stage) {
-                return DropdownMenuItem(
-                  value: stage,
-                  child: Text(stage),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  widget.projectData.currentStage = value;
-                  widget.onChanged(widget.projectData);
-                });
-              },
             ),
             const SizedBox(height: 16),
             // Project Status (Optional)
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
-                labelText: 'Project Status',
-                border: OutlineInputBorder(),
+            SizedBox(
+              height: 50,
+              child: DropdownButtonFormField<String>(
+                style: const TextStyle(fontSize: 13, height: 1.0),
+                decoration: const InputDecoration(
+                  hintStyle: TextStyle(fontSize: 13, height: 1.0),
+                  labelText: 'Project Status',
+                  border: OutlineInputBorder(),
+                  suffixIcon: Icon(Icons.arrow_drop_down, size: 16),
+                ),
+                hint: const Text('Select project status'),
+                initialValue: widget.projectData.projectStatus,
+                items: _projectStatuses.map((status) {
+                  return DropdownMenuItem(
+                    value: status,
+                    child: Text(status),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    widget.projectData.projectStatus = value;
+                    widget.onChanged(widget.projectData);
+                  });
+                },
               ),
-              hint: const Text('Select project status'),
-              initialValue: widget.projectData.projectStatus,
-              items: _projectStatuses.map((status) {
-                return DropdownMenuItem(
-                  value: status,
-                  child: Text(status),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  widget.projectData.projectStatus = value;
-                  widget.onChanged(widget.projectData);
-                });
-              },
             ),
+            const SizedBox(height: 100,)
           ],
         ),
       ),
