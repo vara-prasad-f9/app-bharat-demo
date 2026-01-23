@@ -106,254 +106,256 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
-      title: 'Add New Project',
-      child: Column(
-        children: [
-          // Stepper Header with horizontal scrolling
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-            height: 90, // Fixed height for the stepper
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: _steps.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final step = entry.value;
-                  final isActive = index == _currentStep;
-                  final isCompleted = index < _currentStep;
-
-                  return Container(
-                    width: 100, // Fixed width for each step
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    child: GestureDetector(
-                      onTap: () => _onStepTapped(index),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 30,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: isActive
-                                  ? Theme.of(context).primaryColor
-                                  : isCompleted
-                                      ? Colors.green
-                                      : Colors.grey[300],
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: isCompleted
-                                  ? const Icon(Icons.check, color: Colors.white, size: 16)
-                                  : Text(
-                                      '${index + 1}',
-                                      style: TextStyle(
-                                        color: isActive ? Colors.white : Colors.grey[700],
-                                        fontWeight: FontWeight.bold,
+    return SafeArea(
+      child: Scaffold(
+      
+        body: Column(
+          children: [
+            // Stepper Header with horizontal scrolling
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+              height: 90, // Fixed height for the stepper
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: _steps.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final step = entry.value;
+                    final isActive = index == _currentStep;
+                    final isCompleted = index < _currentStep;
+        
+                    return Container(
+                      width: 100, // Fixed width for each step
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      child: GestureDetector(
+                        onTap: () => _onStepTapped(index),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                color: isActive
+                                    ? Theme.of(context).primaryColor
+                                    : isCompleted
+                                        ? Colors.green
+                                        : Colors.grey[300],
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: isCompleted
+                                    ? const Icon(Icons.check, color: Colors.white, size: 16)
+                                    : Text(
+                                        '${index + 1}',
+                                        style: TextStyle(
+                                          color: isActive ? Colors.white : Colors.grey[700],
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            step['title'],
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                              color: isActive || isCompleted
-                                  ? Theme.of(context).primaryColor
-                                  : Colors.grey[600],
+                            const SizedBox(height: 4),
+                            Text(
+                              step['title'],
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                                color: isActive || isCompleted
+                                    ? Theme.of(context).primaryColor
+                                    : Colors.grey[600],
+                              ),
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+            
+            // Progress Bar
+            Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              child: LinearProgressIndicator(
+                value: (_currentStep + 1) / _steps.length,
+                backgroundColor: Colors.grey[200],
+                minHeight: 4,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
+            
+            // Step Content
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentStep = index;
+                  });
+                },
+                children: [
+                  // Step 1: Basic Details
+                  Form(
+                    key: _formKeys[0],
+                    child: BasicDetailsStep(
+                      projectData: _projectData,
+                      onChanged: (data) {
+                        setState(() {
+                          // Create a new instance with updated data
+                          _projectData.copyWith(
+                            projectName: data.projectName,
+                            projectCode: data.projectCode,
+                            projectType: data.projectType,
+                            constructionStartDate: data.constructionStartDate,
+                            expectedCompletionDate: data.expectedCompletionDate,
+                            currentStage: data.currentStage,
+                            projectStatus: data.projectStatus,
+                          );
+                        });
+                      },
                     ),
-                  );
-                }).toList(),
+                  ),
+                  
+                  // Step 2: Location Details
+                  Form(
+                    key: _formKeys[1],
+                    child: LocationDetailsStep(
+                      projectData: _projectData,
+                      onChanged: (data) {
+                        setState(() {
+                          _projectData.copyWith(
+                            country: data.country,
+                            state: data.state,
+                            district: data.district,
+                            city: data.city,
+                            area: data.area,
+                            landmark: data.landmark,
+                            pincode: data.pincode,
+                            fullAddress: data.fullAddress,
+                            latitude: data.latitude,
+                            longitude: data.longitude,
+                          );
+                        });
+                      },
+                    ),
+                  ),
+                  
+                  // Step 3: Owner Details
+                  Form(
+                    key: _formKeys[2],
+                    child: OwnerDetailsStep(
+                      projectData: _projectData,
+                      onChanged: (data) {
+                        setState(() {
+                          _projectData.copyWith(
+                            ownerType: data.ownerType,
+                            ownerName: data.ownerName,
+                            companyName: data.companyName,
+                            mobileNumber: data.mobileNumber,
+                            alternateMobileNumber: data.alternateMobileNumber,
+                            email: data.email,
+                            isSameAsSiteAddress: data.isSameAsSiteAddress,
+                            idProofType: data.idProofType,
+                            idProofNumber: data.idProofNumber,
+                          );
+                        });
+                      },
+                    ),
+                  ),
+                  
+                  // Step 4: Construction Details
+                  Form(
+                    key: _formKeys[3],
+                    child: ConstructionDetailsStep(
+                      projectData: _projectData,
+                      onChanged: (data) {
+                        setState(() {
+                          _projectData.copyWith(
+                            totalPlotArea: data.totalPlotArea,
+                            builtUpArea: data.builtUpArea,
+                            numberOfFloors: data.numberOfFloors,
+                            constructionMethod: data.constructionMethod,
+                            estimatedBudget: data.estimatedBudget,
+                            projectPriority: data.projectPriority,
+                          );
+                        });
+                      },
+                    ),
+                  ),
+                  
+                  // Step 5: Team Assignment
+                  Form(
+                    key: _formKeys[4],
+                    child: TeamAssignmentStep(
+                      projectData: _projectData,
+                      onChanged: (data) {
+                        setState(() {
+                          _projectData.assignedContractors = data.assignedContractors;
+                          _projectData.assignedSuppliers = data.assignedSuppliers;
+                          _projectData.documents = data.documents;
+                        });
+                      },
+                    ),
+                  ),
+        
+                  // Step 6: Documentation & Media
+                  Form(
+                    key: _formKeys[5],
+                    child: DocumentsStep(
+                      projectData: _projectData,
+                      onChanged: (data) {
+                        setState(() {
+                          _projectData.documents = data.documents;
+                        });
+                      },
+                    ),
+                  ),
+                  
+                  // Step 7: Review
+                  Form(
+                    key: _formKeys[6],
+                    child: ReviewStep(
+                      projectData: _projectData,
+                      onChanged: (data) {
+                        // Update project data if needed
+                        setState(() {
+                          // No need to update anything as this is just a review step
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          
-          // Progress Bar
-          Container(
-            margin: const EdgeInsets.only(bottom: 16),
-            child: LinearProgressIndicator(
-              value: (_currentStep + 1) / _steps.length,
-              backgroundColor: Colors.grey[200],
-              minHeight: 4,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                Theme.of(context).primaryColor,
+            
+            // Navigation Buttons
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromRGBO(0, 0, 0, 0.1),
+                    blurRadius: 5,
+                    offset: const Offset(0, -2),
+                  ),
+                ],
               ),
+              child: _currentStep == _steps.length - 1 
+                ? _buildReviewButtons() 
+                : _buildDefaultButtons(),
             ),
-          ),
-          
-          // Step Content
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              onPageChanged: (index) {
-                setState(() {
-                  _currentStep = index;
-                });
-              },
-              children: [
-                // Step 1: Basic Details
-                Form(
-                  key: _formKeys[0],
-                  child: BasicDetailsStep(
-                    projectData: _projectData,
-                    onChanged: (data) {
-                      setState(() {
-                        // Create a new instance with updated data
-                        _projectData.copyWith(
-                          projectName: data.projectName,
-                          projectCode: data.projectCode,
-                          projectType: data.projectType,
-                          constructionStartDate: data.constructionStartDate,
-                          expectedCompletionDate: data.expectedCompletionDate,
-                          currentStage: data.currentStage,
-                          projectStatus: data.projectStatus,
-                        );
-                      });
-                    },
-                  ),
-                ),
-                
-                // Step 2: Location Details
-                Form(
-                  key: _formKeys[1],
-                  child: LocationDetailsStep(
-                    projectData: _projectData,
-                    onChanged: (data) {
-                      setState(() {
-                        _projectData.copyWith(
-                          country: data.country,
-                          state: data.state,
-                          district: data.district,
-                          city: data.city,
-                          area: data.area,
-                          landmark: data.landmark,
-                          pincode: data.pincode,
-                          fullAddress: data.fullAddress,
-                          latitude: data.latitude,
-                          longitude: data.longitude,
-                        );
-                      });
-                    },
-                  ),
-                ),
-                
-                // Step 3: Owner Details
-                Form(
-                  key: _formKeys[2],
-                  child: OwnerDetailsStep(
-                    projectData: _projectData,
-                    onChanged: (data) {
-                      setState(() {
-                        _projectData.copyWith(
-                          ownerType: data.ownerType,
-                          ownerName: data.ownerName,
-                          companyName: data.companyName,
-                          mobileNumber: data.mobileNumber,
-                          alternateMobileNumber: data.alternateMobileNumber,
-                          email: data.email,
-                          isSameAsSiteAddress: data.isSameAsSiteAddress,
-                          idProofType: data.idProofType,
-                          idProofNumber: data.idProofNumber,
-                        );
-                      });
-                    },
-                  ),
-                ),
-                
-                // Step 4: Construction Details
-                Form(
-                  key: _formKeys[3],
-                  child: ConstructionDetailsStep(
-                    projectData: _projectData,
-                    onChanged: (data) {
-                      setState(() {
-                        _projectData.copyWith(
-                          totalPlotArea: data.totalPlotArea,
-                          builtUpArea: data.builtUpArea,
-                          numberOfFloors: data.numberOfFloors,
-                          constructionMethod: data.constructionMethod,
-                          estimatedBudget: data.estimatedBudget,
-                          projectPriority: data.projectPriority,
-                        );
-                      });
-                    },
-                  ),
-                ),
-                
-                // Step 5: Team Assignment
-                Form(
-                  key: _formKeys[4],
-                  child: TeamAssignmentStep(
-                    projectData: _projectData,
-                    onChanged: (data) {
-                      setState(() {
-                        _projectData.assignedContractors = data.assignedContractors;
-                        _projectData.assignedSuppliers = data.assignedSuppliers;
-                        _projectData.documents = data.documents;
-                      });
-                    },
-                  ),
-                ),
-
-                // Step 6: Documentation & Media
-                Form(
-                  key: _formKeys[5],
-                  child: DocumentsStep(
-                    projectData: _projectData,
-                    onChanged: (data) {
-                      setState(() {
-                        _projectData.documents = data.documents;
-                      });
-                    },
-                  ),
-                ),
-                
-                // Step 7: Review
-                Form(
-                  key: _formKeys[6],
-                  child: ReviewStep(
-                    projectData: _projectData,
-                    onChanged: (data) {
-                      // Update project data if needed
-                      setState(() {
-                        // No need to update anything as this is just a review step
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-          
-          // Navigation Buttons
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: const Color.fromRGBO(0, 0, 0, 0.1),
-                  blurRadius: 5,
-                  offset: const Offset(0, -2),
-                ),
-              ],
-            ),
-            child: _currentStep == _steps.length - 1 
-              ? _buildReviewButtons() 
-              : _buildDefaultButtons(),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
