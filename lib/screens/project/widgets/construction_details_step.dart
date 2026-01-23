@@ -41,41 +41,48 @@ class _ConstructionDetailsStepState extends State<ConstructionDetailsStep> {
           children: [
             const Text(
               'Construction Details',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                      labelText: 'Total Plot Area',
-                      border: OutlineInputBorder(),
-                      suffixText: 'sq.ft',
+                  child: SizedBox(
+                    height: 50,
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Total Plot Area',
+                        border: OutlineInputBorder(),
+                        suffixText: 'sq.ft',
+                        labelStyle: TextStyle(fontSize: 13)
+                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                      ],
+                      initialValue: widget.projectData.totalPlotArea?.toString(),
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
+                          widget.projectData.totalPlotArea = double.tryParse(value);
+                        } else {
+                          widget.projectData.totalPlotArea = null;
+                        }
+                        widget.onChanged(widget.projectData);
+                      },
                     ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                    ],
-                    initialValue: widget.projectData.totalPlotArea?.toString(),
-                    onChanged: (value) {
-                      if (value.isNotEmpty) {
-                        widget.projectData.totalPlotArea = double.tryParse(value);
-                      } else {
-                        widget.projectData.totalPlotArea = null;
-                      }
-                      widget.onChanged(widget.projectData);
-                    },
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: TextFormField(
+                  child: SizedBox(
+                    height: 50,
+                    child: TextFormField(
                     decoration: const InputDecoration(
                       labelText: 'Built-up Area',
                       border: OutlineInputBorder(),
                       suffixText: 'sq.ft',
+                      labelStyle: TextStyle(fontSize: 13)
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: [
@@ -90,16 +97,20 @@ class _ConstructionDetailsStepState extends State<ConstructionDetailsStep> {
                     },
                   ),
                 ),
+                ),
               ],
             ),
             const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
-                  child: TextFormField(
+                  child: SizedBox(
+                    height: 50,
+                    child: TextFormField(
                     decoration: const InputDecoration(
                       labelText: 'Number of Floors *',
                       border: OutlineInputBorder(),
+                      labelStyle: TextStyle(fontSize: 13)
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: [
@@ -123,12 +134,16 @@ class _ConstructionDetailsStepState extends State<ConstructionDetailsStep> {
                     },
                   ),
                 ),
+                ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: DropdownButtonFormField<String>(
+                  child: SizedBox(
+                    height: 50,
+                    child: DropdownButtonFormField<String>(
                     decoration: const InputDecoration(
                       labelText: 'Construction Method *',
                       border: OutlineInputBorder(),
+                      labelStyle: TextStyle(fontSize: 13)
                     ),
                     initialValue: widget.projectData.constructionMethod,
                     items: _constructionMethods.map((method) {
@@ -147,27 +162,32 @@ class _ConstructionDetailsStepState extends State<ConstructionDetailsStep> {
                         value == null ? 'Please select construction method' : null,
                   ),
                 ),
+                ),
               ],
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Estimated Budget',
-                border: const OutlineInputBorder(),
-                prefixText: '₹ ',
-                suffixText: 'INR',
+            SizedBox(
+              height: 50,
+              child: TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Estimated Budget',
+                  border: const OutlineInputBorder(),
+                  prefixText: '₹ ',
+                  suffixText: 'INR',
+                  labelStyle: TextStyle(fontSize: 13)
+                ),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                initialValue: widget.projectData.estimatedBudget?.toString(),
+                onChanged: (value) {
+                  if (value.isNotEmpty) {
+                    widget.projectData.estimatedBudget = double.tryParse(value);
+                    widget.onChanged(widget.projectData);
+                  }
+                },
               ),
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              initialValue: widget.projectData.estimatedBudget?.toString(),
-              onChanged: (value) {
-                if (value.isNotEmpty) {
-                  widget.projectData.estimatedBudget = double.tryParse(value);
-                  widget.onChanged(widget.projectData);
-                }
-              },
             ),
             if (widget.projectData.estimatedBudget != null) ...[
               const SizedBox(height: 8),
@@ -177,28 +197,33 @@ class _ConstructionDetailsStepState extends State<ConstructionDetailsStep> {
                 style: const TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.bold,
+                  fontSize: 13,
                 ),
               ),
             ],
             const SizedBox(height: 16),
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
-                labelText: 'Project Priority',
-                border: OutlineInputBorder(),
+            SizedBox(
+              height: 50,
+              child: DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  labelText: 'Project Priority',
+                  border: OutlineInputBorder(),
+                  labelStyle: TextStyle(fontSize: 13)
+                ),
+                initialValue: widget.projectData.projectPriority,
+                items: _projectPriorities.map((priority) {
+                  return DropdownMenuItem(
+                    value: priority,
+                    child: Text(priority),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    widget.projectData.projectPriority = value;
+                    widget.onChanged(widget.projectData);
+                  });
+                },
               ),
-              initialValue: widget.projectData.projectPriority,
-              items: _projectPriorities.map((priority) {
-                return DropdownMenuItem(
-                  value: priority,
-                  child: Text(priority),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  widget.projectData.projectPriority = value;
-                  widget.onChanged(widget.projectData);
-                });
-              },
             ),
             const SizedBox(height: 24),
             const Text(
@@ -209,6 +234,8 @@ class _ConstructionDetailsStepState extends State<ConstructionDetailsStep> {
             TextFormField(
               decoration: const InputDecoration(
                 hintText: 'Enter any additional construction details or notes...',
+                labelStyle: TextStyle(fontSize: 13),
+                hintStyle: TextStyle(fontSize: 12),
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 12,
