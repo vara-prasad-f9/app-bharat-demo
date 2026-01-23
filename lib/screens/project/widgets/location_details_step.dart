@@ -152,78 +152,108 @@ class _LocationDetailsStepState extends State<LocationDetailsStep> {
               ),
             ),
             const SizedBox(height: 12),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'District *',
-                border: OutlineInputBorder(),
+            SizedBox(
+              height: 50,
+              child: TextFormField(
+                           style: const TextStyle(fontSize: 13, height: 1.0),
+                decoration: const InputDecoration(
+                     contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  labelText: 'District *',
+                        labelStyle: TextStyle(fontSize: 13),
+                  border: OutlineInputBorder(),
+                ),
+                initialValue: widget.projectData.district ?? '',
+                validator: (value) =>
+                    value?.isEmpty ?? true ? 'District is required' : null,
+                onChanged: (value) {
+                  widget.projectData.district = value;
+                  widget.onChanged(widget.projectData);
+                },
               ),
-              initialValue: widget.projectData.district ?? '',
-              validator: (value) =>
-                  value?.isEmpty ?? true ? 'District is required' : null,
-              onChanged: (value) {
-                widget.projectData.district = value;
-                widget.onChanged(widget.projectData);
-              },
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'City/Town *',
-                border: OutlineInputBorder(),
+            SizedBox(
+              height: 50,
+              child: TextFormField(
+                style: const TextStyle(fontSize: 13, height: 1.0),
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  labelText: 'City/Town *',
+                  border: OutlineInputBorder(),
+                  labelStyle: TextStyle(fontSize: 13),
+                ),
+                initialValue: widget.projectData.city ?? '',
+                validator: (value) =>
+                    value?.isEmpty ?? true ? 'City/Town is required' : null,
+                onChanged: (value) {
+                  widget.projectData.city = value;
+                  widget.onChanged(widget.projectData);
+                },
               ),
-              initialValue: widget.projectData.city ?? '',
-              validator: (value) =>
-                  value?.isEmpty ?? true ? 'City/Town is required' : null,
-              onChanged: (value) {
-                widget.projectData.city = value;
-                widget.onChanged(widget.projectData);
-              },
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Area/Locality *',
-                border: OutlineInputBorder(),
+            SizedBox(
+              height: 50,
+              child: TextFormField(
+                style: const TextStyle(fontSize: 13, height: 1.0),
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  labelText: 'Area/Locality *',
+                  border: OutlineInputBorder(),
+                  labelStyle: TextStyle(fontSize: 13),
+                ),
+                initialValue: widget.projectData.area ?? '',
+                validator: (value) =>
+                    value?.isEmpty ?? true ? 'Area/Locality is required' : null,
+                onChanged: (value) {
+                  widget.projectData.area = value;
+                  widget.onChanged(widget.projectData);
+                },
               ),
-              initialValue: widget.projectData.area ?? '',
-              validator: (value) =>
-                  value?.isEmpty ?? true ? 'Area/Locality is required' : null,
-              onChanged: (value) {
-                widget.projectData.area = value;
-                widget.onChanged(widget.projectData);
-              },
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Landmark (Optional)',
-                border: OutlineInputBorder(),
+            SizedBox(
+              height: 50,
+              child: TextFormField(
+                style: const TextStyle(fontSize: 13, height: 1.0),
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  labelText: 'Landmark (Optional)',
+                  border: OutlineInputBorder(),
+                  labelStyle: TextStyle(fontSize: 13),
+                ),
+                initialValue: widget.projectData.landmark ?? '',
+                onChanged: (value) {
+                  widget.projectData.landmark = value;
+                  widget.onChanged(widget.projectData);
+                },
               ),
-              initialValue: widget.projectData.landmark ?? '',
-              onChanged: (value) {
-                widget.projectData.landmark = value;
-                widget.onChanged(widget.projectData);
-              },
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Pincode *',
-                border: OutlineInputBorder(),
+            SizedBox(
+              height: 50,
+              child: TextFormField(
+                style: const TextStyle(fontSize: 13, height: 1.0),
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  labelText: 'Pincode *',
+                  border: OutlineInputBorder(),
+                  labelStyle: TextStyle(fontSize: 13),
+                ),
+                keyboardType: TextInputType.number,
+                initialValue: widget.projectData.pincode ?? '',
+                validator: (value) {
+                  if (value?.isEmpty ?? true) return 'Pincode is required';
+                  if (value!.length != 6 || int.tryParse(value) == null) {
+                    return 'Enter a valid 6-digit pincode';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  widget.projectData.pincode = value;
+                  widget.onChanged(widget.projectData);
+                },
               ),
-              keyboardType: TextInputType.number,
-              initialValue: widget.projectData.pincode ?? '',
-              validator: (value) {
-                if (value?.isEmpty ?? true) return 'Pincode is required';
-                if (value!.length != 6 || int.tryParse(value) == null) {
-                  return 'Enter a valid 6-digit pincode';
-                }
-                return null;
-              },
-              onChanged: (value) {
-                widget.projectData.pincode = value;
-                widget.onChanged(widget.projectData);
-              },
             ),
             const SizedBox(height: 20),
             const Text(
@@ -235,9 +265,12 @@ class _LocationDetailsStepState extends State<LocationDetailsStep> {
               children: [
                 Expanded(
                   child: TextFormField(
+                    style: const TextStyle(fontSize: 13, height: 1.0),
                     decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       labelText: 'Latitude',
                       border: OutlineInputBorder(),
+                      labelStyle: TextStyle(fontSize: 13),
                     ),
                     readOnly: true,
                     controller: TextEditingController(
@@ -249,9 +282,12 @@ class _LocationDetailsStepState extends State<LocationDetailsStep> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: TextFormField(
+                    style: const TextStyle(fontSize: 13, height: 1.0),
                     decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       labelText: 'Longitude',
                       border: OutlineInputBorder(),
+                      labelStyle: TextStyle(fontSize: 13),
                     ),
                     readOnly: true,
                     controller: TextEditingController(
