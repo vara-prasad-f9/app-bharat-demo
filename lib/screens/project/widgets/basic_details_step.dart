@@ -1,4 +1,4 @@
-// ignore_for_file: use_super_parameters, library_private_types_in_public_api
+// ignore_for_file: use_super_parameters, library_private_types_in_public_api, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -186,74 +186,84 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
               ),
             ),
             const SizedBox(height: 12),
-            // Construction Start Date (Optional)
-            SizedBox(
-              height: 50,
-              child: TextFormField(
-                style: const TextStyle(fontSize: 13, height: 1.0),
-                decoration: const InputDecoration(
-                  labelText: 'Construction Start Date',
-                  suffixIcon: Icon(Icons.calendar_today, size: 13),
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  labelStyle: TextStyle(fontSize: 13),
+            // Date fields in a row
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Construction Start Date (Optional)
+                Expanded(
+                  child: SizedBox(
+                    height: 50,
+                    child: TextFormField(
+                      style: const TextStyle(fontSize: 13, height: 1.0),
+                      decoration: const InputDecoration(
+                        labelText: 'Start Date',
+                        suffixIcon: Icon(Icons.calendar_today, size: 13),
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        labelStyle: TextStyle(fontSize: 13),
+                      ),
+                      readOnly: true,
+                      controller: TextEditingController(
+                        text: widget.projectData.constructionStartDate != null
+                            ? DateFormat('MMM dd, yyyy').format(widget.projectData.constructionStartDate!)
+                            : '',
+                      ),
+                      onTap: () async {
+                        final date = await showDatePicker(
+                          context: context,
+                          initialDate: widget.projectData.constructionStartDate ?? DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                        );
+                        if (date != null) {
+                          setState(() {
+                            widget.projectData.constructionStartDate = date;
+                            widget.onChanged(widget.projectData);
+                          });
+                        }
+                      },
+                    ),
+                  ),
                 ),
-                readOnly: true,
-                controller: TextEditingController(
-                  text: widget.projectData.constructionStartDate != null
-                      ? DateFormat('MMM dd, yyyy').format(widget.projectData.constructionStartDate!)
-                      : '',
+                const SizedBox(width: 12),
+                // Expected Completion Date (Optional)
+                Expanded(
+                  child: SizedBox(
+                    height: 50,
+                    child: TextFormField(
+                      style: const TextStyle(fontSize: 13, height: 1.0),
+                      decoration: const InputDecoration(
+                        labelText: 'End Date',
+                        suffixIcon: Icon(Icons.calendar_today, size: 13),
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        labelStyle: TextStyle(fontSize: 13),
+                      ),
+                      readOnly: true,
+                      controller: TextEditingController(
+                        text: widget.projectData.expectedCompletionDate != null
+                            ? DateFormat('MMM dd, yyyy').format(widget.projectData.expectedCompletionDate!)
+                            : '',
+                      ),
+                      onTap: () async {
+                        final date = await showDatePicker(
+                          context: context,
+                          initialDate: widget.projectData.expectedCompletionDate ?? DateTime.now().add(const Duration(days: 30)),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                        );
+                        if (date != null) {
+                          setState(() {
+                            widget.projectData.expectedCompletionDate = date;
+                            widget.onChanged(widget.projectData);
+                          });
+                        }
+                      },
+                    ),
+                  ),
                 ),
-                onTap: () async {
-                  final date = await showDatePicker(
-                    context: context,
-                    initialDate: widget.projectData.constructionStartDate ?? DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100),
-                  );
-                  if (date != null) {
-                    setState(() {
-                      widget.projectData.constructionStartDate = date;
-                      widget.onChanged(widget.projectData);
-                    });
-                  }
-                },
-              ),
-            ),
-            const SizedBox(height: 12),
-            // Expected Completion Date (Optional)
-            SizedBox(
-              height: 50,
-              child: TextFormField(
-                style: const TextStyle(fontSize: 13, height: 1.0),
-                decoration: const InputDecoration(
-                  labelText: 'Expected Completion Date',
-                  suffixIcon: Icon(Icons.calendar_today, size: 13),
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  labelStyle: TextStyle(fontSize: 13),
-                ),
-                readOnly: true,
-                controller: TextEditingController(
-                  text: widget.projectData.expectedCompletionDate != null
-                      ? DateFormat('MMM dd, yyyy').format(widget.projectData.expectedCompletionDate!)
-                      : '',
-                ),
-                onTap: () async {
-                  final date = await showDatePicker(
-                    context: context,
-                    initialDate: widget.projectData.expectedCompletionDate ?? DateTime.now().add(const Duration(days: 30)),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100),
-                  );
-                  if (date != null) {
-                    setState(() {
-                      widget.projectData.expectedCompletionDate = date;
-                      widget.onChanged(widget.projectData);
-                    });
-                  }
-                },
-              ),
+              ],
             ),
             const SizedBox(height: 16),
             // Current Stage (Optional)
@@ -287,41 +297,59 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
               ),
             ),
             const SizedBox(height: 16),
-            // Project Status (Optional)
-            SizedBox(
-              height: 50,
-              child: DropdownButtonFormField<String>(
-                style: const TextStyle(fontSize: 13, height: 1.0),
-                decoration: const InputDecoration(
-                  hintStyle: TextStyle(fontSize: 13, height: 1.0),
-                  labelText: 'Project Status *',
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.arrow_drop_down, size: 16),
+            // Project Status (Radio Buttons)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Project Status *',
+                  style: TextStyle(fontSize: 13, color: Colors.black54, fontWeight: FontWeight.w500),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Project status is required';
-                  }
-                  return null;
-                },
-                hint: const Text('Select project status *'),
-                initialValue: widget.projectData.projectStatus,
-                items: _projectStatuses.map((status) {
-                  return DropdownMenuItem(
-                    value: status,
-                    child: Text(
-                      status,
-                      style: const TextStyle(color: Colors.black), // Set text color to black
-                    ),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    widget.projectData.projectStatus = value;
-                    widget.onChanged(widget.projectData);
-                  });
-                },
-              ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: _projectStatuses.map((status) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          widget.projectData.projectStatus = status;
+                          widget.onChanged(widget.projectData);
+                        });
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: status,
+                            groupValue: widget.projectData.projectStatus,
+                            onChanged: (value) {
+                              if (value != null) {
+                                setState(() {
+                                  widget.projectData.projectStatus = value;
+                                  widget.onChanged(widget.projectData);
+                                });
+                              }
+                            },
+                            activeColor: Theme.of(context).primaryColor,
+                          ),
+                          Text(
+                            status,
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                          const SizedBox(width: 16),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+                if (_formKey.currentState != null &&
+                    _formKey.currentState!.validate() &&
+                    (widget.projectData.projectStatus == null || widget.projectData.projectStatus!.isEmpty))
+                  const Text(
+                    'Project status is required',
+                    style: TextStyle(color: Colors.red, fontSize: 12),
+                  ),
+              ],
             ),
             const SizedBox(height:0,)
           ],
