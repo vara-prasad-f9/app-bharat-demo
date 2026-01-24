@@ -55,25 +55,38 @@ class CustomBottomBar extends StatelessWidget {
         showSelectedLabels: true,
         showUnselectedLabels: true,
         items: items.map((item) {
-          return BottomNavigationBarItem(
-            icon: item.icon == 'profile' && onProfileTap != null
-                ? GestureDetector(
-                    onTap: onProfileTap,
-                    child: Container(
-                      padding: const EdgeInsets.only(bottom: 4),
-                      child: Icon(
-                        _getIconData(item.icon),
-                        size: 20,
-                      ),
-                    ),
-                  )
-                : Container(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Icon(
+          if (item.icon == 'profile' && onProfileTap != null) {
+            return BottomNavigationBarItem(
+              icon: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: onProfileTap,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
                       _getIconData(item.icon),
                       size: 20,
                     ),
-                  ),
+                    const SizedBox(height: 4),
+                    Text(
+                      item.label,
+                      style: const TextStyle(fontSize: 10, height: 1.5),
+                    ),
+                  ],
+                ),
+              ),
+              label: '', // Empty label since we're handling it in the column
+            );
+          }
+          
+          return BottomNavigationBarItem(
+            icon: Container(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Icon(
+                _getIconData(item.icon),
+                size: 20,
+              ),
+            ),
             label: item.label,
           );
         }).toList(),
