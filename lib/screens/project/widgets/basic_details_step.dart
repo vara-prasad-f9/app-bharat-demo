@@ -150,40 +150,84 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
             ),
             const SizedBox(height: 16),
             // Project Type (Required)
-            SizedBox(
-              height: 50,
-              child: DropdownButtonFormField<String>(
-                style: const TextStyle(fontSize: 13, height: 1.0),
-                decoration: const InputDecoration(
-                  labelText: 'Project Type *',
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  labelStyle: TextStyle(fontSize: 13),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Project Type *',
+                  style: TextStyle(fontSize: 13, color: Colors.black54, fontWeight: FontWeight.w500),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select a project type';
-                  }
-                  return null;
-                },
-                hint: const Text('Select project type *', style: TextStyle(fontSize: 13)),
-                initialValue: widget.projectData.projectType,
-                items: _projectTypes.map((type) {
-                  return DropdownMenuItem(
-                    value: type,
-                    child: Text(
-                      type,
-                      style: const TextStyle(color: Colors.black), // Set text color to black
+                const SizedBox(height: 4),
+                Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: widget.projectData.projectType == null || 
+                             widget.projectData.projectType!.isEmpty
+                          ? Colors.red
+                          : Colors.grey.shade400,
+                      width: 1.0,
                     ),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    widget.projectData.projectType = value;
-                    widget.onChanged(widget.projectData);
-                  });
-                },
-              ),
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButtonFormField<String>(
+                      isExpanded: true,
+                      style: const TextStyle(fontSize: 13, color: Colors.black, height: 1.0),
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                        border: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none,
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select a project type';
+                        }
+                        return null;
+                      },
+                      hint: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4.0),
+                        child: Text(
+                          'Select project type',
+                          style: TextStyle(fontSize: 13, color: Colors.grey),
+                        ),
+                      ),
+                      value: widget.projectData.projectType,
+                      items: _projectTypes.map((type) {
+                        return DropdownMenuItem(
+                          value: type,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              type,
+                              style: const TextStyle(fontSize: 13, color: Colors.black),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          widget.projectData.projectType = value;
+                          widget.onChanged(widget.projectData);
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                if (widget.projectData.projectType == null || 
+                    widget.projectData.projectType!.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.only(top: 4.0, left: 4.0),
+                    child: Text(
+                      'Please select a project type',
+                      style: TextStyle(color: Colors.red, fontSize: 12),
+                    ),
+                  ),
+              ],
             ),
             const SizedBox(height: 12),
             // Date fields in a row
