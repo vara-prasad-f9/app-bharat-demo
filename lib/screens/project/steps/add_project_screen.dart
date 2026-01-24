@@ -168,7 +168,7 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
             // Stepper Header with horizontal scrolling
             Container(
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-              height: 50, // Fixed height for the stepper
+              height: 60, // Fixed height for the stepper
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -180,29 +180,35 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                     final isCompleted = index < _currentStep;
         
                     return Container(
-                      width: 45, // Fixed width for each step
+                      width: 60, // Fixed width for each step
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       child: GestureDetector(
                         onTap: () => _onStepTapped(index),
-                        child: Text(
-                          step['title'],
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                            color: isActive || isCompleted
-                                ? Theme.of(context).primaryColor
-                                : Colors.grey[600],
-                          ),
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (isCompleted)
+                              const Icon(
+                                Icons.check_circle,
+                                size: 24,
+                                color: Colors.green,
+                              )
+                            else
+                              Container(
+                                width: 60,
+                                height: 24,
+                               
+                                child: Text(step['title'] as String, style: TextStyle(fontSize:  12, height: 2, color: isActive ? Colors.black : Theme.of(context).primaryColor)),
+                              ),
+                          ],
                         ),
                       ),
                     );
                   }).toList(),
                 ),
+                ),
               ),
-            ),
+          
             
             // Progress Bar
             Container(

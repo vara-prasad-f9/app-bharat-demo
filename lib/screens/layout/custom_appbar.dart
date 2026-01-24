@@ -1,4 +1,4 @@
-// ignore_for_file: use_super_parameters
+// ignore_for_file: use_super_parameters, unused_result
 
 import 'package:bharatplus/screens/notification/notification_screen.dart';
 import 'package:flutter/material.dart';
