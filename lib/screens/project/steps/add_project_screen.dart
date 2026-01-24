@@ -194,7 +194,7 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                                 color: Colors.green,
                               )
                             else
-                              Container(
+                              SizedBox(
                                 width: 60,
                                 height: 24,
                                
@@ -460,127 +460,133 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
 
 
   Widget _buildDefaultButtons() {
-    return Row(
-      children: [
-        // Back Button (only shown when not on first step)
-        if (_currentStep > 0) ...[
-          Expanded(
-            child: OutlinedButton(
-              onPressed: _previousStep,
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                side: BorderSide(color: Theme.of(context).primaryColor),
-              ),
-              child: Text(
-                'BACK',
-                style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 12, fontWeight: FontWeight.bold),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          // Back Button (only shown when not on first step)
+          if (_currentStep > 0) ...[
+            Expanded(
+              child: OutlinedButton(
+                onPressed: _previousStep,
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  side: BorderSide(color: Theme.of(context).primaryColor),
+                ),
+                child: Text(
+                  'BACK',
+                  style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 12, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 8), // Reduced space between buttons
-        ],
-        // Cancel Button (only shown on first step)
-        if (_currentStep == 0) ...[
-          Expanded(
-            child: OutlinedButton(
-              onPressed: () {
-                // Navigate back to home page
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                side: BorderSide(color: Theme.of(context).primaryColor),
+            const SizedBox(width: 8), // Reduced space between buttons
+          ],
+          // Cancel Button (only shown on first step)
+          if (_currentStep == 0) ...[
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () {
+                  // Navigate back to home page
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  side: BorderSide(color: Theme.of(context).primaryColor),
+                ),
+                child: Text(
+                  'CANCEL',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
               ),
-              child: Text(
-                'CANCEL',
+            ),
+            const SizedBox(width: 8), // Space between buttons
+          ] else ...[
+            // Empty widget when not on first step
+            const SizedBox.shrink(),
+          ],
+          // Next Button
+          Expanded(
+            child: ElevatedButton(
+              onPressed: _isNextButtonEnabled ? _nextStep : null,
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
+              child: const Text(
+                'NEXT',
                 style: TextStyle(
-                  color: Theme.of(context).primaryColor,
                   fontWeight: FontWeight.bold,
+                  color: Colors.white,
                   fontSize: 12,
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 8), // Space between buttons
-        ] else ...[
-          // Empty widget when not on first step
-          const SizedBox.shrink(),
         ],
-        // Next Button
-        Expanded(
-          child: ElevatedButton(
-            onPressed: _isNextButtonEnabled ? _nextStep : null,
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              backgroundColor: Theme.of(context).primaryColor,
-            ),
-            child: const Text(
-              'NEXT',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 12,
-              ),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 
   Widget _buildReviewButtons() {
-    return Column(
-      children: [
-        Row(
-          children: [
-            // Back Button
-            Expanded(
-              child: OutlinedButton(
-                onPressed: _previousStep,
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  side:  BorderSide(color: Theme.of(context).primaryColor),
-                ),
-                child: Text(
-                  'BACK',
-                  style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            const SizedBox(width: 16),
-            // Save as Draft Button
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: () {
-               
-                  _submitForm();
-                },
-                icon: const Icon(Icons.save_outlined, size: 20),
-                label: const Text('SAVE'),
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  side: BorderSide(color: Theme.of(context).primaryColor),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              // Back Button
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: _previousStep,
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    side:  BorderSide(color: Theme.of(context).primaryColor),
+                  ),
+                  child: Text(
+                    'BACK',
+                    style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        // Submit Button
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: _isNextButtonEnabled ? _nextStep : null,
-            icon: const Icon(Icons.check_circle_outline, size: 20),
-            label: const Text('SUBMIT', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              backgroundColor: Theme.of(context).primaryColor,
-              foregroundColor: Colors.white,
+              const SizedBox(width: 16),
+              // Save as Draft Button
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                 
+                    _submitForm();
+                  },
+                  icon: const Icon(Icons.save_outlined, size: 20),
+                  label: const Text('SAVE'),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    side: BorderSide(color: Theme.of(context).primaryColor),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          // Submit Button
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: _isNextButtonEnabled ? _nextStep : null,
+              icon: const Icon(Icons.check_circle_outline, size: 20),
+              label: const Text('SUBMIT', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                backgroundColor: Theme.of(context).primaryColor,
+                foregroundColor: Colors.white,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

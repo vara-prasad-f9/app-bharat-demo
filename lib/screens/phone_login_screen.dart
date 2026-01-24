@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -6,14 +8,14 @@ import '../providers/auth_provider.dart';
 
 
 class CurvePainter extends CustomPainter {
-  BuildContext context;
+  final Color color;
 
-  CurvePainter({required this.context});
+  const CurvePainter({required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Theme.of(context).primaryColor // Red color
+      ..color = color
       ..style = PaintingStyle.fill;
 
     final path = Path();
@@ -44,9 +46,14 @@ class PhoneLoginScreen extends ConsumerStatefulWidget {
 }
 
 class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController();
+  late final TextEditingController _phoneController;
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _phoneController = TextEditingController();
+  }
 
   @override
   void dispose() {
@@ -55,20 +62,28 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
   }
 
   Future<void> _sendOtp() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (_phoneController.text.length != 10) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please enter a valid 10-digit phone number')),
+        );
+      }
+      return;
+    }
 
     setState(() => _isLoading = true);
     
     // In a real app, you would call your API here
     await Future.delayed(const Duration(seconds: 1));
     
+    if (!mounted) return;
+    
+    setState(() => _isLoading = false);
+    
+    // Navigate to OTP screen
+    ref.read(authProvider.notifier).setPhoneNumber(_phoneController.text);
     if (mounted) {
-      setState(() => _isLoading = false);
-      // Navigate to OTP screen
-      ref.read(authProvider.notifier).setPhoneNumber(_phoneController.text);
-      if (mounted) {
-        context.push('/otp-verify');
-      }
+      context.push('/otp-verify');
     }
   }
 
@@ -86,8 +101,8 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
             left: 0,
             right: 0,
             height: screenHeight * 0.45,
-            child: CustomPaint(
-              painter: CurvePainter(context: context),
+            child: const CustomPaint(
+              painter:  CurvePainter(color: Color(0xFFE63946)),
               child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -97,8 +112,8 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                       backgroundImage: AssetImage("assets/images/logo.png"),
                       radius: 40,
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
+                    SizedBox(height: 8),
+                    Text(
                       'Bharatplus',
                       style: TextStyle(
                         color: Colors.white,
@@ -123,6 +138,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 20),
                   const Text(
                     'Login',
                     style: TextStyle(
@@ -131,89 +147,84 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                       color: Colors.black87,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                    margin: const EdgeInsets.only(bottom: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.black12),
+                    ),
+                    child: Row(
                       children: [
-                        TextFormField(
-                          controller: _phoneController,
-                          keyboardType: TextInputType.phone,
-                          style: const TextStyle(fontSize: 16),
-                          decoration: InputDecoration(
-                            hintText: 'Enter your Phone number',
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Colors.black12),
+                        const Text('+91', style: TextStyle(fontSize: 16, color: Colors.black87)),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _phoneController,
+                            keyboardType: TextInputType.phone,
+                            maxLength: 10,
+                            style: const TextStyle(fontSize: 16),
+                            decoration: const InputDecoration(
+                              hintText: 'Enter 10-digit number',
+                              counterText: '',
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.zero,
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Colors.black12),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Color(0xFFE63946)),
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                            prefix: const Padding(
-                              padding: EdgeInsets.only(right: 4.0),
-                              child: Text('+91', style: TextStyle(color: Colors.black87)),
-                            ),
+                            onChanged: (value) {
+                              // Update the controller with only digits
+                              final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+                              if (digitsOnly != value) {
+                                _phoneController.value = TextEditingValue(
+                                  text: digitsOnly,
+                                  selection: TextSelection.collapsed(offset: digitsOnly.length),
+                                );
+                              }
+                            },
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your phone number';
-                            } else if (value.length != 10) {
-                              return 'Please enter a valid 10-digit number';
-                            } else if (value != '1234567890') {
-                              return 'For demo, use: 1234567890';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 30),
-                        SizedBox(
-                          height: 56,
-                          child: ElevatedButton(
-                            onPressed: _isLoading ? null : _sendOtp,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              elevation: 0,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                            ),
-                            child: _isLoading
-                                ? const SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : const Text(
-                                    'Send OTP',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        const Text(
-                          'For demo purposes, use 1234567890 as phone number',
-                          style: TextStyle(color: Colors.grey, fontSize: 12),
-                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _isLoading ? null : _sendOtp,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFE63946),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: _isLoading 
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text('Send OTP', style: TextStyle(fontSize: 16, color: Colors.white)),
+                    ),
+                  ),
+                  if (_isLoading)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFFE63946),
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'For demo purposes, use 1234567890 as phone number',
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
