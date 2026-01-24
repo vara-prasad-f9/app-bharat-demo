@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../providers/theme_provider.dart';
+import 'custom_drawer.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String title;
   final List<Widget>? actions;
   final bool showBackButton;
   final VoidCallback? onBackPressed;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
 
   const CustomAppBar({
     Key? key,
@@ -17,6 +19,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     this.actions,
     this.showBackButton = false,
     this.onBackPressed,
+    this.scaffoldKey,
   }) : super(key: key);
 
   @override
@@ -48,6 +51,14 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
               ),
             ),
       actions: [
+        IconButton(
+          icon: const Icon(Icons.account_circle_outlined),
+          onPressed: () {
+            if (scaffoldKey?.currentState != null) {
+              scaffoldKey!.currentState!.openEndDrawer();
+            }
+          },
+        ),
         IconButton(
           icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
           onPressed: () {

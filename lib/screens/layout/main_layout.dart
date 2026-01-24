@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'custom_appbar.dart';
 import 'custom_bottombar.dart';
+import 'custom_drawer.dart';
 
 class MainLayout extends ConsumerStatefulWidget {
   final Widget child;
@@ -40,16 +41,20 @@ class MainLayout extends ConsumerStatefulWidget {
 }
 
 class _MainLayoutState extends ConsumerState<MainLayout> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: const Color(0xFFFFEDF7),
+      endDrawer: const CustomDrawer(),
       appBar: widget.showAppBar
           ? CustomAppBar(
               title: widget.title,
               actions: widget.appBarActions,
               showBackButton: widget.showBackButton,
               onBackPressed: widget.onBackPressed,
+              scaffoldKey: _scaffoldKey,
             )
           : null,
       body: SafeArea(
