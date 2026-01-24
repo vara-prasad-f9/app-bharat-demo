@@ -335,7 +335,7 @@ class _OwnerDetailsStepState extends State<OwnerDetailsStep> {
                 },
               ),
             ),
-            const SizedBox(height: 100),
+            const SizedBox(height: 0),
           ],
         ),
       ),

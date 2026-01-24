@@ -291,7 +291,7 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                 },
               ),
             ),
-            const SizedBox(height: 100,)
+            const SizedBox(height:0,)
           ],
         ),
       ),
