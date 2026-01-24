@@ -168,7 +168,7 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
             // Stepper Header with horizontal scrolling
             Container(
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-              height: 75, // Fixed height for the stepper
+              height: 50, // Fixed height for the stepper
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -184,48 +184,18 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       child: GestureDetector(
                         onTap: () => _onStepTapped(index),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: 25,
-                              height: 25,
-                              decoration: BoxDecoration(
-                                color: isActive
-                                    ? Theme.of(context).primaryColor
-                                    : isCompleted
-                                        ? Colors.green
-                                        : Colors.grey[300],
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                child: isCompleted
-                                    ? const Icon(Icons.check, color: Colors.white, size: 12)
-                                    : const Text(
-                                          '✓',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 10,
-                                        ),
-                                      ),
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              step['title'],
-                              style: TextStyle(
-                                fontSize: 9,
-                                fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                                color: isActive || isCompleted
-                                    ? Theme.of(context).primaryColor
-                                    : Colors.grey[600],
-                              ),
-                              maxLines: 2,
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                        child: Text(
+                          step['title'],
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                            color: isActive || isCompleted
+                                ? Theme.of(context).primaryColor
+                                : Colors.grey[600],
+                          ),
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     );
