@@ -259,162 +259,223 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                 },
                 children: [
                   // Step 1: Basic Details
-                  Form(
-                    key: _formKeys[0],
-                    child: BasicDetailsStep(
-                      projectData: _projectData,
-                      onChanged: (data) {
-                        setState(() {
-                          // Create a new instance with updated data
-                          _projectData.copyWith(
-                            projectName: data.projectName,
-                            projectCode: data.projectCode,
-                            projectType: data.projectType,
-                            constructionStartDate: data.constructionStartDate,
-                            expectedCompletionDate: data.expectedCompletionDate,
-                            currentStage: data.currentStage,
-                            projectStatus: data.projectStatus,
-                          );
-                        });
-                      },
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Form(
+                          key: _formKeys[0],
+                          child: BasicDetailsStep(
+                            projectData: _projectData,
+                            onChanged: (data) {
+                              setState(() {
+                                // Create a new instance with updated data
+                                _projectData.copyWith(
+                                  projectName: data.projectName,
+                                  projectCode: data.projectCode,
+                                  projectType: data.projectType,
+                                  constructionStartDate: data.constructionStartDate,
+                                  expectedCompletionDate: data.expectedCompletionDate,
+                                  currentStage: data.currentStage,
+                                  projectStatus: data.projectStatus,
+                                );
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _currentStep == _steps.length - 1 
+                          ? _buildReviewButtons() 
+                          : _buildDefaultButtons(),
+                        const SizedBox(height: 16),
+                      ],
                     ),
                   ),
                   
                   // Step 2: Location Details
-                  Form(
-                    key: _formKeys[1],
-                    child: LocationDetailsStep(
-                      projectData: _projectData,
-                      onChanged: (data) {
-                        setState(() {
-                          _projectData.copyWith(
-                            country: data.country,
-                            state: data.state,
-                            district: data.district,
-                            city: data.city,
-                            area: data.area,
-                            landmark: data.landmark,
-                            pincode: data.pincode,
-                            fullAddress: data.fullAddress,
-                            latitude: data.latitude,
-                            longitude: data.longitude,
-                          );
-                        });
-                      },
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Form(
+                          key: _formKeys[1],
+                          child: LocationDetailsStep(
+                            projectData: _projectData,
+                            onChanged: (data) {
+                              setState(() {
+                                _projectData.copyWith(
+                                  country: data.country,
+                                  state: data.state,
+                                  district: data.district,
+                                  city: data.city,
+                                  area: data.area,
+                                  landmark: data.landmark,
+                                  pincode: data.pincode,
+                                  fullAddress: data.fullAddress,
+                                  latitude: data.latitude,
+                                  longitude: data.longitude,
+                                );
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _currentStep == _steps.length - 1 
+                          ? _buildReviewButtons() 
+                          : _buildDefaultButtons(),
+                        const SizedBox(height: 16),
+                      ],
                     ),
                   ),
                   
                   // Step 3: Owner Details
-                  Form(
-                    key: _formKeys[2],
-                    child: OwnerDetailsStep(
-                      projectData: _projectData,
-                      onChanged: (data) {
-                      // Update the project data
-                      _projectData.ownerType = data.ownerType;
-                      _projectData.ownerName = data.ownerName;
-                      _projectData.companyName = data.companyName;
-                      _projectData.mobileNumber = data.mobileNumber;
-                      _projectData.alternateMobileNumber = data.alternateMobileNumber;
-                      _projectData.email = data.email;
-                      _projectData.isSameAsSiteAddress = data.isSameAsSiteAddress;
-                      _projectData.idProofType = data.idProofType;
-                      _projectData.idProofNumber = data.idProofNumber;
-                      
-                      // Trigger a rebuild and validate the form
-                      if (mounted) {
-                        setState(() {
-                          // The state update will trigger a rebuild
-                        });
-                        // Validate the form after the state has been updated
-                        _formKeys[_currentStep].currentState?.validate();
-                      }
-                    },
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Form(
+                          key: _formKeys[2],
+                          child: OwnerDetailsStep(
+                            projectData: _projectData,
+                            onChanged: (data) {
+                              // Update the project data
+                              _projectData.ownerType = data.ownerType;
+                              _projectData.ownerName = data.ownerName;
+                              _projectData.companyName = data.companyName;
+                              _projectData.mobileNumber = data.mobileNumber;
+                              _projectData.alternateMobileNumber = data.alternateMobileNumber;
+                              _projectData.email = data.email;
+                              _projectData.isSameAsSiteAddress = data.isSameAsSiteAddress;
+                              _projectData.idProofType = data.idProofType;
+                              _projectData.idProofNumber = data.idProofNumber;
+                              
+                              // Trigger a rebuild and validate the form
+                              if (mounted) {
+                                setState(() {
+                                  // The state update will trigger a rebuild
+                                });
+                                // Validate the form after the state has been updated
+                                _formKeys[_currentStep].currentState?.validate();
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _currentStep == _steps.length - 1 
+                          ? _buildReviewButtons() 
+                          : _buildDefaultButtons(),
+                        const SizedBox(height: 16),
+                      ],
                     ),
                   ),
                   
                   // Step 4: Construction Details
-                  Form(
-                    key: _formKeys[3],
-                    child: ConstructionDetailsStep(
-                      projectData: _projectData,
-                      onChanged: (data) {
-                        setState(() {
-                          _projectData.copyWith(
-                            totalPlotArea: data.totalPlotArea,
-                            builtUpArea: data.builtUpArea,
-                            numberOfFloors: data.numberOfFloors,
-                            constructionMethod: data.constructionMethod,
-                            estimatedBudget: data.estimatedBudget,
-                            projectPriority: data.projectPriority,
-                          );
-                        });
-                      },
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Form(
+                          key: _formKeys[3],
+                          child: ConstructionDetailsStep(
+                            projectData: _projectData,
+                            onChanged: (data) {
+                              setState(() {
+                                _projectData.copyWith(
+                                  totalPlotArea: data.totalPlotArea,
+                                  builtUpArea: data.builtUpArea,
+                                  numberOfFloors: data.numberOfFloors,
+                                  constructionMethod: data.constructionMethod,
+                                  estimatedBudget: data.estimatedBudget,
+                                  projectPriority: data.projectPriority,
+                                );
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _currentStep == _steps.length - 1 
+                          ? _buildReviewButtons() 
+                          : _buildDefaultButtons(),
+                        const SizedBox(height: 16),
+                      ],
                     ),
                   ),
                   
                   // Step 5: Team Assignment
-                  Form(
-                    key: _formKeys[4],
-                    child: TeamAssignmentStep(
-                      projectData: _projectData,
-                      onChanged: (data) {
-                        setState(() {
-                          _projectData.assignedContractors = data.assignedContractors;
-                          _projectData.assignedSuppliers = data.assignedSuppliers;
-                          _projectData.documents = data.documents;
-                        });
-                      },
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Form(
+                          key: _formKeys[4],
+                          child: TeamAssignmentStep(
+                            projectData: _projectData,
+                            onChanged: (data) {
+                              setState(() {
+                                _projectData.assignedContractors = data.assignedContractors;
+                                _projectData.assignedSuppliers = data.assignedSuppliers;
+                                _projectData.documents = data.documents;
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _currentStep == _steps.length - 1 
+                          ? _buildReviewButtons() 
+                          : _buildDefaultButtons(),
+                        const SizedBox(height: 16),
+                      ],
                     ),
                   ),
         
                   // Step 6: Documentation & Media
-                  Form(
-                    key: _formKeys[5],
-                    child: DocumentsStep(
-                      projectData: _projectData,
-                      onChanged: (data) {
-                        setState(() {
-                          _projectData.documents = data.documents;
-                        });
-                      },
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Form(
+                          key: _formKeys[5],
+                          child: DocumentsStep(
+                            projectData: _projectData,
+                            onChanged: (data) {
+                              setState(() {
+                                _projectData.documents = data.documents;
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _currentStep == _steps.length - 1 
+                          ? _buildReviewButtons() 
+                          : _buildDefaultButtons(),
+                        const SizedBox(height: 16),
+                      ],
                     ),
                   ),
                   
                   // Step 7: Review
-                  Form(
-                    key: _formKeys[6],
-                    child: ReviewStep(
-                      projectData: _projectData,
-                      onChanged: (data) {
-                        // Update project data if needed
-                        setState(() {
-                          // No need to update anything as this is just a review step
-                        });
-                      },
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Form(
+                          key: _formKeys[6],
+                          child: ReviewStep(
+                            projectData: _projectData,
+                            onChanged: (data) {
+                              // Update project data if needed
+                              setState(() {
+                                // No need to update anything as this is just a review step
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _currentStep == _steps.length - 1 
+                          ? _buildReviewButtons() 
+                          : _buildDefaultButtons(),
+                        const SizedBox(height: 16),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
             
-            // Navigation Buttons
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color.fromRGBO(0, 0, 0, 0.1),
-                    blurRadius: 5,
-                    offset: const Offset(0, -2),
-                  ),
-                ],
-              ),
-              child: _currentStep == _steps.length - 1 
-                ? _buildReviewButtons() 
-                : _buildDefaultButtons(),
-            ),
+            // Navigation Buttons will be inside each step's content
           ],
         ),
       ),
