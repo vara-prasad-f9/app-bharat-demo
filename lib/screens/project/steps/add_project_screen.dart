@@ -35,59 +35,52 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
     {'title': 'Step 7', 'subtitle': 'Review and submit project'},
   ];
 
-  bool get _isNextButtonEnabled {
+ bool get _isNextButtonEnabled {
+  // Get the current form state
+  final formState = _formKeys[_currentStep].currentState;
+  
+  // If form state is null, button should be disabled
+  if (formState == null) return false;
+  
+  // For the first step, check project name, type, and status
+  if (_currentStep == 0) {
+    final hasRequiredFields = _projectData.projectName?.trim().isNotEmpty == true &&
+                            _projectData.projectType?.isNotEmpty == true &&
+                            _projectData.projectStatus?.isNotEmpty == true;
+    
+    // Also validate the form to show any validation errors
+    if (formState.mounted) {
+      formState.validate();
+    }
+    
+    return hasRequiredFields;
+  }
+  
+  // For location step (index 1), manually validate required fields
+  if (_currentStep == 1) {
+    final hasState = _projectData.state?.trim().isNotEmpty == true;
+    final hasCity = _projectData.city?.trim().isNotEmpty == true;
+    final hasArea = _projectData.area?.trim().isNotEmpty == true;
+    final hasPincode = _projectData.pincode?.trim().isNotEmpty == true && 
+                      _projectData.pincode!.length == 6 && 
+                      int.tryParse(_projectData.pincode!) != null;
+    
+    return hasState && hasCity && hasArea && hasPincode;
+  }
+  
+  // For other steps, use form validation
+  return formState.validate();
+}
+
+  void _nextStep() {
     // Get the current form state
     final formState = _formKeys[_currentStep].currentState;
     
-    // If form state is null, button should be disabled
-    if (formState == null) return false;
-    
-    // For the first step, check project name is not empty
-    if (_currentStep == 0) {
-      return _projectData.projectName?.trim().isNotEmpty == true;
-    }
-    
-    // For location step (index 1), manually validate required fields
-    if (_currentStep == 1) {
-      final hasState = _projectData.state?.trim().isNotEmpty == true;
-      final hasCity = _projectData.city?.trim().isNotEmpty == true;
-      final hasArea = _projectData.area?.trim().isNotEmpty == true;
-      final hasPincode = _projectData.pincode?.trim().isNotEmpty == true && 
-                        _projectData.pincode!.length == 6 && 
-                        int.tryParse(_projectData.pincode!) != null;
-      
-      return hasState && hasCity && hasArea && hasPincode;
-    }
-    
-    // For Owner Details step (index 2), validate required fields
-    if (_currentStep == 2) {
-      // Check if owner type is selected
-      if (_projectData.ownerType == null) {
-        return false;
-      }
-      
-      // For Individual owner
-      if (_projectData.ownerType == 'Individual') {
-        final hasOwnerName = _projectData.ownerName?.trim().isNotEmpty == true;
-        final hasMobileNumber = _projectData.mobileNumber?.trim().isNotEmpty == true;
-        return hasOwnerName && hasMobileNumber;
-      } 
-      // For Company owner
-      else if (_projectData.ownerType == 'Company') {
-        final hasCompanyName = _projectData.companyName?.trim().isNotEmpty == true;
-        final hasMobileNumber = _projectData.mobileNumber?.trim().isNotEmpty == true;
-        return hasCompanyName && hasMobileNumber;
-      }
-      
-      return false;
-    }
-    
-    // For other steps, use form validation
-    return formState.validate();
-  }
+    // If form state is null, return early
+    if (formState == null) return;
 
-  void _nextStep() {
-    if (_isNextButtonEnabled) {
+    // Validate the form and check if all required fields are filled
+    if (formState.validate() && _isNextButtonEnabled) {
       if (_currentStep < _steps.length - 1) {
         _pageController.nextPage(
           duration: const Duration(milliseconds: 300),

@@ -21,7 +21,27 @@ class BasicDetailsStep extends StatefulWidget {
 
 class _BasicDetailsStepState extends State<BasicDetailsStep> {
   final _formKey = GlobalKey<FormState>();
-  final List<String> _projectTypes = ['Residential', 'Commercial', 'Industrial', 'Infrastructure'];
+  final List<String> _projectTypes = [
+    'Community',
+    'Villa',
+    'Building',
+    'Flat',
+    'Individual',
+    'Group housing',
+    'Industrial',
+    'Business',
+    'Commercial complex',
+    'SEZ',
+    'Small house',
+    'Farm house',
+    'Stadium',
+    'Parks',
+    'Government',
+    'Residential',
+    'Commercial',
+    'Infrastructure',
+    'Others',
+  ];
   final List<String> _projectStages = [
     'Planning',
     'Foundation',
@@ -129,18 +149,24 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
               ),
             ),
             const SizedBox(height: 16),
-            // Project Type (Optional)
+            // Project Type (Required)
             SizedBox(
               height: 50,
               child: DropdownButtonFormField<String>(
                 style: const TextStyle(fontSize: 13, height: 1.0),
                 decoration: const InputDecoration(
-                  labelText: 'Project Type',
+                  labelText: 'Project Type *',
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   labelStyle: TextStyle(fontSize: 13),
                 ),
-                hint: const Text('Select project type', style: TextStyle(fontSize: 13)),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select a project type';
+                  }
+                  return null;
+                },
+                hint: const Text('Select project type *', style: TextStyle(fontSize: 13)),
                 initialValue: widget.projectData.projectType,
                 items: _projectTypes.map((type) {
                   return DropdownMenuItem(
@@ -268,11 +294,17 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                 style: const TextStyle(fontSize: 13, height: 1.0),
                 decoration: const InputDecoration(
                   hintStyle: TextStyle(fontSize: 13, height: 1.0),
-                  labelText: 'Project Status',
+                  labelText: 'Project Status *',
                   border: OutlineInputBorder(),
                   suffixIcon: Icon(Icons.arrow_drop_down, size: 16),
                 ),
-                hint: const Text('Select project status'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Project status is required';
+                  }
+                  return null;
+                },
+                hint: const Text('Select project status *'),
                 initialValue: widget.projectData.projectStatus,
                 items: _projectStatuses.map((status) {
                   return DropdownMenuItem(
