@@ -18,12 +18,14 @@ class CustomBottomBar extends StatelessWidget {
   final int currentIndex;
   final List<BottomNavItem> items;
   final ValueChanged<int> onTap;
+  final VoidCallback? onProfileTap;
 
   const CustomBottomBar({
     Key? key,
     required this.currentIndex,
     required this.items,
     required this.onTap,
+    this.onProfileTap,
   }) : super(key: key);
 
   @override
@@ -54,13 +56,24 @@ class CustomBottomBar extends StatelessWidget {
         showUnselectedLabels: true,
         items: items.map((item) {
           return BottomNavigationBarItem(
-            icon: Container(
-              padding: const EdgeInsets.only(bottom: 4),
-              child: Icon(
-                _getIconData(item.icon),
-                size: 20,
-              ),
-            ),
+            icon: item.icon == 'profile' && onProfileTap != null
+                ? GestureDetector(
+                    onTap: onProfileTap,
+                    child: Container(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Icon(
+                        _getIconData(item.icon),
+                        size: 20,
+                      ),
+                    ),
+                  )
+                : Container(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Icon(
+                      _getIconData(item.icon),
+                      size: 20,
+                    ),
+                  ),
             label: item.label,
           );
         }).toList(),

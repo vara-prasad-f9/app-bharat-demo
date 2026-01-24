@@ -65,6 +65,9 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
               currentIndex: widget.currentBottomNavIndex,
               items: widget.bottomNavItems!,
               onTap: widget.onBottomNavTap ?? (_) {},
+              onProfileTap: () {
+                _scaffoldKey.currentState?.openEndDrawer();
+              },
             )
           : null,
       floatingActionButton: widget.floatingActionButton,
