@@ -37,18 +37,7 @@ class ProjectModel {
   String? watchmanName;
   String? watchmanPhoneNumber;
 
-  // Step 4: Assignment Details
-  List<String>? assignedContractors;
-  List<String>? assignedSuppliers;
-  String? siteEngineer;
-  String? adminInCharge;
-
-  // Step 5: Documentation & Media
-  Map<String, dynamic>? documents; // For storing document references
-  List<String>? sitePlans;
-  List<String>? sitePhotos;
-  List<String>? governmentApprovals;
-  List<String>? approvalDocuments;
+  // Step 4: Review
 
   ProjectModel();
 
@@ -104,14 +93,6 @@ class ProjectModel {
     String? supervisorPhoneNumber,
     String? watchmanName,
     String? watchmanPhoneNumber,
-    List<String>? assignedContractors,
-    List<String>? assignedSuppliers,
-    String? siteEngineer,
-    String? adminInCharge,
-    Map<String, dynamic>? documents,
-    List<String>? sitePlans,
-    List<String>? sitePhotos,
-    List<String>? approvalDocuments,
   }) {
     return ProjectModel()
       ..projectName = projectName ?? this.projectName
@@ -137,15 +118,7 @@ class ProjectModel {
       ..supervisorName = supervisorName ?? this.supervisorName
       ..supervisorPhoneNumber = supervisorPhoneNumber ?? this.supervisorPhoneNumber
       ..watchmanName = watchmanName ?? this.watchmanName
-      ..watchmanPhoneNumber = watchmanPhoneNumber ?? this.watchmanPhoneNumber
-      ..assignedContractors = assignedContractors != null ? List.from(assignedContractors) : this.assignedContractors != null ? List.from(this.assignedContractors!) : null
-      ..assignedSuppliers = assignedSuppliers != null ? List.from(assignedSuppliers) : this.assignedSuppliers != null ? List.from(this.assignedSuppliers!) : null
-      ..siteEngineer = siteEngineer ?? this.siteEngineer
-      ..adminInCharge = adminInCharge ?? this.adminInCharge
-      ..documents = documents != null ? Map.from(documents) : this.documents != null ? Map.from(this.documents!) : null
-      ..sitePlans = sitePlans != null ? List.from(sitePlans) : this.sitePlans != null ? List.from(this.sitePlans!) : null
-      ..sitePhotos = sitePhotos != null ? List.from(sitePhotos) : this.sitePhotos != null ? List.from(this.sitePhotos!) : null
-      ..approvalDocuments = approvalDocuments != null ? List.from(approvalDocuments) : this.approvalDocuments != null ? List.from(this.approvalDocuments!) : null;
+      ..watchmanPhoneNumber = watchmanPhoneNumber ?? this.watchmanPhoneNumber;
   }
 
   // Convert ProjectModel to JSON
@@ -175,14 +148,6 @@ class ProjectModel {
       'supervisorPhoneNumber': supervisorPhoneNumber,
       'watchmanName': watchmanName,
       'watchmanPhoneNumber': watchmanPhoneNumber,
-      'assignedContractors': assignedContractors,
-      'assignedSuppliers': assignedSuppliers,
-      'siteEngineer': siteEngineer,
-      'adminInCharge': adminInCharge,
-      'documents': documents,
-      'sitePlans': sitePlans,
-      'sitePhotos': sitePhotos,
-      'approvalDocuments': approvalDocuments,
     };
   }
 
@@ -216,26 +181,6 @@ class ProjectModel {
       ..supervisorName = json['supervisorName']
       ..supervisorPhoneNumber = json['supervisorPhoneNumber']
       ..watchmanName = json['watchmanName']
-      ..watchmanPhoneNumber = json['watchmanPhoneNumber']
-      ..assignedContractors = json['assignedContractors'] != null
-          ? List<String>.from(json['assignedContractors'])
-          : null
-      ..assignedSuppliers = json['assignedSuppliers'] != null
-          ? List<String>.from(json['assignedSuppliers'])
-          : null
-      ..siteEngineer = json['siteEngineer']
-      ..adminInCharge = json['adminInCharge']
-      ..documents = json['documents'] != null
-          ? Map<String, dynamic>.from(json['documents'])
-          : null
-      ..sitePlans = json['sitePlans'] != null
-          ? List<String>.from(json['sitePlans'])
-          : null
-      ..sitePhotos = json['sitePhotos'] != null
-          ? List<String>.from(json['sitePhotos'])
-          : null
-      ..approvalDocuments = json['approvalDocuments'] != null
-          ? List<String>.from(json['approvalDocuments'])
-          : null;
+      ..watchmanPhoneNumber = json['watchmanPhoneNumber'];
   }
 }

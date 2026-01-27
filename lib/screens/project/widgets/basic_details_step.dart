@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import '../../../models/project_model.dart';
-import '../../../widgets/photo_picker.dart';
 
 class BasicDetailsStep extends StatefulWidget {
   final ProjectModel projectData;
@@ -111,19 +110,6 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                   });
                 },
               ),
-            ),
-              const SizedBox(height: 10),
-            // Project Photo (Optional)
-            PhotoPicker(
-              initialPhotos: widget.projectData.sitePhotos,
-              onPhotosChanged: (photos) {
-                setState(() {
-                  widget.projectData.sitePhotos = photos;
-                  widget.onChanged(widget.projectData);
-                });
-              },
-              maxPhotos: 5,
-              
             ),
             const SizedBox(height: 16),
             // Project Type (Required)

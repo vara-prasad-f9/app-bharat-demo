@@ -7,8 +7,6 @@ import 'package:bharatplus/providers/project_provider.dart';
 import 'package:bharatplus/screens/project/widgets/basic_details_step.dart';
 import 'package:bharatplus/screens/project/widgets/location_details_step.dart';
 import 'package:bharatplus/screens/project/widgets/owner_details_step.dart';
-import 'package:bharatplus/screens/project/widgets/team_assignment_step.dart';
-import 'package:bharatplus/screens/project/widgets/documents_step.dart';
 import 'package:bharatplus/screens/project/widgets/review_step.dart';
 
 class AddProjectScreen extends ConsumerStatefulWidget {
@@ -22,7 +20,7 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
   final ProjectModel _projectData = ProjectModel();
   final PageController _pageController = PageController();
   int _currentStep = 0;
-  final List<GlobalKey<FormState>> _formKeys = List.generate(6, (_) => GlobalKey<FormState>());
+  final List<GlobalKey<FormState>> _formKeys = List.generate(4, (_) => GlobalKey<FormState>());
 
   @override
   void initState() {
@@ -35,9 +33,7 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
     {'title': 'Step 1', 'subtitle': 'Enter project basic information'},
     {'title': 'Step 2', 'subtitle': 'Add project location details'},
     {'title': 'Step 3', 'subtitle': 'Enter owner information'},
-    {'title': 'Step 4', 'subtitle': 'Assign team members'},
-    {'title': 'Step 5', 'subtitle': 'Upload required documents'},
-    {'title': 'Step 6', 'subtitle': 'Review and submit project'},
+    {'title': 'Step 4', 'subtitle': 'Review and submit project'},
   ];
 
  bool get _isNextButtonEnabled {
@@ -353,62 +349,12 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                     ),
                   ),
                   
-                  // Step 4: Team Assignment
+                  // Step 4: Review
                   SingleChildScrollView(
                     child: Column(
                       children: [
                         Form(
                           key: _formKeys[3],
-                          child: TeamAssignmentStep(
-                            projectData: _projectData,
-                            onChanged: (data) {
-                              setState(() {
-                                _projectData.assignedContractors = data.assignedContractors;
-                                _projectData.assignedSuppliers = data.assignedSuppliers;
-                                _projectData.documents = data.documents;
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        _currentStep == _steps.length - 1 
-                          ? _buildReviewButtons() 
-                          : _buildDefaultButtons(),
-                        const SizedBox(height: 16),
-                      ],
-                    ),
-                  ),
-        
-                  // Step 5: Documentation & Media
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Form(
-                          key: _formKeys[4],
-                          child: DocumentsStep(
-                            projectData: _projectData,
-                            onChanged: (data) {
-                              setState(() {
-                                _projectData.documents = data.documents;
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        _currentStep == _steps.length - 1 
-                          ? _buildReviewButtons() 
-                          : _buildDefaultButtons(),
-                        const SizedBox(height: 16),
-                      ],
-                    ),
-                  ),
-                  
-                  // Step 6: Review
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Form(
-                          key: _formKeys[5],
                           child: ReviewStep(
                             projectData: _projectData,
                             onChanged: (data) {

@@ -78,24 +78,6 @@ class _ReviewStepState extends State<ReviewStep> {
           ]),
           
           
-          if ((widget.projectData.assignedContractors?.isNotEmpty ?? false) || 
-              (widget.projectData.assignedSuppliers?.isNotEmpty ?? false))
-            ...[
-              const SizedBox(height: 24),
-              _buildSectionHeader('Team Assignment'),
-              _buildInfoCard([
-                if (widget.projectData.assignedContractors?.isNotEmpty ?? false)
-                  _buildInfoItem(
-                    'Contractors',
-                    widget.projectData.assignedContractors!.join(', '),
-                  ),
-                if (widget.projectData.assignedSuppliers?.isNotEmpty ?? false)
-                  _buildInfoItem(
-                    'Suppliers',
-                    widget.projectData.assignedSuppliers!.join(', '),
-                  ),
-              ]),
-            ],
           
                 ],
       ),
