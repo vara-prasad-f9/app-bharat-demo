@@ -59,23 +59,31 @@ class _ReviewStepState extends State<ReviewStep> {
               _buildInfoItem('Owner Email', widget.projectData.ownerEmail!),
           ]),
           
-          const SizedBox(height: 24),
-          _buildSectionHeader('Supervisor Details'),
-          _buildInfoCard([
-            if (widget.projectData.supervisorName?.isNotEmpty ?? false)
-              _buildInfoItem('Supervisor Name', widget.projectData.supervisorName!),
-            if (widget.projectData.supervisorPhoneNumber?.isNotEmpty ?? false)
-              _buildInfoItem('Supervisor Phone', widget.projectData.supervisorPhoneNumber!),
-          ]),
+          // Supervisor Details - Only show if there's data
+          if ((widget.projectData.supervisorName?.isNotEmpty ?? false) || 
+              (widget.projectData.supervisorPhoneNumber?.isNotEmpty ?? false)) ...[
+            const SizedBox(height: 24),
+            _buildSectionHeader('Supervisor Details'),
+            _buildInfoCard([
+              if (widget.projectData.supervisorName?.isNotEmpty ?? false)
+                _buildInfoItem('Supervisor Name', widget.projectData.supervisorName!),
+              if (widget.projectData.supervisorPhoneNumber?.isNotEmpty ?? false)
+                _buildInfoItem('Supervisor Phone', widget.projectData.supervisorPhoneNumber!),
+            ]),
+          ],
           
-          const SizedBox(height: 24),
-          _buildSectionHeader('Watchman Details'),
-          _buildInfoCard([
-            if (widget.projectData.watchmanName?.isNotEmpty ?? false)
-              _buildInfoItem('Watchman Name', widget.projectData.watchmanName!),
-            if (widget.projectData.watchmanPhoneNumber?.isNotEmpty ?? false)
-              _buildInfoItem('Watchman Phone', widget.projectData.watchmanPhoneNumber!),
-          ]),
+          // Watchman Details - Only show if there's data
+          if ((widget.projectData.watchmanName?.isNotEmpty ?? false) || 
+              (widget.projectData.watchmanPhoneNumber?.isNotEmpty ?? false)) ...[
+            const SizedBox(height: 24),
+            _buildSectionHeader('Watchman Details'),
+            _buildInfoCard([
+              if (widget.projectData.watchmanName?.isNotEmpty ?? false)
+                _buildInfoItem('Watchman Name', widget.projectData.watchmanName!),
+              if (widget.projectData.watchmanPhoneNumber?.isNotEmpty ?? false)
+                _buildInfoItem('Watchman Phone', widget.projectData.watchmanPhoneNumber!),
+            ]),
+          ],
           
           
           
