@@ -37,21 +37,13 @@ class ProjectModel {
   String? watchmanName;
   String? watchmanPhoneNumber;
 
-  // Step 4: Construction Details
-  double? totalPlotArea;
-  double? builtUpArea;
-  int? numberOfFloors;
-  String? constructionMethod;
-  double? estimatedBudget;
-  String? projectPriority;
-
-  // Step 5: Assignment Details
+  // Step 4: Assignment Details
   List<String>? assignedContractors;
   List<String>? assignedSuppliers;
   String? siteEngineer;
   String? adminInCharge;
 
-  // Step 6: Documentation & Media
+  // Step 5: Documentation & Media
   Map<String, dynamic>? documents; // For storing document references
   List<String>? sitePlans;
   List<String>? sitePhotos;
@@ -112,12 +104,6 @@ class ProjectModel {
     String? supervisorPhoneNumber,
     String? watchmanName,
     String? watchmanPhoneNumber,
-    double? totalPlotArea,
-    double? builtUpArea,
-    int? numberOfFloors,
-    String? constructionMethod,
-    double? estimatedBudget,
-    String? projectPriority,
     List<String>? assignedContractors,
     List<String>? assignedSuppliers,
     String? siteEngineer,
@@ -152,12 +138,6 @@ class ProjectModel {
       ..supervisorPhoneNumber = supervisorPhoneNumber ?? this.supervisorPhoneNumber
       ..watchmanName = watchmanName ?? this.watchmanName
       ..watchmanPhoneNumber = watchmanPhoneNumber ?? this.watchmanPhoneNumber
-      ..totalPlotArea = totalPlotArea ?? this.totalPlotArea
-      ..builtUpArea = builtUpArea ?? this.builtUpArea
-      ..numberOfFloors = numberOfFloors ?? this.numberOfFloors
-      ..constructionMethod = constructionMethod ?? this.constructionMethod
-      ..estimatedBudget = estimatedBudget ?? this.estimatedBudget
-      ..projectPriority = projectPriority ?? this.projectPriority
       ..assignedContractors = assignedContractors != null ? List.from(assignedContractors) : this.assignedContractors != null ? List.from(this.assignedContractors!) : null
       ..assignedSuppliers = assignedSuppliers != null ? List.from(assignedSuppliers) : this.assignedSuppliers != null ? List.from(this.assignedSuppliers!) : null
       ..siteEngineer = siteEngineer ?? this.siteEngineer
@@ -195,12 +175,6 @@ class ProjectModel {
       'supervisorPhoneNumber': supervisorPhoneNumber,
       'watchmanName': watchmanName,
       'watchmanPhoneNumber': watchmanPhoneNumber,
-      'totalPlotArea': totalPlotArea,
-      'builtUpArea': builtUpArea,
-      'numberOfFloors': numberOfFloors,
-      'constructionMethod': constructionMethod,
-      'estimatedBudget': estimatedBudget,
-      'projectPriority': projectPriority,
       'assignedContractors': assignedContractors,
       'assignedSuppliers': assignedSuppliers,
       'siteEngineer': siteEngineer,
@@ -243,12 +217,6 @@ class ProjectModel {
       ..supervisorPhoneNumber = json['supervisorPhoneNumber']
       ..watchmanName = json['watchmanName']
       ..watchmanPhoneNumber = json['watchmanPhoneNumber']
-      ..totalPlotArea = (json['totalPlotArea'] as num?)?.toDouble()
-      ..builtUpArea = (json['builtUpArea'] as num?)?.toDouble()
-      ..numberOfFloors = json['numberOfFloors']
-      ..constructionMethod = json['constructionMethod']
-      ..estimatedBudget = (json['estimatedBudget'] as num?)?.toDouble()
-      ..projectPriority = json['projectPriority']
       ..assignedContractors = json['assignedContractors'] != null
           ? List<String>.from(json['assignedContractors'])
           : null

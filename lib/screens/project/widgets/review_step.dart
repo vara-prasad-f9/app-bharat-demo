@@ -77,22 +77,6 @@ class _ReviewStepState extends State<ReviewStep> {
               _buildInfoItem('Watchman Phone', widget.projectData.watchmanPhoneNumber!),
           ]),
           
-          const SizedBox(height: 24),
-          _buildSectionHeader('Construction Details'),
-          _buildInfoCard([
-            if (widget.projectData.totalPlotArea != null)
-              _buildInfoItem('Total Plot Area', '${widget.projectData.totalPlotArea} sq.ft'),
-            if (widget.projectData.builtUpArea != null)
-              _buildInfoItem('Built-up Area', '${widget.projectData.builtUpArea} sq.ft'),
-            if (widget.projectData.numberOfFloors != null)
-              _buildInfoItem('Number of Floors', '${widget.projectData.numberOfFloors}'),
-            if (widget.projectData.constructionMethod?.isNotEmpty ?? false)
-              _buildInfoItem('Construction Method', widget.projectData.constructionMethod!),
-            if (widget.projectData.estimatedBudget != null)
-              _buildInfoItem('Estimated Budget', '₹${widget.projectData.estimatedBudget?.toStringAsFixed(2)}'),
-            if (widget.projectData.projectPriority?.isNotEmpty ?? false)
-              _buildInfoItem('Priority', widget.projectData.projectPriority!),
-          ]),
           
           if ((widget.projectData.assignedContractors?.isNotEmpty ?? false) || 
               (widget.projectData.assignedSuppliers?.isNotEmpty ?? false))
