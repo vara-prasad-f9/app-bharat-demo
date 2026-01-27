@@ -137,7 +137,7 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
         ..constructionStartDate = _projectData.constructionStartDate ?? now
         ..expectedCompletionDate = _projectData.expectedCompletionDate ?? now.add(const Duration(days: 365))
         ..currentStage = _projectData.currentStage ?? 'Planning'
-        ..projectStatus = _projectData.projectStatus ?? 'Not Started'
+        ..projectStatus = _projectData.projectStatus ?? 'In Progress'
         ..country = _projectData.country
         ..state = _projectData.state
         ..city = _projectData.city

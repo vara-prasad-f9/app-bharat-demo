@@ -27,7 +27,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -121,9 +121,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
               unselectedLabelColor: Colors.white70,
               indicatorColor: Colors.white,
               tabs: const [
-                Tab(text: 'Active'),
+                Tab(text: 'In Progress'),
                 Tab(text: 'On Hold'),
-                Tab(text: 'Completed'),
               ],
             ),
           ),
@@ -131,17 +130,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
             child: TabBarView(
               controller: _tabController,
               children: [
-                // Active Projects Tab
+                // In Progress Projects Tab
                 _buildProjectList(
-                  projects.where((p) => p.projectStatus == 'Active').toList(),
+                  projects.where((p) => p.projectStatus == 'In Progress').toList(),
                 ),
                 // On Hold Projects Tab
                 _buildProjectList(
                   projects.where((p) => p.projectStatus == 'On Hold').toList(),
-                ),
-                // Completed Projects Tab
-                _buildProjectList(
-                  projects.where((p) => p.projectStatus == 'Completed').toList(),
                 ),
               ],
             ),
