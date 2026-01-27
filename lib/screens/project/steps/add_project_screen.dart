@@ -25,6 +25,13 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
   int _currentStep = 0;
   final List<GlobalKey<FormState>> _formKeys = List.generate(7, (_) => GlobalKey<FormState>());
 
+  @override
+  void initState() {
+    super.initState();
+    // Initialize city with default value
+    _projectData.city = 'Visakhapatnam';
+  }
+
   final List<Map<String, dynamic>> _steps = [
     {'title': 'Step 1', 'subtitle': 'Enter project basic information'},
     {'title': 'Step 2', 'subtitle': 'Add project location details'},
@@ -58,14 +65,15 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
   
   // For location step (index 1), manually validate required fields
   if (_currentStep == 1) {
-    final hasState = _projectData.state?.trim().isNotEmpty == true;
     final hasCity = _projectData.city?.trim().isNotEmpty == true;
     final hasArea = _projectData.area?.trim().isNotEmpty == true;
-    final hasPincode = _projectData.pincode?.trim().isNotEmpty == true && 
-                      _projectData.pincode!.length == 6 && 
-                      int.tryParse(_projectData.pincode!) != null;
     
-    return hasState && hasCity && hasArea && hasPincode;
+    // Also validate the form to show any validation errors
+    if (formState.mounted) {
+      formState.validate();
+    }
+    
+    return hasCity && hasArea;
   }
   
   // For other steps, use form validation
@@ -283,6 +291,8 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                                   longitude: data.longitude,
                                 );
                               });
+                              // Trigger form validation after state update
+                              _formKeys[_currentStep].currentState?.validate();
                             },
                           ),
                         ),
