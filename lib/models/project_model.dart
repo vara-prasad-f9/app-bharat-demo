@@ -25,16 +25,17 @@ class ProjectModel {
   double? longitude;
 
   // Step 3: Owner Details
-  String? ownerType;
   String? ownerName;
-  String? companyName;
-  String? mobileNumber;
-  String? alternateMobileNumber;
-  String? email;
-  bool isSameAsSiteAddress = false;
-  String? ownerAddress;
-  String? idProofType;
-  String? idProofNumber;
+  String? ownerPhoneNumber;
+  String? ownerEmail;
+
+  // Supervisor Details
+  String? supervisorName;
+  String? supervisorPhoneNumber;
+
+  // Watchman Details
+  String? watchmanName;
+  String? watchmanPhoneNumber;
 
   // Step 4: Construction Details
   double? totalPlotArea;
@@ -83,10 +84,7 @@ class ProjectModel {
   }
 
   bool validateOwnerDetails() {
-    return ownerType?.isNotEmpty == true &&
-        ((ownerType == 'Individual' && ownerName?.isNotEmpty == true) ||
-            (ownerType == 'Company' && companyName?.isNotEmpty == true)) &&
-        mobileNumber?.isNotEmpty == true;
+    return ownerName?.isNotEmpty == true;
   }
 
   ProjectModel copyWith({
@@ -107,16 +105,13 @@ class ProjectModel {
     String? fullAddress,
     double? latitude,
     double? longitude,
-    String? ownerType,
-    String? ownerAddress,
     String? ownerName,
-    String? companyName,
-    String? mobileNumber,
-    String? alternateMobileNumber,
-    String? email,
-    bool? isSameAsSiteAddress,
-    String? idProofType,
-    String? idProofNumber,
+    String? ownerPhoneNumber,
+    String? ownerEmail,
+    String? supervisorName,
+    String? supervisorPhoneNumber,
+    String? watchmanName,
+    String? watchmanPhoneNumber,
     double? totalPlotArea,
     double? builtUpArea,
     int? numberOfFloors,
@@ -150,16 +145,13 @@ class ProjectModel {
       ..fullAddress = fullAddress ?? this.fullAddress
       ..latitude = latitude ?? this.latitude
       ..longitude = longitude ?? this.longitude
-      ..ownerType = ownerType ?? this.ownerType
-      ..ownerAddress = ownerAddress ?? this.ownerAddress
       ..ownerName = ownerName ?? this.ownerName
-      ..companyName = companyName ?? this.companyName
-      ..mobileNumber = mobileNumber ?? this.mobileNumber
-      ..alternateMobileNumber = alternateMobileNumber ?? this.alternateMobileNumber
-      ..email = email ?? this.email
-      ..isSameAsSiteAddress = isSameAsSiteAddress ?? this.isSameAsSiteAddress
-      ..idProofType = idProofType ?? this.idProofType
-      ..idProofNumber = idProofNumber ?? this.idProofNumber
+      ..ownerPhoneNumber = ownerPhoneNumber ?? this.ownerPhoneNumber
+      ..ownerEmail = ownerEmail ?? this.ownerEmail
+      ..supervisorName = supervisorName ?? this.supervisorName
+      ..supervisorPhoneNumber = supervisorPhoneNumber ?? this.supervisorPhoneNumber
+      ..watchmanName = watchmanName ?? this.watchmanName
+      ..watchmanPhoneNumber = watchmanPhoneNumber ?? this.watchmanPhoneNumber
       ..totalPlotArea = totalPlotArea ?? this.totalPlotArea
       ..builtUpArea = builtUpArea ?? this.builtUpArea
       ..numberOfFloors = numberOfFloors ?? this.numberOfFloors
@@ -196,16 +188,13 @@ class ProjectModel {
       'fullAddress': fullAddress,
       'latitude': latitude,
       'longitude': longitude,
-      'ownerType': ownerType,
       'ownerName': ownerName,
-      'companyName': companyName,
-      'mobileNumber': mobileNumber,
-      'alternateMobileNumber': alternateMobileNumber,
-      'email': email,
-      'isSameAsSiteAddress': isSameAsSiteAddress,
-      'ownerAddress': ownerAddress,
-      'idProofType': idProofType,
-      'idProofNumber': idProofNumber,
+      'ownerPhoneNumber': ownerPhoneNumber,
+      'ownerEmail': ownerEmail,
+      'supervisorName': supervisorName,
+      'supervisorPhoneNumber': supervisorPhoneNumber,
+      'watchmanName': watchmanName,
+      'watchmanPhoneNumber': watchmanPhoneNumber,
       'totalPlotArea': totalPlotArea,
       'builtUpArea': builtUpArea,
       'numberOfFloors': numberOfFloors,
@@ -247,16 +236,13 @@ class ProjectModel {
       ..fullAddress = json['fullAddress']
       ..latitude = (json['latitude'] as num?)?.toDouble()
       ..longitude = (json['longitude'] as num?)?.toDouble()
-      ..ownerType = json['ownerType']
       ..ownerName = json['ownerName']
-      ..companyName = json['companyName']
-      ..mobileNumber = json['mobileNumber']
-      ..alternateMobileNumber = json['alternateMobileNumber']
-      ..email = json['email']
-      ..isSameAsSiteAddress = json['isSameAsSiteAddress'] ?? false
-      ..ownerAddress = json['ownerAddress']
-      ..idProofType = json['idProofType']
-      ..idProofNumber = json['idProofNumber']
+      ..ownerPhoneNumber = json['ownerPhoneNumber']
+      ..ownerEmail = json['ownerEmail']
+      ..supervisorName = json['supervisorName']
+      ..supervisorPhoneNumber = json['supervisorPhoneNumber']
+      ..watchmanName = json['watchmanName']
+      ..watchmanPhoneNumber = json['watchmanPhoneNumber']
       ..totalPlotArea = (json['totalPlotArea'] as num?)?.toDouble()
       ..builtUpArea = (json['builtUpArea'] as num?)?.toDouble()
       ..numberOfFloors = json['numberOfFloors']

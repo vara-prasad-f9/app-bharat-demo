@@ -76,6 +76,18 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
     return hasCity && hasArea;
   }
   
+  // For owner details step (index 2), manually validate required fields
+  if (_currentStep == 2) {
+    final hasOwnerName = _projectData.ownerName?.trim().isNotEmpty == true;
+    
+    // Also validate the form to show any validation errors
+    if (formState.mounted) {
+      formState.validate();
+    }
+    
+    return hasOwnerName;
+  }
+  
   // For other steps, use form validation
   return formState.validate();
 }
@@ -315,15 +327,13 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                             projectData: _projectData,
                             onChanged: (data) {
                               // Update the project data
-                              _projectData.ownerType = data.ownerType;
                               _projectData.ownerName = data.ownerName;
-                              _projectData.companyName = data.companyName;
-                              _projectData.mobileNumber = data.mobileNumber;
-                              _projectData.alternateMobileNumber = data.alternateMobileNumber;
-                              _projectData.email = data.email;
-                              _projectData.isSameAsSiteAddress = data.isSameAsSiteAddress;
-                              _projectData.idProofType = data.idProofType;
-                              _projectData.idProofNumber = data.idProofNumber;
+                              _projectData.ownerPhoneNumber = data.ownerPhoneNumber;
+                              _projectData.ownerEmail = data.ownerEmail;
+                              _projectData.supervisorName = data.supervisorName;
+                              _projectData.supervisorPhoneNumber = data.supervisorPhoneNumber;
+                              _projectData.watchmanName = data.watchmanName;
+                              _projectData.watchmanPhoneNumber = data.watchmanPhoneNumber;
                               
                               // Trigger a rebuild and validate the form
                               if (mounted) {

@@ -115,7 +115,7 @@ class ProjectDetailsScreen extends StatelessWidget {
             const SizedBox(height: 16),
             
             // Owner Details
-            if (project.ownerName != null || project.mobileNumber != null) ...[
+            if (project.ownerName != null || project.ownerPhoneNumber != null || project.ownerEmail != null) ...[
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -132,10 +132,10 @@ class ProjectDetailsScreen extends StatelessWidget {
                       const SizedBox(height: 12),
                       if (project.ownerName != null)
                         _buildDetailRow(Icons.person, 'Name', project.ownerName!),
-                      if (project.mobileNumber != null)
-                        _buildDetailRow(Icons.phone, 'Mobile', project.mobileNumber!),
-                      if (project.email != null)
-                        _buildDetailRow(Icons.email, 'Email', project.email!),
+                      if (project.ownerPhoneNumber != null)
+                        _buildDetailRow(Icons.phone, 'Phone', project.ownerPhoneNumber!),
+                      if (project.ownerEmail != null)
+                        _buildDetailRow(Icons.email, 'Email', project.ownerEmail!),
                     ],
                   ),
                 ),

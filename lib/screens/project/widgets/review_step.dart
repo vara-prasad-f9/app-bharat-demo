@@ -52,18 +52,29 @@ class _ReviewStepState extends State<ReviewStep> {
           const SizedBox(height: 24),
           _buildSectionHeader('Owner Details'),
           _buildInfoCard([
-            _buildInfoItem('Owner Type', widget.projectData.ownerType ?? 'Not provided'),
-            _buildInfoItem(
-              widget.projectData.ownerType == 'Company' ? 'Company Name' : 'Owner Name',
-              widget.projectData.ownerType == 'Company' 
-                  ? widget.projectData.companyName ?? 'Not provided'
-                  : widget.projectData.ownerName ?? 'Not provided',
-            ),
-            _buildInfoItem('Mobile', widget.projectData.mobileNumber ?? 'Not provided'),
-            if (widget.projectData.alternateMobileNumber?.isNotEmpty ?? false)
-              _buildInfoItem('Alternate Mobile', widget.projectData.alternateMobileNumber!),
-            if (widget.projectData.email?.isNotEmpty ?? false)
-              _buildInfoItem('Email', widget.projectData.email!),
+            _buildInfoItem('Owner Name', widget.projectData.ownerName ?? 'Not provided'),
+            if (widget.projectData.ownerPhoneNumber?.isNotEmpty ?? false)
+              _buildInfoItem('Owner Phone', widget.projectData.ownerPhoneNumber!),
+            if (widget.projectData.ownerEmail?.isNotEmpty ?? false)
+              _buildInfoItem('Owner Email', widget.projectData.ownerEmail!),
+          ]),
+          
+          const SizedBox(height: 24),
+          _buildSectionHeader('Supervisor Details'),
+          _buildInfoCard([
+            if (widget.projectData.supervisorName?.isNotEmpty ?? false)
+              _buildInfoItem('Supervisor Name', widget.projectData.supervisorName!),
+            if (widget.projectData.supervisorPhoneNumber?.isNotEmpty ?? false)
+              _buildInfoItem('Supervisor Phone', widget.projectData.supervisorPhoneNumber!),
+          ]),
+          
+          const SizedBox(height: 24),
+          _buildSectionHeader('Watchman Details'),
+          _buildInfoCard([
+            if (widget.projectData.watchmanName?.isNotEmpty ?? false)
+              _buildInfoItem('Watchman Name', widget.projectData.watchmanName!),
+            if (widget.projectData.watchmanPhoneNumber?.isNotEmpty ?? false)
+              _buildInfoItem('Watchman Phone', widget.projectData.watchmanPhoneNumber!),
           ]),
           
           const SizedBox(height: 24),
