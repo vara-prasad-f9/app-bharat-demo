@@ -67,7 +67,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
           project.projectName ?? 'Unnamed Project',
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: Text(project.city ?? 'No location'),
+        subtitle: Text(project.projectType ?? 'No project type'),
         trailing: const Icon(Icons.chevron_right),
         onTap: () {
           Navigator.of(context).push(
