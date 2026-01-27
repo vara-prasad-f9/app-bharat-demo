@@ -124,6 +124,8 @@ class _LocationDetailsStepState extends State<LocationDetailsStep> {
                   labelText: 'City/Town',
                   border: OutlineInputBorder(),
                   labelStyle: TextStyle(fontSize: 13),
+                  filled: true,
+                  fillColor: Colors.grey,
                 ),
                 initialValue: 'Visakhapatnam',
                 readOnly: true,
