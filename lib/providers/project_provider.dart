@@ -8,14 +8,12 @@ import 'package:bharatplus/models/property_stats.dart';
 // Helper function to get color based on project status
 Color _getStatusColor(String status) {
   switch (status.toLowerCase()) {
-    case 'completed':
-      return Colors.green;
     case 'in progress':
+      return Colors.green;
+    case 'on hold':
       return Colors.orange;
-    case 'not started':
-      return Colors.red;
     default:
-      return Colors.blueGrey;
+      return Colors.grey;
   }
 }
 

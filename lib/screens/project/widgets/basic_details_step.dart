@@ -1,7 +1,6 @@
 // ignore_for_file: use_super_parameters, library_private_types_in_public_api, deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../../models/project_model.dart';
 import '../../../widgets/photo_picker.dart';
 
@@ -50,7 +49,7 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
     'Finishing',
     'Completed'
   ];
-  final List<String> _projectStatuses = ['Active', 'On Hold', 'Completed'];
+  final List<String> _projectStatuses = ['In Progress', 'On Hold'];
 
   @override
   void initState() {
@@ -125,28 +124,6 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
               },
               maxPhotos: 5,
               
-            ),
-            const SizedBox(height: 16),
-            // Project Code / ID (Optional)
-            SizedBox(
-              height: 50,
-              child: TextFormField(
-                style: const TextStyle(fontSize: 13, height: 1.0),
-                decoration: const InputDecoration(
-                  labelText: 'Project Code / ID',
-                  border: OutlineInputBorder(),
-                  hintText: 'Auto-generated / Manual',
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  labelStyle: TextStyle(fontSize: 13),
-                ),
-                initialValue: widget.projectData.projectCode,
-                onChanged: (value) {
-                  setState(() {
-                    widget.projectData.projectCode = value;
-                    widget.onChanged(widget.projectData);
-                  });
-                },
-              ),
             ),
             const SizedBox(height: 16),
             // Project Type (Required)
@@ -227,86 +204,6 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                       style: TextStyle(color: Colors.red, fontSize: 12),
                     ),
                   ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            // Date fields in a row
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Construction Start Date (Optional)
-                Expanded(
-                  child: SizedBox(
-                    height: 50,
-                    child: TextFormField(
-                      style: const TextStyle(fontSize: 13, height: 1.0),
-                      decoration: const InputDecoration(
-                        labelText: 'Start Date',
-                        suffixIcon: Icon(Icons.calendar_today, size: 13),
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        labelStyle: TextStyle(fontSize: 13),
-                      ),
-                      readOnly: true,
-                      controller: TextEditingController(
-                        text: widget.projectData.constructionStartDate != null
-                            ? DateFormat('MMM dd, yyyy').format(widget.projectData.constructionStartDate!)
-                            : '',
-                      ),
-                      onTap: () async {
-                        final date = await showDatePicker(
-                          context: context,
-                          initialDate: widget.projectData.constructionStartDate ?? DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2100),
-                        );
-                        if (date != null) {
-                          setState(() {
-                            widget.projectData.constructionStartDate = date;
-                            widget.onChanged(widget.projectData);
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                // Expected Completion Date (Optional)
-                Expanded(
-                  child: SizedBox(
-                    height: 50,
-                    child: TextFormField(
-                      style: const TextStyle(fontSize: 13, height: 1.0),
-                      decoration: const InputDecoration(
-                        labelText: 'End Date',
-                        suffixIcon: Icon(Icons.calendar_today, size: 13),
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        labelStyle: TextStyle(fontSize: 13),
-                      ),
-                      readOnly: true,
-                      controller: TextEditingController(
-                        text: widget.projectData.expectedCompletionDate != null
-                            ? DateFormat('MMM dd, yyyy').format(widget.projectData.expectedCompletionDate!)
-                            : '',
-                      ),
-                      onTap: () async {
-                        final date = await showDatePicker(
-                          context: context,
-                          initialDate: widget.projectData.expectedCompletionDate ?? DateTime.now().add(const Duration(days: 30)),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2100),
-                        );
-                        if (date != null) {
-                          setState(() {
-                            widget.projectData.expectedCompletionDate = date;
-                            widget.onChanged(widget.projectData);
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                ),
               ],
             ),
             const SizedBox(height: 16),

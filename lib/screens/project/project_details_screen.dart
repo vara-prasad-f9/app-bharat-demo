@@ -103,17 +103,8 @@ class ProjectDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    _buildDetailRow(Icons.code, 'Project Code', project.projectCode),
                     _buildDetailRow(Icons.location_on, 'Location', 
                         '${project.city ?? ''}${project.area != null ? ', ${project.area}' : ''}'),
-                    _buildDetailRow(Icons.calendar_today, 'Start Date', 
-                        project.constructionStartDate != null 
-                            ? '${project.constructionStartDate!.day}/${project.constructionStartDate!.month}/${project.constructionStartDate!.year}'
-                            : 'Not set'),
-                    _buildDetailRow(Icons.calendar_month, 'Expected Completion', 
-                        project.expectedCompletionDate != null 
-                            ? '${project.expectedCompletionDate!.day}/${project.expectedCompletionDate!.month}/${project.expectedCompletionDate!.year}'
-                            : 'Not set'),
                     _buildDetailRow(Icons.assessment, 'Current Stage', 
                         project.currentStage ?? 'Not specified'),
                   ],
@@ -194,12 +185,10 @@ class ProjectDetailsScreen extends StatelessWidget {
 
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
-      case 'active':
+      case 'in progress':
         return Colors.green;
       case 'on hold':
         return Colors.orange;
-      case 'completed':
-        return Colors.blue;
       default:
         return Colors.grey;
     }

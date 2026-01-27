@@ -33,12 +33,9 @@ class _ReviewStepState extends State<ReviewStep> {
           _buildSectionHeader('Project Overview'),
           _buildInfoCard([
             _buildInfoItem('Project Name', widget.projectData.projectName ?? 'Not provided'),
-            _buildInfoItem('Project Code', widget.projectData.projectCode ?? 'Not provided'),
             _buildInfoItem('Project Type', widget.projectData.projectType ?? 'Not provided'),
             _buildInfoItem('Status', widget.projectData.projectStatus ?? 'Not provided'),
             _buildInfoItem('Current Stage', widget.projectData.currentStage ?? 'Not provided'),
-            _buildInfoItem('Start Date', widget.projectData.constructionStartDate?.toString().split(' ')[0] ?? 'Not provided'),
-            _buildInfoItem('Expected Completion', widget.projectData.expectedCompletionDate?.toString().split(' ')[0] ?? 'Not provided'),
           ]),
           
           const SizedBox(height: 24),
