@@ -310,35 +310,108 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
               ],
             ),
             const SizedBox(height: 16),
-            // Current Stage (Optional)
-            SizedBox(
-              height: 50,
-              child: DropdownButtonFormField<String>(
-                style: const TextStyle(fontSize: 13, height: 1.0),
-                decoration: const InputDecoration(
-                  hintStyle: TextStyle(fontSize: 13, height: 1.0),
-                  labelText: 'Current Stage',
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.arrow_drop_down, size: 16),
+            // Current Stage (Radio Buttons with Icons)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Current Stage',
+                  style: TextStyle(fontSize: 13, color: Colors.black54, fontWeight: FontWeight.w500),
                 ),
-                hint: const Text('Select current stage'),
-                initialValue: widget.projectData.currentStage,
-                items: _projectStages.map((stage) {
-                  return DropdownMenuItem(
-                    value: stage,
-                    child: Text(
-                      stage,
-                      style: const TextStyle(color: Colors.black), // Set text color to black
+                const SizedBox(height: 8),
+                // Create rows with 3 items each
+                ...List.generate((_projectStages.length / 3).ceil(), (rowIndex) {
+                  final startIndex = rowIndex * 3;
+                  final endIndex = (startIndex + 3).clamp(0, _projectStages.length);
+                  final rowStages = _projectStages.sublist(startIndex, endIndex);
+                  
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      children: rowStages.map((stage) {
+                        IconData icon;
+                        switch (stage) {
+                          case 'Planning':
+                            icon = Icons.edit_note;
+                            break;
+                          case 'Foundation':
+                            icon = Icons.foundation;
+                            break;
+                          case 'Structure':
+                            icon = Icons.domain;
+                            break;
+                          case 'Brick Work':
+                            icon = Icons.grid_view;
+                            break;
+                          case 'Finishing':
+                            icon = Icons.brush;
+                            break;
+                          case 'Completed':
+                            icon = Icons.check_circle;
+                            break;
+                          default:
+                            icon = Icons.circle;
+                        }
+                        
+                        return Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                widget.projectData.currentStage = stage;
+                                widget.onChanged(widget.projectData);
+                              });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                right: rowStages.indexOf(stage) < rowStages.length - 1 ? 8.0 : 0,
+                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: widget.projectData.currentStage == stage
+                                      ? Theme.of(context).primaryColor
+                                      : Colors.grey.shade300,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
+                                color: widget.projectData.currentStage == stage
+                                    ? Theme.of(context).primaryColor.withOpacity(0.1)
+                                    : Colors.transparent,
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    icon,
+                                    size: 16,
+                                    color: widget.projectData.currentStage == stage
+                                        ? Theme.of(context).primaryColor
+                                        : Colors.grey.shade600,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    stage,
+                                    style: TextStyle(
+                                      fontSize: 9,
+                                      color: widget.projectData.currentStage == stage
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.black,
+                                      fontWeight: widget.projectData.currentStage == stage
+                                          ? FontWeight.w500
+                                          : FontWeight.normal,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    widget.projectData.currentStage = value;
-                    widget.onChanged(widget.projectData);
-                  });
-                },
-              ),
+                }),
+              ],
             ),
             const SizedBox(height: 16),
             // Project Status (Radio Buttons)
