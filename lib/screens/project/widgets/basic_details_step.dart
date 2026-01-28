@@ -148,7 +148,7 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please select a project type';
+                          return null; // Return null to prevent default error display
                         }
                         return null;
                       },

@@ -104,9 +104,35 @@ class ProjectDetailsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     _buildDetailRow(Icons.location_on, 'Location', 
-                        '${project.city ?? ''}${project.area != null ? ', ${project.area}' : ''}'),
+                        '${project.city ?? 'N/A'}${project.area != null ? ', ${project.area}' : ''}'),
                     _buildDetailRow(Icons.assessment, 'Current Stage', 
-                        project.currentStage ?? 'Not specified'),
+                        project.currentStage ?? 'N/A'),
+                    _buildDetailRow(Icons.code, 'Project Code', 
+                        project.projectCode ?? 'N/A'),
+                    _buildDetailRow(Icons.calendar_today, 'Construction Start Date', 
+                        project.constructionStartDate != null 
+                            ? _formatDate(project.constructionStartDate!) 
+                            : 'N/A'),
+                    _buildDetailRow(Icons.event, 'Expected Completion Date', 
+                        project.expectedCompletionDate != null 
+                            ? _formatDate(project.expectedCompletionDate!) 
+                            : 'N/A'),
+                    _buildDetailRow(Icons.public, 'Country', 
+                        project.country.isNotEmpty ? project.country : 'N/A'),
+                    _buildDetailRow(Icons.map, 'State', 
+                        project.state ?? 'N/A'),
+                    _buildDetailRow(Icons.location_city, 'District', 
+                        project.district ?? 'N/A'),
+                    _buildDetailRow(Icons.place, 'Landmark', 
+                        project.landmark ?? 'N/A'),
+                    _buildDetailRow(Icons.mail, 'Pincode', 
+                        project.pincode ?? 'N/A'),
+                    _buildDetailRow(Icons.home, 'Full Address', 
+                        project.fullAddress ?? 'N/A'),
+                    _buildDetailRow(Icons.gps_fixed, 'Coordinates', 
+                        (project.latitude != null && project.longitude != null) 
+                            ? '${project.latitude!.toStringAsFixed(6)}, ${project.longitude!.toStringAsFixed(6)}'
+                            : 'N/A'),
                   ],
                 ),
               ),
@@ -115,33 +141,75 @@ class ProjectDetailsScreen extends StatelessWidget {
             const SizedBox(height: 16),
             
             // Owner Details
-            if (project.ownerName != null || project.ownerPhoneNumber != null || project.ownerEmail != null) ...[
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Owner Details',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Owner Details',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                      const SizedBox(height: 12),
-                      if (project.ownerName != null)
-                        _buildDetailRow(Icons.person, 'Name', project.ownerName!),
-                      if (project.ownerPhoneNumber != null)
-                        _buildDetailRow(Icons.phone, 'Phone', project.ownerPhoneNumber!),
-                      if (project.ownerEmail != null)
-                        _buildDetailRow(Icons.email, 'Email', project.ownerEmail!),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildDetailRow(Icons.person, 'Name', project.ownerName ?? 'N/A'),
+                    _buildDetailRow(Icons.phone, 'Phone', project.ownerPhoneNumber ?? 'N/A'),
+                    _buildDetailRow(Icons.email, 'Email', project.ownerEmail ?? 'N/A'),
+                  ],
                 ),
               ),
-              const SizedBox(height: 16),
-            ],
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Supervisor Details
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Supervisor Details',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildDetailRow(Icons.person, 'Name', project.supervisorName ?? 'N/A'),
+                    _buildDetailRow(Icons.phone, 'Phone', project.supervisorPhoneNumber ?? 'N/A'),
+                  ],
+                ),
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Watchman Details
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Watchman Details',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildDetailRow(Icons.person, 'Name', project.watchmanName ?? 'N/A'),
+                    _buildDetailRow(Icons.phone, 'Phone', project.watchmanPhoneNumber ?? 'N/A'),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -169,7 +237,7 @@ class ProjectDetailsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  value ?? 'Not specified',
+                  value ?? 'N/A',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -192,5 +260,9 @@ class ProjectDetailsScreen extends StatelessWidget {
       default:
         return Colors.grey;
     }
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}-${date.year}';
   }
 }
