@@ -45,7 +45,7 @@ class CustomDrawer extends ConsumerWidget {
                 Text(
                   'user@example.com',
                   style: textTheme.bodyMedium?.copyWith(
-                    color: Colors.white70,  // Changed from withOpacity(0.9)
+                    color: Colors.white70,  // Changed from withValues(alpha: 0.9)
                   ),
                 ),
               ],

@@ -7,10 +7,7 @@ import '../models/project_model.dart';
 class ProjectDetailScreen extends StatelessWidget {
   final ProjectModel project;
 
-  const ProjectDetailScreen({
-    super.key,
-    required this.project,
-  });
+  const ProjectDetailScreen({super.key, required this.project});
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +79,7 @@ class ProjectDetailScreen extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 200,
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-      ),
+      decoration: BoxDecoration(color: Colors.grey[200]),
       child: Image.asset(
         'assets/images/noImageAvailable.jpg',
         fit: BoxFit.cover,
@@ -101,7 +96,7 @@ class ProjectDetailScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -115,7 +110,7 @@ class ProjectDetailScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
+                  color: Colors.blue.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
@@ -148,9 +143,14 @@ class ProjectDetailScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.1), // Default status color
+                  color: Colors.green.withValues(
+                    alpha: 0.1,
+                  ), // Default status color
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
@@ -178,7 +178,7 @@ class ProjectDetailScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -196,8 +196,16 @@ class ProjectDetailScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          _buildDetailRow(Icons.location_on, 'Location', 'India - N/A'), // Default location
-          _buildDetailRow(Icons.trending_up, 'Current Stage', 'Planning'), // Default stage
+          _buildDetailRow(
+            Icons.location_on,
+            'Location',
+            'India - N/A',
+          ), // Default location
+          _buildDetailRow(
+            Icons.trending_up,
+            'Current Stage',
+            'Planning',
+          ), // Default stage
         ],
       ),
     );
@@ -214,11 +222,7 @@ class ProjectDetailScreen extends StatelessWidget {
               color: Colors.grey[100],
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(
-              icon,
-              color: Colors.grey[600],
-              size: 16,
-            ),
+            child: Icon(icon, color: Colors.grey[600], size: 16),
           ),
           const SizedBox(width: 12),
           Expanded(

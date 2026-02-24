@@ -11,6 +11,8 @@ class ProjectModel {
   DateTime? expectedCompletionDate;
   String? currentStage;
   String? projectStatus;
+  String? imageUrl;
+  String? price;
 
   // Step 2: Location Details
   String country = 'India';
@@ -76,6 +78,8 @@ class ProjectModel {
     DateTime? expectedCompletionDate,
     String? currentStage,
     String? projectStatus,
+    String? imageUrl,
+    String? price,
     String? country,
     String? state,
     String? district,
@@ -98,10 +102,14 @@ class ProjectModel {
       ..projectName = projectName ?? this.projectName
       ..projectCode = projectCode ?? this.projectCode
       ..projectType = projectType ?? this.projectType
-      ..constructionStartDate = constructionStartDate ?? this.constructionStartDate
-      ..expectedCompletionDate = expectedCompletionDate ?? this.expectedCompletionDate
+      ..constructionStartDate =
+          constructionStartDate ?? this.constructionStartDate
+      ..expectedCompletionDate =
+          expectedCompletionDate ?? this.expectedCompletionDate
       ..currentStage = currentStage ?? this.currentStage
       ..projectStatus = projectStatus ?? this.projectStatus
+      ..imageUrl = imageUrl ?? this.imageUrl
+      ..price = price ?? this.price
       ..country = country ?? this.country
       ..state = state ?? this.state
       ..district = district ?? this.district
@@ -116,7 +124,8 @@ class ProjectModel {
       ..ownerPhoneNumber = ownerPhoneNumber ?? this.ownerPhoneNumber
       ..ownerEmail = ownerEmail ?? this.ownerEmail
       ..supervisorName = supervisorName ?? this.supervisorName
-      ..supervisorPhoneNumber = supervisorPhoneNumber ?? this.supervisorPhoneNumber
+      ..supervisorPhoneNumber =
+          supervisorPhoneNumber ?? this.supervisorPhoneNumber
       ..watchmanName = watchmanName ?? this.watchmanName
       ..watchmanPhoneNumber = watchmanPhoneNumber ?? this.watchmanPhoneNumber;
   }
@@ -131,6 +140,8 @@ class ProjectModel {
       'expectedCompletionDate': expectedCompletionDate?.toIso8601String(),
       'currentStage': currentStage,
       'projectStatus': projectStatus,
+      'imageUrl': imageUrl,
+      'price': price,
       'country': country,
       'state': state,
       'district': district,
@@ -157,7 +168,7 @@ class ProjectModel {
       ..projectName = json['projectName']
       ..projectCode = json['projectCode']
       ..projectType = json['projectType']
-      ..constructionStartDate = json['constructionStartDate'] != null 
+      ..constructionStartDate = json['constructionStartDate'] != null
           ? DateTime.parse(json['constructionStartDate'])
           : null
       ..expectedCompletionDate = json['expectedCompletionDate'] != null
@@ -165,6 +176,8 @@ class ProjectModel {
           : null
       ..currentStage = json['currentStage']
       ..projectStatus = json['projectStatus']
+      ..imageUrl = json['imageUrl']
+      ..price = json['price']
       ..country = json['country'] ?? 'India'
       ..state = json['state']
       ..district = json['district']

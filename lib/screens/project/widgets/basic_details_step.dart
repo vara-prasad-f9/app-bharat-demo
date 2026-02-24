@@ -1,4 +1,4 @@
-// ignore_for_file: use_super_parameters, library_private_types_in_public_api, deprecated_member_use
+// ignore_for_file: use_super_parameters, library_private_types_in_public_api, deprecated_member_use, unnecessary_to_list_in_spreads
 
 import 'package:flutter/material.dart';
 import '../../../models/project_model.dart';
@@ -237,7 +237,7 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                                   color: widget.projectData.projectType == type
                                       ? Theme.of(
                                           context,
-                                        ).primaryColor.withOpacity(0.1)
+                                        ).primaryColor.withValues(alpha: 0.1)
                                       : Colors.transparent,
                                 ),
                                 child: Row(
@@ -386,7 +386,7 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                                 color: widget.projectData.currentStage == stage
                                     ? Theme.of(
                                         context,
-                                      ).primaryColor.withOpacity(0.1)
+                                      ).primaryColor.withValues(alpha: 0.1)
                                     : Colors.transparent,
                               ),
                               child: Row(

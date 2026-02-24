@@ -8,10 +8,12 @@ class SimplifiedAddProjectScreen extends ConsumerStatefulWidget {
   const SimplifiedAddProjectScreen({super.key});
 
   @override
-  ConsumerState<SimplifiedAddProjectScreen> createState() => _SimplifiedAddProjectScreenState();
+  ConsumerState<SimplifiedAddProjectScreen> createState() =>
+      _SimplifiedAddProjectScreenState();
 }
 
-class _SimplifiedAddProjectScreenState extends ConsumerState<SimplifiedAddProjectScreen> {
+class _SimplifiedAddProjectScreenState
+    extends ConsumerState<SimplifiedAddProjectScreen> {
   final ProjectModel _projectData = ProjectModel();
   final _formKey = GlobalKey<FormState>();
 
@@ -27,24 +29,24 @@ class _SimplifiedAddProjectScreenState extends ConsumerState<SimplifiedAddProjec
       try {
         // Get the project provider
         final projectNotifier = ref.read(projectProvider.notifier);
-        
+
         // Add the project to the provider
         projectNotifier.addProject(_projectData);
-        
+
         // Show success message and navigate back
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Project created successfully!')),
           );
-          
+
           // Navigate back to home screen
           Navigator.of(context).pop(true); // Pass true to indicate success
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error creating project: $e')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Error creating project: $e')));
         }
       }
     }
@@ -70,7 +72,7 @@ class _SimplifiedAddProjectScreenState extends ConsumerState<SimplifiedAddProjec
             // Header
             Container(
               padding: const EdgeInsets.all(16.0),
-              color: Theme.of(context).primaryColor.withOpacity(0.1),
+              color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
               child: Row(
                 children: [
                   Icon(
@@ -90,7 +92,7 @@ class _SimplifiedAddProjectScreenState extends ConsumerState<SimplifiedAddProjec
                 ],
               ),
             ),
-            
+
             // Form Content
             Expanded(
               child: SingleChildScrollView(
@@ -110,7 +112,7 @@ class _SimplifiedAddProjectScreenState extends ConsumerState<SimplifiedAddProjec
                 ),
               ),
             ),
-            
+
             // Action Buttons
             Container(
               padding: const EdgeInsets.all(16.0),
@@ -118,7 +120,7 @@ class _SimplifiedAddProjectScreenState extends ConsumerState<SimplifiedAddProjec
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
+                    color: Colors.grey.withValues(alpha: 0.3),
                     spreadRadius: 1,
                     blurRadius: 5,
                     offset: const Offset(0, -1),

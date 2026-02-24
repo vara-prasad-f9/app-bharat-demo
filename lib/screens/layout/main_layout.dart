@@ -46,7 +46,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: const Color(0xFFFFEDF7),
+      backgroundColor: const Color(0xFFF9FAFB),
       endDrawer: const CustomDrawer(),
       appBar: widget.showAppBar
           ? CustomAppBar(
@@ -57,9 +57,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
               scaffoldKey: _scaffoldKey,
             )
           : null,
-      body: SafeArea(
-        child: widget.child,
-      ),
+      body: SafeArea(child: widget.child),
       bottomNavigationBar: widget.showBottomNav && widget.bottomNavItems != null
           ? CustomBottomBar(
               currentIndex: widget.currentBottomNavIndex,
@@ -71,7 +69,8 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
             )
           : null,
       floatingActionButton: widget.floatingActionButton,
-      floatingActionButtonLocation: widget.floatingActionButtonLocation ??
+      floatingActionButtonLocation:
+          widget.floatingActionButtonLocation ??
           (widget.floatingActionButton != null
               ? FloatingActionButtonLocation.centerDocked
               : null),

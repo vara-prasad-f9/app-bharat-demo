@@ -14,9 +14,10 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   int _currentIndex = 0;
+  String _selectedFilter = 'All Properties';
+
   final List<BottomNavItem> _bottomNavItems = const [
     BottomNavItem(icon: 'dashboard', label: 'Dashboard', index: 0),
     BottomNavItem(icon: 'projects', label: 'Projects', index: 1),
@@ -24,24 +25,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
     BottomNavItem(icon: 'profile', label: 'Profile', index: 3),
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
+  final List<String> _filters = [
+    'All Properties',
+    'Apartment',
+    'Villa',
+    'Building',
+    'Individual',
+  ];
 
   void _onAddPressed() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const AddProjectScreen(),
-      ),
-    );
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (context) => const AddProjectScreen()));
   }
 
   void _onItemTapped(int index) {
@@ -50,29 +45,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
     });
   }
 
-  Widget _buildProjectCard(ProjectModel project) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: ListTile(
-        leading: Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: const Icon(Icons.work_outline, size: 30),
-        ),
-        title: Text(
-          project.projectName ?? 'Unnamed Project',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(project.city ?? 'No location'),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ProjectDetailsScreen(project: project),
+  Widget _buildFilterChips() {
+    return SizedBox(
+      height: 60,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        itemCount: _filters.length,
+        itemBuilder: (context, index) {
+          final filter = _filters[index];
+          final isSelected = _selectedFilter == filter;
+          return Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: FilterChip(
+              label: Text(
+                filter,
+                style: TextStyle(
+                  color: isSelected ? Colors.white : Colors.black87,
+                  fontSize: 13,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                ),
+              ),
+              selected: isSelected,
+              onSelected: (selected) {
+                setState(() {
+                  _selectedFilter = filter;
+                });
+              },
+              backgroundColor: const Color(0xFFF3F4F6),
+              selectedColor: const Color(0xFF3F5141), // Deep green from image
+              showCheckmark: false,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide.none,
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             ),
           );
         },
@@ -80,28 +87,134 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
     );
   }
 
-  Widget _buildProjectList(List<ProjectModel> projects) {
-    if (projects.isEmpty) {
-      return const Center(
-        child: Text('No projects found'),
-      );
-    }
-
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      itemCount: projects.length,
-      itemBuilder: (context, index) {
-        return _buildProjectCard(projects[index]);
+  Widget _buildProjectCard(ProjectModel project) {
+    final theme = Theme.of(context);
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ProjectDetailsScreen(project: project),
+          ),
+        );
       },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(
+            28,
+          ), // Larger radius for premium feel
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image Stack
+            Expanded(
+              flex: 14,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(28),
+                      child: Container(
+                        color: Colors.grey[100],
+                        child: project.imageUrl != null
+                            ? Image.network(
+                                project.imageUrl!,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(Icons.broken_image, size: 40),
+                              )
+                            : const Icon(
+                                Icons.image,
+                                size: 40,
+                                color: Colors.grey,
+                              ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 12,
+                    right: 12,
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.favorite_border,
+                        size: 16,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Details
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    project.projectName ?? 'Unnamed Project',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    project.city ?? 'No location',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: Colors.grey[500],
+                      fontSize: 12,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        project.price ?? 'Contact',
+                        style: TextStyle(
+                          color: theme.primaryColor,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final projects = ref.watch(projectProvider);
+    final allProjects = ref.watch(projectProvider);
+    final projects = _selectedFilter == 'All Properties'
+        ? allProjects
+        : allProjects.where((p) => p.projectType == _selectedFilter).toList();
 
     return MainLayout(
-      title: 'Projects',
+      title: 'Bharat Plus',
       showBottomNav: true,
       bottomNavItems: _bottomNavItems,
       currentBottomNavIndex: _currentIndex,
@@ -109,37 +222,35 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
       floatingActionButton: FloatingActionButton(
         onPressed: _onAddPressed,
         backgroundColor: Theme.of(context).primaryColor,
+        elevation: 4,
         child: const Icon(Icons.add, color: Colors.white),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            color: Theme.of(context).primaryColor,
-            child: TabBar(
-              controller: _tabController,
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.white70,
-              indicatorColor: Colors.white,
-              tabs: const [
-                Tab(text: 'In Progress'),
-                Tab(text: 'On Hold'),
-              ],
-            ),
-          ),
+          _buildFilterChips(),
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                // In Progress Projects Tab
-                _buildProjectList(
-                  projects.where((p) => p.projectStatus == 'In Progress').toList(),
-                ),
-                // On Hold Projects Tab
-                _buildProjectList(
-                  projects.where((p) => p.projectStatus == 'On Hold').toList(),
-                ),
-              ],
-            ),
+            child: projects.isEmpty
+                ? const Center(child: Text('No properties found'))
+                : GridView.builder(
+                    padding: const EdgeInsets.fromLTRB(
+                      16,
+                      8,
+                      16,
+                      80,
+                    ), // Extra bottom padding for FAB
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 16,
+                          childAspectRatio: 0.72,
+                        ),
+                    itemCount: projects.length,
+                    itemBuilder: (context, index) {
+                      return _buildProjectCard(projects[index]);
+                    },
+                  ),
           ),
         ],
       ),
