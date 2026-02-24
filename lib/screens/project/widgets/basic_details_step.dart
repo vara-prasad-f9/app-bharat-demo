@@ -46,7 +46,7 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
     'Structure',
     'Brick Work',
     'Finishing',
-    'Completed'
+    'Completed',
   ];
   final List<String> _projectStatuses = ['In Progress', 'On Hold'];
 
@@ -82,7 +82,7 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             ),
-          
+
             const SizedBox(height: 16),
             // Project Name (Required)
             SizedBox(
@@ -93,7 +93,10 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                   labelText: 'Project Name *',
                   border: OutlineInputBorder(),
                   hintText: 'Enter project name',
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   labelStyle: TextStyle(fontSize: 13),
                 ),
                 initialValue: widget.projectData.projectName,
@@ -118,70 +121,173 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
               children: [
                 const Text(
                   'Project Type *',
-                  style: TextStyle(fontSize: 13, color: Colors.black54, fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 4),
-                Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: widget.projectData.projectType == null || 
-                             widget.projectData.projectType!.isEmpty
-                          ? Colors.red
-                          : Colors.grey.shade400,
-                      width: 1.0,
-                    ),
-                    borderRadius: BorderRadius.circular(4.0),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w500,
                   ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButtonFormField<String>(
-                      isExpanded: true,
-                      style: const TextStyle(fontSize: 13, color: Colors.black, height: 1.0),
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-                        border: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        focusedErrorBorder: InputBorder.none,
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return null; // Return null to prevent default error display
-                        }
-                        return null;
-                      },
-                      hint: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 4.0),
-                        child: Text(
-                          'Select project type',
-                          style: TextStyle(fontSize: 13, color: Colors.grey),
-                        ),
-                      ),
-                      value: widget.projectData.projectType,
-                      items: _projectTypes.map((type) {
-                        return DropdownMenuItem(
-                          value: type,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              type,
-                              style: const TextStyle(fontSize: 13, color: Colors.black),
+                ),
+                const SizedBox(height: 8),
+                // Create rows with 3 items each for Project Type
+                ...List.generate((_projectTypes.length / 3).ceil(), (rowIndex) {
+                  final startIndex = rowIndex * 3;
+                  final endIndex = (startIndex + 3).clamp(
+                    0,
+                    _projectTypes.length,
+                  );
+                  final rowTypes = _projectTypes.sublist(startIndex, endIndex);
+
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      children: [
+                        ...rowTypes.map((type) {
+                          IconData icon;
+                          switch (type) {
+                            case 'Community':
+                              icon = Icons.group_work;
+                              break;
+                            case 'Villa':
+                              icon = Icons.home;
+                              break;
+                            case 'Building':
+                              icon = Icons.apartment;
+                              break;
+                            case 'Flat':
+                              icon = Icons.domain;
+                              break;
+                            case 'Individual':
+                              icon = Icons.person;
+                              break;
+                            case 'Group housing':
+                              icon = Icons.groups;
+                              break;
+                            case 'Industrial':
+                              icon = Icons.factory;
+                              break;
+                            case 'Business':
+                              icon = Icons.business;
+                              break;
+                            case 'Commercial complex':
+                              icon = Icons.store;
+                              break;
+                            case 'SEZ':
+                              icon = Icons.location_on;
+                              break;
+                            case 'Small house':
+                              icon = Icons.home_outlined;
+                              break;
+                            case 'Farm house':
+                              icon = Icons.agriculture;
+                              break;
+                            case 'Stadium':
+                              icon = Icons.stadium;
+                              break;
+                            case 'Parks':
+                              icon = Icons.park;
+                              break;
+                            case 'Government':
+                              icon = Icons.account_balance;
+                              break;
+                            case 'Residential':
+                              icon = Icons.house;
+                              break;
+                            case 'Commercial':
+                              icon = Icons.business_center;
+                              break;
+                            case 'Infrastructure':
+                              icon = Icons.construction;
+                              break;
+                            case 'Others':
+                              icon = Icons.more_horiz;
+                              break;
+                            default:
+                              icon = Icons.category;
+                          }
+
+                          return Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  widget.projectData.projectType = type;
+                                  widget.onChanged(widget.projectData);
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  right:
+                                      rowTypes.indexOf(type) <
+                                          rowTypes.length - 1
+                                      ? 8.0
+                                      : 0,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 4,
+                                  vertical: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color:
+                                        widget.projectData.projectType == type
+                                        ? Theme.of(context).primaryColor
+                                        : Colors.grey.shade300,
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  color: widget.projectData.projectType == type
+                                      ? Theme.of(
+                                          context,
+                                        ).primaryColor.withOpacity(0.1)
+                                      : Colors.transparent,
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      icon,
+                                      size: 14,
+                                      color:
+                                          widget.projectData.projectType == type
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey.shade600,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Expanded(
+                                      child: Text(
+                                        type,
+                                        style: TextStyle(
+                                          fontSize: 8.5,
+                                          color:
+                                              widget.projectData.projectType ==
+                                                  type
+                                              ? Theme.of(context).primaryColor
+                                              : Colors.black,
+                                          fontWeight:
+                                              widget.projectData.projectType ==
+                                                  type
+                                              ? FontWeight.w500
+                                              : FontWeight.normal,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          widget.projectData.projectType = value;
-                          widget.onChanged(widget.projectData);
-                        });
-                      },
+                          );
+                        }).toList(),
+                        // Add empty boxes if the row is not full to maintain alignment
+                        ...List.generate(
+                          3 - rowTypes.length,
+                          (index) => const Expanded(child: SizedBox()),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-                if (widget.projectData.projectType == null || 
+                  );
+                }),
+                if (widget.projectData.projectType == null ||
                     widget.projectData.projectType!.isEmpty)
                   const Padding(
                     padding: EdgeInsets.only(top: 4.0, left: 4.0),
@@ -199,15 +305,27 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
               children: [
                 const Text(
                   'Current Stage',
-                  style: TextStyle(fontSize: 13, color: Colors.black54, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 // Create rows with 3 items each
-                ...List.generate((_projectStages.length / 3).ceil(), (rowIndex) {
+                ...List.generate((_projectStages.length / 3).ceil(), (
+                  rowIndex,
+                ) {
                   final startIndex = rowIndex * 3;
-                  final endIndex = (startIndex + 3).clamp(0, _projectStages.length);
-                  final rowStages = _projectStages.sublist(startIndex, endIndex);
-                  
+                  final endIndex = (startIndex + 3).clamp(
+                    0,
+                    _projectStages.length,
+                  );
+                  final rowStages = _projectStages.sublist(
+                    startIndex,
+                    endIndex,
+                  );
+
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Row(
@@ -235,7 +353,7 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                           default:
                             icon = Icons.circle;
                         }
-                        
+
                         return Expanded(
                           child: GestureDetector(
                             onTap: () {
@@ -246,19 +364,29 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                             },
                             child: Container(
                               margin: EdgeInsets.only(
-                                right: rowStages.indexOf(stage) < rowStages.length - 1 ? 8.0 : 0,
+                                right:
+                                    rowStages.indexOf(stage) <
+                                        rowStages.length - 1
+                                    ? 8.0
+                                    : 0,
                               ),
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 8,
+                              ),
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: widget.projectData.currentStage == stage
+                                  color:
+                                      widget.projectData.currentStage == stage
                                       ? Theme.of(context).primaryColor
                                       : Colors.grey.shade300,
                                   width: 1.0,
                                 ),
                                 borderRadius: BorderRadius.circular(8.0),
                                 color: widget.projectData.currentStage == stage
-                                    ? Theme.of(context).primaryColor.withOpacity(0.1)
+                                    ? Theme.of(
+                                        context,
+                                      ).primaryColor.withOpacity(0.1)
                                     : Colors.transparent,
                               ),
                               child: Row(
@@ -267,7 +395,8 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                                   Icon(
                                     icon,
                                     size: 16,
-                                    color: widget.projectData.currentStage == stage
+                                    color:
+                                        widget.projectData.currentStage == stage
                                         ? Theme.of(context).primaryColor
                                         : Colors.grey.shade600,
                                   ),
@@ -276,10 +405,14 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                                     stage,
                                     style: TextStyle(
                                       fontSize: 9,
-                                      color: widget.projectData.currentStage == stage
+                                      color:
+                                          widget.projectData.currentStage ==
+                                              stage
                                           ? Theme.of(context).primaryColor
                                           : Colors.black,
-                                      fontWeight: widget.projectData.currentStage == stage
+                                      fontWeight:
+                                          widget.projectData.currentStage ==
+                                              stage
                                           ? FontWeight.w500
                                           : FontWeight.normal,
                                     ),
@@ -303,7 +436,11 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
               children: [
                 const Text(
                   'Project Status *',
-                  style: TextStyle(fontSize: 13, color: Colors.black54, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -332,10 +469,7 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                             },
                             activeColor: Theme.of(context).primaryColor,
                           ),
-                          Text(
-                            status,
-                            style: const TextStyle(fontSize: 13),
-                          ),
+                          Text(status, style: const TextStyle(fontSize: 13)),
                           const SizedBox(width: 16),
                         ],
                       ),
@@ -344,14 +478,15 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
                 ),
                 if (_formKey.currentState != null &&
                     _formKey.currentState!.validate() &&
-                    (widget.projectData.projectStatus == null || widget.projectData.projectStatus!.isEmpty))
+                    (widget.projectData.projectStatus == null ||
+                        widget.projectData.projectStatus!.isEmpty))
                   const Text(
                     'Project status is required',
                     style: TextStyle(color: Colors.red, fontSize: 12),
                   ),
               ],
             ),
-            const SizedBox(height:0,)
+            const SizedBox(height: 0),
           ],
         ),
       ),
