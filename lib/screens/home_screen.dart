@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bharatplus/screens/layout/main_layout.dart';
@@ -125,12 +126,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       child: Container(
                         color: Colors.grey[100],
                         child: project.imageUrl != null
-                            ? Image.network(
-                                project.imageUrl!,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(Icons.broken_image, size: 40),
-                              )
+                            ? (project.imageUrl!.startsWith('http')
+                                  ? Image.network(
+                                      project.imageUrl!,
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const Icon(
+                                                Icons.broken_image,
+                                                size: 40,
+                                              ),
+                                    )
+                                  : Image.file(
+                                      File(project.imageUrl!),
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const Icon(
+                                                Icons.broken_image,
+                                                size: 40,
+                                              ),
+                                    ))
                             : const Icon(
                                 Icons.image,
                                 size: 40,

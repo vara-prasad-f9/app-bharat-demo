@@ -1,6 +1,8 @@
 // ignore_for_file: use_super_parameters, library_private_types_in_public_api, deprecated_member_use, unnecessary_to_list_in_spreads
 
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../models/project_model.dart';
 
 class BasicDetailsStep extends StatefulWidget {
@@ -49,6 +51,30 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
     'Completed',
   ];
   final List<String> _projectStatuses = ['In Progress', 'On Hold'];
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    try {
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 800,
+        maxHeight: 800,
+        imageQuality: 85,
+      );
+      if (image != null) {
+        setState(() {
+          widget.projectData.imageUrl = image.path;
+          widget.onChanged(widget.projectData);
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error picking image: $e')));
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -80,6 +106,103 @@ class _BasicDetailsStepState extends State<BasicDetailsStep> {
               child: const Text(
                 'Basic Project Details',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Image Upload Section
+            Center(
+              child: GestureDetector(
+                onTap: _pickImage,
+                child: Container(
+                  width: 120,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: Theme.of(
+                        context,
+                      ).primaryColor.withValues(alpha: 0.2),
+                      width: 1,
+                    ),
+                  ),
+                  child: widget.projectData.imageUrl != null
+                      ? Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child:
+                                  widget.projectData.imageUrl!.startsWith(
+                                    'http',
+                                  )
+                                  ? Image.network(
+                                      widget.projectData.imageUrl!,
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.file(
+                                      File(widget.projectData.imageUrl!),
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
+                            Positioned(
+                              right: 4,
+                              top: 4,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    widget.projectData.imageUrl = null;
+                                    widget.onChanged(widget.projectData);
+                                  });
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.close,
+                                    size: 12,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.add_a_photo_outlined,
+                              color: Theme.of(context).primaryColor,
+                              size: 28,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Add Image',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                            Text(
+                              '(Optional)',
+                              style: TextStyle(
+                                fontSize: 8,
+                                color: Colors.grey[500],
+                              ),
+                            ),
+                          ],
+                        ),
+                ),
               ),
             ),
 
