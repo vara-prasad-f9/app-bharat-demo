@@ -8,18 +8,23 @@ class BottomCurvePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFFE63946) // Red color
+      ..color =
+          const Color(0xFFE63946) // Red color
       ..style = PaintingStyle.fill;
 
     final path = Path();
     path.moveTo(0, size.height * 0.8);
     path.quadraticBezierTo(
-      size.width * 0.25, size.height * 0.7,
-      size.width * 0.5, size.height * 0.8,
+      size.width * 0.25,
+      size.height * 0.7,
+      size.width * 0.5,
+      size.height * 0.8,
     );
     path.quadraticBezierTo(
-      size.width * 0.75, size.height * 0.9,
-      size.width, size.height * 0.8,
+      size.width * 0.75,
+      size.height * 0.9,
+      size.width,
+      size.height * 0.8,
     );
     path.lineTo(size.width, size.height);
     path.lineTo(0, size.height);
@@ -36,11 +41,15 @@ class OtpVerificationScreen extends ConsumerStatefulWidget {
   const OtpVerificationScreen({super.key});
 
   @override
-  ConsumerState<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
+  ConsumerState<OtpVerificationScreen> createState() =>
+      _OtpVerificationScreenState();
 }
 
 class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
-  final List<TextEditingController> _otpControllers = List.generate(6, (index) => TextEditingController());
+  final List<TextEditingController> _otpControllers = List.generate(
+    6,
+    (index) => TextEditingController(),
+  );
   final List<FocusNode> _focusNodes = List.generate(6, (index) => FocusNode());
   bool _isLoading = false;
   bool _isResendLoading = false;
@@ -81,7 +90,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
 
   Future<void> _verifyOtp() async {
     final otp = _otpControllers.map((controller) => controller.text).join();
-    
+
     if (otp.length != 6) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -92,15 +101,15 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     }
 
     setState(() => _isLoading = true);
-    
+
     try {
       ref.read(authProvider.notifier).setOtp(otp);
       final isVerified = await ref.read(authProvider.notifier).verifyOtp();
 
       if (!mounted) return;
-      
+
       setState(() => _isLoading = false);
-      
+
       if (isVerified) {
         // Navigate to role selection after successful verification
         if (mounted) {
@@ -138,9 +147,9 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     if (mounted) {
       setState(() => _isResendLoading = false);
       _startResendTimer();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('OTP has been resent')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('OTP has been resent')));
     }
   }
 
@@ -156,15 +165,16 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     }
   }
 
- // ... (keep all the imports and classes above the same)
+  // ... (keep all the imports and classes above the same)
 
   @override
   Widget build(BuildContext context) {
-    final phoneNumber = ref.watch(authProvider.select((state) => state.phoneNumber));
- 
-    
+    final phoneNumber = ref.watch(
+      authProvider.select((state) => state.phoneNumber),
+    );
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F0FB), // Light pink background
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
           // Bottom curved background
@@ -173,17 +183,19 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
             left: 0,
             right: 0,
             height: MediaQuery.of(context).size.height * 1.2,
-            child: CustomPaint(
-              painter: BottomCurvePainter(),
-            ),
+            child: CustomPaint(painter: BottomCurvePainter()),
           ),
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.transparent,
               elevation: 0,
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 20),
+                icon: const Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Colors.black,
+                  size: 20,
+                ),
                 onPressed: () => Navigator.of(context).pop(),
               ),
               title: const Text(
@@ -197,7 +209,10 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
               centerTitle: true,
             ),
             body: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 32.0,
+                vertical: 16.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -225,8 +240,8 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                         height: 50,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: _focusNodes[index].hasFocus 
-                                ? Theme.of(context).primaryColor 
+                            color: _focusNodes[index].hasFocus
+                                ? Theme.of(context).primaryColor
                                 : Colors.black,
                             width: 1,
                           ),
@@ -300,7 +315,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                                     width: 20,
                                     height: 20,
                                     child: CircularProgressIndicator(
-                                      strokeWidth: 2, 
+                                      strokeWidth: 2,
                                       color: Theme.of(context).primaryColor,
                                     ),
                                   )

@@ -8,7 +8,7 @@ class AppColors {
   static const Color secondary = Color(0xFF6B7280); // Slick Grey
 
   // Light Theme Colors
-  static const Color lightBackground = Color(0xFFF9FAFB);
+  static const Color lightBackground = Color(0xFFFFEDF7);
   static const Color lightSurface = Color(0xFFFFFFFF);
   static const Color lightError = Color(0xFFEF4444);
   static const Color lightOnPrimary = Color(0xFFFFFFFF);

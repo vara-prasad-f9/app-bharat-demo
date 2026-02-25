@@ -56,6 +56,7 @@ class _SimplifiedAddProjectScreenState
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           title: const Text('Add Project'),
           backgroundColor: Theme.of(context).primaryColor,

@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 
 import '../providers/auth_provider.dart';
 
-
 class CurvePainter extends CustomPainter {
   final Color color;
 
@@ -21,12 +20,16 @@ class CurvePainter extends CustomPainter {
     final path = Path();
     path.lineTo(0, size.height * 0.7);
     path.quadraticBezierTo(
-      size.width * 0.25, size.height * 0.85,
-      size.width * 0.5, size.height * 0.75,
+      size.width * 0.25,
+      size.height * 0.85,
+      size.width * 0.5,
+      size.height * 0.75,
     );
     path.quadraticBezierTo(
-      size.width * 0.75, size.height * 0.65,
-      size.width, size.height * 0.7,
+      size.width * 0.75,
+      size.height * 0.65,
+      size.width,
+      size.height * 0.7,
     );
     path.lineTo(size.width, 0);
     path.close();
@@ -65,21 +68,23 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
     if (_phoneController.text.length != 10) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please enter a valid 10-digit phone number')),
+          const SnackBar(
+            content: Text('Please enter a valid 10-digit phone number'),
+          ),
         );
       }
       return;
     }
 
     setState(() => _isLoading = true);
-    
+
     // In a real app, you would call your API here
     await Future.delayed(const Duration(seconds: 1));
-    
+
     if (!mounted) return;
-    
+
     setState(() => _isLoading = false);
-    
+
     // Navigate to OTP screen
     ref.read(authProvider.notifier).setPhoneNumber(_phoneController.text);
     if (mounted) {
@@ -90,9 +95,9 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F0FB), // Light pink background
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
           // Curved red header
@@ -102,7 +107,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
             right: 0,
             height: screenHeight * 0.45,
             child: const CustomPaint(
-              painter:  CurvePainter(color: Color(0xFFE63946)),
+              painter: CurvePainter(color: Color(0xFFE63946)),
               child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -126,7 +131,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
               ),
             ),
           ),
-          
+
           // Login Form
           Positioned(
             top: screenHeight * 0.45,
@@ -149,7 +154,10 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 20,
+                    ),
                     margin: const EdgeInsets.only(bottom: 16),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -158,7 +166,10 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                     ),
                     child: Row(
                       children: [
-                        const Text('+91', style: TextStyle(fontSize: 16, color: Colors.black87)),
+                        const Text(
+                          '+91',
+                          style: TextStyle(fontSize: 16, color: Colors.black87),
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: TextFormField(
@@ -174,11 +185,16 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                             ),
                             onChanged: (value) {
                               // Update the controller with only digits
-                              final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+                              final digitsOnly = value.replaceAll(
+                                RegExp(r'[^0-9]'),
+                                '',
+                              );
                               if (digitsOnly != value) {
                                 _phoneController.value = TextEditingValue(
                                   text: digitsOnly,
-                                  selection: TextSelection.collapsed(offset: digitsOnly.length),
+                                  selection: TextSelection.collapsed(
+                                    offset: digitsOnly.length,
+                                  ),
                                 );
                               }
                             },
@@ -199,7 +215,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: _isLoading 
+                      child: _isLoading
                           ? const SizedBox(
                               width: 20,
                               height: 20,
@@ -208,7 +224,13 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                                 strokeWidth: 2,
                               ),
                             )
-                          : const Text('Send OTP', style: TextStyle(fontSize: 16, color: Colors.white)),
+                          : const Text(
+                              'Send OTP',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
                     ),
                   ),
                   if (_isLoading)

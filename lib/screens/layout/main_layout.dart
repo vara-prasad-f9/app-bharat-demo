@@ -46,7 +46,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: const Color(0xFFF9FAFB),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       endDrawer: const CustomDrawer(),
       appBar: widget.showAppBar
           ? CustomAppBar(

@@ -8,11 +8,15 @@ class OtpVerificationScreen extends ConsumerStatefulWidget {
   const OtpVerificationScreen({super.key});
 
   @override
-  ConsumerState<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
+  ConsumerState<OtpVerificationScreen> createState() =>
+      _OtpVerificationScreenState();
 }
 
 class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
-  final List<TextEditingController> _otpControllers = List.generate(6, (index) => TextEditingController());
+  final List<TextEditingController> _otpControllers = List.generate(
+    6,
+    (index) => TextEditingController(),
+  );
   final List<FocusNode> _focusNodes = List.generate(6, (index) => FocusNode());
   bool _isLoading = false;
   bool _isResendLoading = false;
@@ -53,7 +57,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
 
   Future<void> _verifyOtp() async {
     final otp = _otpControllers.map((controller) => controller.text).join();
-    
+
     if (otp.length != 6) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -64,15 +68,15 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     }
 
     setState(() => _isLoading = true);
-    
+
     try {
       ref.read(authProvider.notifier).setOtp(otp);
       final isVerified = await ref.read(authProvider.notifier).verifyOtp();
 
       if (!mounted) return;
-      
+
       setState(() => _isLoading = false);
-      
+
       if (isVerified) {
         if (mounted) {
           context.go('/role-selection');
@@ -109,9 +113,9 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     if (mounted) {
       setState(() => _isResendLoading = false);
       _startResendTimer();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('OTP has been resent')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('OTP has been resent')));
     }
   }
 
@@ -130,15 +134,21 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final phoneNumber = ref.watch(authProvider.select((state) => state.phoneNumber));
-    
+    final phoneNumber = ref.watch(
+      authProvider.select((state) => state.phoneNumber),
+    );
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F0FB),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 20),
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.black,
+            size: 20,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
@@ -169,7 +179,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
               ),
             ),
           ),
-          
+
           SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 20),
             child: Column(
@@ -187,13 +197,10 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                 const SizedBox(height: 8),
                 Text(
                   'We have sent an OTP to +91 $phoneNumber',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                  ),
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
                 ),
                 const SizedBox(height: 40),
-                
+
                 // OTP Input Fields
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,7 +213,10 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         maxLength: 1,
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                         decoration: InputDecoration(
                           counterText: '',
                           filled: true,
@@ -222,9 +232,9 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                     );
                   }),
                 ),
-                
+
                 const SizedBox(height: 30),
-                
+
                 // Verify Button
                 SizedBox(
                   width: double.infinity,
@@ -257,28 +267,32 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                           ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Resend OTP
                 Center(
                   child: _isResendLoading
-                      ? const CircularProgressIndicator(color: Color(0xFFE63946))
+                      ? const CircularProgressIndicator(
+                          color: Color(0xFFE63946),
+                        )
                       : TextButton(
                           onPressed: _canResend ? _resendOtp : null,
                           child: Text(
-                            _canResend 
-                                ? 'Resend OTP' 
+                            _canResend
+                                ? 'Resend OTP'
                                 : 'Resend OTP in $_resendTime seconds',
                             style: TextStyle(
-                              color: _canResend ? const Color(0xFFE63946) : Colors.grey,
+                              color: _canResend
+                                  ? const Color(0xFFE63946)
+                                  : Colors.grey,
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                 ),
-                
+
                 const SizedBox(height: 40),
               ],
             ),

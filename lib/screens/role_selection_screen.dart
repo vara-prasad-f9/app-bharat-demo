@@ -13,18 +13,23 @@ class CurvePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Theme.of(context).primaryColor // Red color
+      ..color = Theme.of(context)
+          .primaryColor // Red color
       ..style = PaintingStyle.fill;
 
     final path = Path();
     path.lineTo(0, size.height * 0.7);
     path.quadraticBezierTo(
-      size.width * 0.25, size.height * 0.85,
-      size.width * 0.5, size.height * 0.75,
+      size.width * 0.25,
+      size.height * 0.85,
+      size.width * 0.5,
+      size.height * 0.75,
     );
     path.quadraticBezierTo(
-      size.width * 0.75, size.height * 0.65,
-      size.width, size.height * 0.7,
+      size.width * 0.75,
+      size.height * 0.65,
+      size.width,
+      size.height * 0.7,
     );
     path.lineTo(size.width, 0);
     path.close();
@@ -40,7 +45,8 @@ class RoleSelectionScreen extends ConsumerStatefulWidget {
   const RoleSelectionScreen({super.key});
 
   @override
-  ConsumerState<RoleSelectionScreen> createState() => _RoleSelectionScreenState();
+  ConsumerState<RoleSelectionScreen> createState() =>
+      _RoleSelectionScreenState();
 }
 
 class _RoleSelectionScreenState extends ConsumerState<RoleSelectionScreen> {
@@ -56,9 +62,9 @@ class _RoleSelectionScreenState extends ConsumerState<RoleSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F0FB), // Light pink background
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
           // Curved red header
@@ -74,7 +80,6 @@ class _RoleSelectionScreenState extends ConsumerState<RoleSelectionScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Logo Circle
-        
                     const Text(
                       'Select Your Role',
                       style: TextStyle(
@@ -88,7 +93,7 @@ class _RoleSelectionScreenState extends ConsumerState<RoleSelectionScreen> {
               ),
             ),
           ),
-          
+
           // White content area
           Positioned(
             left: 0,
@@ -110,17 +115,17 @@ class _RoleSelectionScreenState extends ConsumerState<RoleSelectionScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 20),
-                   
+
                     const Text(
                       'Please select your role',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                     const SizedBox(height: 24),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey.shade300),
                         borderRadius: BorderRadius.circular(8),
@@ -156,12 +161,15 @@ class _RoleSelectionScreenState extends ConsumerState<RoleSelectionScreen> {
                                 if (_formKey.currentState!.validate()) {
                                   setState(() => _isLoading = true);
                                   // Save the selected role and navigate to home
-                                  Future.delayed(const Duration(seconds: 1), () {
-                                    if (mounted) {
-                                      setState(() => _isLoading = false);
-                                      context.go('/home');
-                                    }
-                                  });
+                                  Future.delayed(
+                                    const Duration(seconds: 1),
+                                    () {
+                                      if (mounted) {
+                                        setState(() => _isLoading = false);
+                                        context.go('/home');
+                                      }
+                                    },
+                                  );
                                 }
                               },
                         style: ElevatedButton.styleFrom(

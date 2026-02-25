@@ -14,7 +14,9 @@ class NotificationScreen extends ConsumerWidget {
     final unreadCount = ref.watch(notificationProvider.notifier).unreadCount;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: const Text('Notifications'),
         actions: [
           if (unreadCount > 0)
@@ -27,9 +29,7 @@ class NotificationScreen extends ConsumerWidget {
         ],
       ),
       body: notifications.isEmpty
-          ? const Center(
-              child: Text('No notifications'),
-            )
+          ? const Center(child: Text('No notifications'))
           : ListView.builder(
               itemCount: notifications.length,
               itemBuilder: (context, index) {
@@ -44,9 +44,13 @@ class NotificationScreen extends ConsumerWidget {
                     child: const Icon(Icons.delete, color: Colors.white),
                   ),
                   onDismissed: (_) {
-                    ref.read(notificationProvider.notifier).deleteNotification(notification.id);
+                    ref
+                        .read(notificationProvider.notifier)
+                        .deleteNotification(notification.id);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('${notification.title} dismissed')),
+                      SnackBar(
+                        content: Text('${notification.title} dismissed'),
+                      ),
                     );
                   },
                   child: ListTile(
@@ -74,14 +78,18 @@ class NotificationScreen extends ConsumerWidget {
                     trailing: !notification.isRead
                         ? TextButton(
                             onPressed: () {
-                              ref.read(notificationProvider.notifier).markAsRead(notification.id);
+                              ref
+                                  .read(notificationProvider.notifier)
+                                  .markAsRead(notification.id);
                             },
                             child: const Text('Mark as read'),
                           )
                         : null,
                     onTap: () {
                       if (!notification.isRead) {
-                        ref.read(notificationProvider.notifier).markAsRead(notification.id);
+                        ref
+                            .read(notificationProvider.notifier)
+                            .markAsRead(notification.id);
                       }
                       // Handle notification tap
                     },

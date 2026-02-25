@@ -8,11 +8,7 @@ class CustomNumberPad extends StatelessWidget {
   final TextEditingController controller;
   final VoidCallback? onDone;
 
-  const CustomNumberPad({
-    super.key,
-    required this.controller,
-    this.onDone,
-  });
+  const CustomNumberPad({super.key, required this.controller, this.onDone});
 
   void _onNumberTap(String number) {
     if (controller.text.length < 10) {
@@ -22,7 +18,10 @@ class CustomNumberPad extends StatelessWidget {
 
   void _onBackspace() {
     if (controller.text.isNotEmpty) {
-      controller.text = controller.text.substring(0, controller.text.length - 1);
+      controller.text = controller.text.substring(
+        0,
+        controller.text.length - 1,
+      );
     }
   }
 
@@ -41,7 +40,10 @@ class CustomNumberPad extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const Text('+91', style: TextStyle(fontSize: 16, color: Colors.black87)),
+              const Text(
+                '+91',
+                style: TextStyle(fontSize: 16, color: Colors.black87),
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: TextField(
@@ -59,7 +61,7 @@ class CustomNumberPad extends StatelessWidget {
             ],
           ),
         ),
-        
+
         // Custom numeric keypad
         GridView.builder(
           shrinkWrap: true,
@@ -98,7 +100,10 @@ class CustomNumberPad extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text('Send OTP', style: TextStyle(fontSize: 16, color: Colors.white)),
+            child: const Text(
+              'Send OTP',
+              style: TextStyle(fontSize: 16, color: Colors.white),
+            ),
           ),
         ),
       ],
@@ -122,16 +127,17 @@ class CustomNumberPad extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton({required IconData icon, required VoidCallback onTap}) {
+  Widget _buildActionButton({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
     return Material(
       color: Colors.white,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
-        child: Center(
-          child: Icon(icon, size: 28, color: Colors.black87),
-        ),
+        child: Center(child: Icon(icon, size: 28, color: Colors.black87)),
       ),
     );
   }
@@ -139,7 +145,7 @@ class CustomNumberPad extends StatelessWidget {
 
 class CurvePainter extends CustomPainter {
   const CurvePainter();
-  
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
@@ -149,12 +155,16 @@ class CurvePainter extends CustomPainter {
     final path = Path();
     path.lineTo(0, size.height * 0.7);
     path.quadraticBezierTo(
-      size.width * 0.25, size.height * 0.85,
-      size.width * 0.5, size.height * 0.75,
+      size.width * 0.25,
+      size.height * 0.85,
+      size.width * 0.5,
+      size.height * 0.75,
     );
     path.quadraticBezierTo(
-      size.width * 0.75, size.height * 0.65,
-      size.width, size.height * 0.7,
+      size.width * 0.75,
+      size.height * 0.65,
+      size.width,
+      size.height * 0.7,
     );
     path.lineTo(size.width, 0);
     path.close();
@@ -187,21 +197,23 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
     if (_phoneController.text.length != 10) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please enter a valid 10-digit phone number')),
+          const SnackBar(
+            content: Text('Please enter a valid 10-digit phone number'),
+          ),
         );
       }
       return;
     }
 
     setState(() => _isLoading = true);
-    
+
     // In a real app, you would call your API here
     await Future.delayed(const Duration(seconds: 1));
-    
+
     if (!mounted) return;
-    
+
     setState(() => _isLoading = false);
-    
+
     // Navigate to OTP screen
     ref.read(authProvider.notifier).setPhoneNumber(_phoneController.text);
     if (mounted) {
@@ -212,9 +224,9 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F0FB), // Light pink background
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
           // Curved red header
@@ -247,7 +259,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
               ),
             ),
           ),
-          
+
           // Login Form
           Positioned(
             top: screenHeight * 0.4,
@@ -255,7 +267,10 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
             right: 0,
             bottom: 0,
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 20),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 32.0,
+                vertical: 20,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, curly_braces_in_flow_control_structures
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,6 +51,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -62,7 +63,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 child: const Text('Skip'),
               ),
             ),
-            
+
             // Page view for onboarding screens
             Expanded(
               child: PageView.builder(
@@ -85,15 +86,20 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                                   fit: BoxFit.contain,
                                   errorBuilder: (context, error, stackTrace) {
                                     return const Center(
-                                      child: Icon(Icons.error_outline, color: Colors.red),
+                                      child: Icon(
+                                        Icons.error_outline,
+                                        color: Colors.red,
+                                      ),
                                     );
                                   },
-                                  loadingBuilder: (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  },
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      },
                                 )
                               : Image.asset(
                                   item.imagePath,
@@ -104,9 +110,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                         // Title
                         Text(
                           item.title,
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 16),
@@ -122,7 +127,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 },
               ),
             ),
-            
+
             // Page indicator and next button
             Padding(
               padding: const EdgeInsets.all(24.0),
@@ -147,7 +152,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       ),
                     ),
                   ),
-                  
+
                   // Next/Get Started button
                   ElevatedButton(
                     onPressed: _onNextPressed,

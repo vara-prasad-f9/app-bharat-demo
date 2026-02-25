@@ -4,15 +4,14 @@ import 'package:bharatplus/models/project_model.dart';
 class ProjectDetailsScreen extends StatelessWidget {
   final ProjectModel project;
 
-  const ProjectDetailsScreen({
-    super.key,
-    required this.project,
-  });
+  const ProjectDetailsScreen({super.key, required this.project});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: Text(project.projectName ?? 'Project Details'),
       ),
       body: SingleChildScrollView(
@@ -53,9 +52,7 @@ class ProjectDetailsScreen extends StatelessWidget {
                               const SizedBox(height: 4),
                               Text(
                                 project.projectType ?? 'No type specified',
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                ),
+                                style: TextStyle(color: Colors.grey[600]),
                               ),
                             ],
                           ),
@@ -85,9 +82,9 @@ class ProjectDetailsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Project Details
             Card(
               child: Padding(
@@ -103,43 +100,75 @@ class ProjectDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    _buildDetailRow(Icons.location_on, 'Location', 
-                        '${project.city ?? 'N/A'}${project.area != null ? ', ${project.area}' : ''}'),
-                    _buildDetailRow(Icons.assessment, 'Current Stage', 
-                        project.currentStage ?? 'N/A'),
-                    _buildDetailRow(Icons.code, 'Project Code', 
-                        project.projectCode ?? 'N/A'),
-                    _buildDetailRow(Icons.calendar_today, 'Construction Start Date', 
-                        project.constructionStartDate != null 
-                            ? _formatDate(project.constructionStartDate!) 
-                            : 'N/A'),
-                    _buildDetailRow(Icons.event, 'Expected Completion Date', 
-                        project.expectedCompletionDate != null 
-                            ? _formatDate(project.expectedCompletionDate!) 
-                            : 'N/A'),
-                    _buildDetailRow(Icons.public, 'Country', 
-                        project.country.isNotEmpty ? project.country : 'N/A'),
-                    _buildDetailRow(Icons.map, 'State', 
-                        project.state ?? 'N/A'),
-                    _buildDetailRow(Icons.location_city, 'District', 
-                        project.district ?? 'N/A'),
-                    _buildDetailRow(Icons.place, 'Landmark', 
-                        project.landmark ?? 'N/A'),
-                    _buildDetailRow(Icons.mail, 'Pincode', 
-                        project.pincode ?? 'N/A'),
-                    _buildDetailRow(Icons.home, 'Full Address', 
-                        project.fullAddress ?? 'N/A'),
-                    _buildDetailRow(Icons.gps_fixed, 'Coordinates', 
-                        (project.latitude != null && project.longitude != null) 
-                            ? '${project.latitude!.toStringAsFixed(6)}, ${project.longitude!.toStringAsFixed(6)}'
-                            : 'N/A'),
+                    _buildDetailRow(
+                      Icons.location_on,
+                      'Location',
+                      '${project.city ?? 'N/A'}${project.area != null ? ', ${project.area}' : ''}',
+                    ),
+                    _buildDetailRow(
+                      Icons.assessment,
+                      'Current Stage',
+                      project.currentStage ?? 'N/A',
+                    ),
+                    _buildDetailRow(
+                      Icons.code,
+                      'Project Code',
+                      project.projectCode ?? 'N/A',
+                    ),
+                    _buildDetailRow(
+                      Icons.calendar_today,
+                      'Construction Start Date',
+                      project.constructionStartDate != null
+                          ? _formatDate(project.constructionStartDate!)
+                          : 'N/A',
+                    ),
+                    _buildDetailRow(
+                      Icons.event,
+                      'Expected Completion Date',
+                      project.expectedCompletionDate != null
+                          ? _formatDate(project.expectedCompletionDate!)
+                          : 'N/A',
+                    ),
+                    _buildDetailRow(
+                      Icons.public,
+                      'Country',
+                      project.country.isNotEmpty ? project.country : 'N/A',
+                    ),
+                    _buildDetailRow(Icons.map, 'State', project.state ?? 'N/A'),
+                    _buildDetailRow(
+                      Icons.location_city,
+                      'District',
+                      project.district ?? 'N/A',
+                    ),
+                    _buildDetailRow(
+                      Icons.place,
+                      'Landmark',
+                      project.landmark ?? 'N/A',
+                    ),
+                    _buildDetailRow(
+                      Icons.mail,
+                      'Pincode',
+                      project.pincode ?? 'N/A',
+                    ),
+                    _buildDetailRow(
+                      Icons.home,
+                      'Full Address',
+                      project.fullAddress ?? 'N/A',
+                    ),
+                    _buildDetailRow(
+                      Icons.gps_fixed,
+                      'Coordinates',
+                      (project.latitude != null && project.longitude != null)
+                          ? '${project.latitude!.toStringAsFixed(6)}, ${project.longitude!.toStringAsFixed(6)}'
+                          : 'N/A',
+                    ),
                   ],
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Owner Details
             Card(
               child: Padding(
@@ -155,16 +184,28 @@ class ProjectDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    _buildDetailRow(Icons.person, 'Name', project.ownerName ?? 'N/A'),
-                    _buildDetailRow(Icons.phone, 'Phone', project.ownerPhoneNumber ?? 'N/A'),
-                    _buildDetailRow(Icons.email, 'Email', project.ownerEmail ?? 'N/A'),
+                    _buildDetailRow(
+                      Icons.person,
+                      'Name',
+                      project.ownerName ?? 'N/A',
+                    ),
+                    _buildDetailRow(
+                      Icons.phone,
+                      'Phone',
+                      project.ownerPhoneNumber ?? 'N/A',
+                    ),
+                    _buildDetailRow(
+                      Icons.email,
+                      'Email',
+                      project.ownerEmail ?? 'N/A',
+                    ),
                   ],
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Supervisor Details
             Card(
               child: Padding(
@@ -180,15 +221,23 @@ class ProjectDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    _buildDetailRow(Icons.person, 'Name', project.supervisorName ?? 'N/A'),
-                    _buildDetailRow(Icons.phone, 'Phone', project.supervisorPhoneNumber ?? 'N/A'),
+                    _buildDetailRow(
+                      Icons.person,
+                      'Name',
+                      project.supervisorName ?? 'N/A',
+                    ),
+                    _buildDetailRow(
+                      Icons.phone,
+                      'Phone',
+                      project.supervisorPhoneNumber ?? 'N/A',
+                    ),
                   ],
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Watchman Details
             Card(
               child: Padding(
@@ -204,8 +253,16 @@ class ProjectDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    _buildDetailRow(Icons.person, 'Name', project.watchmanName ?? 'N/A'),
-                    _buildDetailRow(Icons.phone, 'Phone', project.watchmanPhoneNumber ?? 'N/A'),
+                    _buildDetailRow(
+                      Icons.person,
+                      'Name',
+                      project.watchmanName ?? 'N/A',
+                    ),
+                    _buildDetailRow(
+                      Icons.phone,
+                      'Phone',
+                      project.watchmanPhoneNumber ?? 'N/A',
+                    ),
                   ],
                 ),
               ),
@@ -230,10 +287,7 @@ class ProjectDetailsScreen extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                 ),
                 const SizedBox(height: 2),
                 Text(

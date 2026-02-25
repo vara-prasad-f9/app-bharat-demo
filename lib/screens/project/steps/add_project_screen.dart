@@ -20,7 +20,10 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
   final ProjectModel _projectData = ProjectModel();
   final PageController _pageController = PageController();
   int _currentStep = 0;
-  final List<GlobalKey<FormState>> _formKeys = List.generate(4, (_) => GlobalKey<FormState>());
+  final List<GlobalKey<FormState>> _formKeys = List.generate(
+    4,
+    (_) => GlobalKey<FormState>(),
+  );
 
   @override
   void initState() {
@@ -36,60 +39,61 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
     {'title': 'Step 4', 'subtitle': 'Review and submit project'},
   ];
 
- bool get _isNextButtonEnabled {
-  // Get the current form state
-  final formState = _formKeys[_currentStep].currentState;
-  
-  // If form state is null, button should be disabled
-  if (formState == null) return false;
-  
-  // For the first step, check project name, type, and status
-  if (_currentStep == 0) {
-    final hasRequiredFields = _projectData.projectName?.trim().isNotEmpty == true &&
-                            _projectData.projectType?.isNotEmpty == true &&
-                            _projectData.projectStatus?.isNotEmpty == true;
-    
-    // Also validate the form to show any validation errors
-    if (formState.mounted) {
-      formState.validate();
+  bool get _isNextButtonEnabled {
+    // Get the current form state
+    final formState = _formKeys[_currentStep].currentState;
+
+    // If form state is null, button should be disabled
+    if (formState == null) return false;
+
+    // For the first step, check project name, type, and status
+    if (_currentStep == 0) {
+      final hasRequiredFields =
+          _projectData.projectName?.trim().isNotEmpty == true &&
+          _projectData.projectType?.isNotEmpty == true &&
+          _projectData.projectStatus?.isNotEmpty == true;
+
+      // Also validate the form to show any validation errors
+      if (formState.mounted) {
+        formState.validate();
+      }
+
+      return hasRequiredFields;
     }
-    
-    return hasRequiredFields;
-  }
-  
-  // For location step (index 1), manually validate required fields
-  if (_currentStep == 1) {
-    final hasCity = _projectData.city?.trim().isNotEmpty == true;
-    final hasArea = _projectData.area?.trim().isNotEmpty == true;
-    
-    // Also validate the form to show any validation errors
-    if (formState.mounted) {
-      formState.validate();
+
+    // For location step (index 1), manually validate required fields
+    if (_currentStep == 1) {
+      final hasCity = _projectData.city?.trim().isNotEmpty == true;
+      final hasArea = _projectData.area?.trim().isNotEmpty == true;
+
+      // Also validate the form to show any validation errors
+      if (formState.mounted) {
+        formState.validate();
+      }
+
+      return hasCity && hasArea;
     }
-    
-    return hasCity && hasArea;
-  }
-  
-  // For owner details step (index 2), manually validate required fields
-  if (_currentStep == 2) {
-    final hasOwnerName = _projectData.ownerName?.trim().isNotEmpty == true;
-    
-    // Also validate the form to show any validation errors
-    if (formState.mounted) {
-      formState.validate();
+
+    // For owner details step (index 2), manually validate required fields
+    if (_currentStep == 2) {
+      final hasOwnerName = _projectData.ownerName?.trim().isNotEmpty == true;
+
+      // Also validate the form to show any validation errors
+      if (formState.mounted) {
+        formState.validate();
+      }
+
+      return hasOwnerName;
     }
-    
-    return hasOwnerName;
+
+    // For other steps, use form validation
+    return formState.validate();
   }
-  
-  // For other steps, use form validation
-  return formState.validate();
-}
 
   void _nextStep() {
     // Get the current form state
     final formState = _formKeys[_currentStep].currentState;
-    
+
     // If form state is null, return early
     if (formState == null) return;
 
@@ -125,17 +129,20 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
     try {
       // Get the project provider
       final projectNotifier = ref.read(projectProvider.notifier);
-      
+
       // Set default values for required fields
       final now = DateTime.now();
-      
+
       // Create a new project instance with all required fields
       final projectToAdd = ProjectModel()
         ..projectName = _projectData.projectName ?? 'New Project'
-        ..projectCode = _projectData.projectCode ?? 'PRJ-${now.millisecondsSinceEpoch}'
+        ..projectCode =
+            _projectData.projectCode ?? 'PRJ-${now.millisecondsSinceEpoch}'
         ..projectType = _projectData.projectType ?? 'Residential'
         ..constructionStartDate = _projectData.constructionStartDate ?? now
-        ..expectedCompletionDate = _projectData.expectedCompletionDate ?? now.add(const Duration(days: 365))
+        ..expectedCompletionDate =
+            _projectData.expectedCompletionDate ??
+            now.add(const Duration(days: 365))
         ..currentStage = _projectData.currentStage ?? 'Planning'
         ..projectStatus = _projectData.projectStatus ?? 'In Progress'
         ..country = _projectData.country
@@ -143,24 +150,24 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
         ..city = _projectData.city
         ..area = _projectData.area
         ..pincode = _projectData.pincode;
-      
+
       // Add the project to the provider
       projectNotifier.addProject(projectToAdd);
-      
+
       // Show success message and navigate back
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Project created successfully!')),
         );
-        
+
         // Navigate back to home screen
         Navigator.of(context).pop(true); // Pass true to indicate success
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error creating project: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error creating project: $e')));
       }
     }
   }
@@ -169,7 +176,7 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-      
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: Column(
           children: [
             // Stepper Header with horizontal scrolling
@@ -185,7 +192,7 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                     final step = entry.value;
                     final isActive = index == _currentStep;
                     final isCompleted = index < _currentStep;
-        
+
                     return Container(
                       width: 60, // Fixed width for each step
                       margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -204,8 +211,17 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                               SizedBox(
                                 width: 60,
                                 height: 24,
-                               
-                                child: Text(step['title'] as String, style: TextStyle(fontSize:  12, height: 2, color: isActive ? Colors.black : Theme.of(context).primaryColor)),
+
+                                child: Text(
+                                  step['title'] as String,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    height: 2,
+                                    color: isActive
+                                        ? Colors.black
+                                        : Theme.of(context).primaryColor,
+                                  ),
+                                ),
                               ),
                           ],
                         ),
@@ -213,10 +229,9 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                     );
                   }).toList(),
                 ),
-                ),
               ),
-          
-            
+            ),
+
             // Progress Bar
             Container(
               margin: const EdgeInsets.only(bottom: 0),
@@ -229,7 +244,7 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                 ),
               ),
             ),
-            
+
             // Step Content
             Expanded(
               child: PageView(
@@ -256,8 +271,10 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                                   projectName: data.projectName,
                                   projectCode: data.projectCode,
                                   projectType: data.projectType,
-                                  constructionStartDate: data.constructionStartDate,
-                                  expectedCompletionDate: data.expectedCompletionDate,
+                                  constructionStartDate:
+                                      data.constructionStartDate,
+                                  expectedCompletionDate:
+                                      data.expectedCompletionDate,
                                   currentStage: data.currentStage,
                                   projectStatus: data.projectStatus,
                                 );
@@ -266,14 +283,14 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        _currentStep == _steps.length - 1 
-                          ? _buildReviewButtons() 
-                          : _buildDefaultButtons(),
+                        _currentStep == _steps.length - 1
+                            ? _buildReviewButtons()
+                            : _buildDefaultButtons(),
                         const SizedBox(height: 16),
                       ],
                     ),
                   ),
-                  
+
                   // Step 2: Location Details
                   SingleChildScrollView(
                     child: Column(
@@ -303,14 +320,14 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        _currentStep == _steps.length - 1 
-                          ? _buildReviewButtons() 
-                          : _buildDefaultButtons(),
+                        _currentStep == _steps.length - 1
+                            ? _buildReviewButtons()
+                            : _buildDefaultButtons(),
                         const SizedBox(height: 16),
                       ],
                     ),
                   ),
-                  
+
                   // Step 3: Owner Details
                   SingleChildScrollView(
                     child: Column(
@@ -322,33 +339,37 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                             onChanged: (data) {
                               // Update the project data
                               _projectData.ownerName = data.ownerName;
-                              _projectData.ownerPhoneNumber = data.ownerPhoneNumber;
+                              _projectData.ownerPhoneNumber =
+                                  data.ownerPhoneNumber;
                               _projectData.ownerEmail = data.ownerEmail;
                               _projectData.supervisorName = data.supervisorName;
-                              _projectData.supervisorPhoneNumber = data.supervisorPhoneNumber;
+                              _projectData.supervisorPhoneNumber =
+                                  data.supervisorPhoneNumber;
                               _projectData.watchmanName = data.watchmanName;
-                              _projectData.watchmanPhoneNumber = data.watchmanPhoneNumber;
-                              
+                              _projectData.watchmanPhoneNumber =
+                                  data.watchmanPhoneNumber;
+
                               // Trigger a rebuild and validate the form
                               if (mounted) {
                                 setState(() {
                                   // The state update will trigger a rebuild
                                 });
                                 // Validate the form after the state has been updated
-                                _formKeys[_currentStep].currentState?.validate();
+                                _formKeys[_currentStep].currentState
+                                    ?.validate();
                               }
                             },
                           ),
                         ),
                         const SizedBox(height: 16),
-                        _currentStep == _steps.length - 1 
-                          ? _buildReviewButtons() 
-                          : _buildDefaultButtons(),
+                        _currentStep == _steps.length - 1
+                            ? _buildReviewButtons()
+                            : _buildDefaultButtons(),
                         const SizedBox(height: 16),
                       ],
                     ),
                   ),
-                  
+
                   // Step 4: Review
                   SingleChildScrollView(
                     child: Column(
@@ -366,9 +387,9 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        _currentStep == _steps.length - 1 
-                          ? _buildReviewButtons() 
-                          : _buildDefaultButtons(),
+                        _currentStep == _steps.length - 1
+                            ? _buildReviewButtons()
+                            : _buildDefaultButtons(),
                         const SizedBox(height: 16),
                       ],
                     ),
@@ -376,14 +397,13 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                 ],
               ),
             ),
-            
+
             // Navigation Buttons will be inside each step's content
           ],
         ),
       ),
     );
   }
-
 
   Widget _buildDefaultButtons() {
     return Padding(
@@ -401,7 +421,11 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                 ),
                 child: Text(
                   'BACK',
-                  style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 12, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -470,11 +494,14 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                   onPressed: _previousStep,
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    side:  BorderSide(color: Theme.of(context).primaryColor),
+                    side: BorderSide(color: Theme.of(context).primaryColor),
                   ),
                   child: Text(
                     'BACK',
-                    style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -483,7 +510,6 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () {
-                 
                     _submitForm();
                   },
                   icon: const Icon(Icons.save_outlined, size: 20),
@@ -503,7 +529,10 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
             child: ElevatedButton.icon(
               onPressed: _isNextButtonEnabled ? _nextStep : null,
               icon: const Icon(Icons.check_circle_outline, size: 20),
-              label: const Text('SUBMIT', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+              label: const Text(
+                'SUBMIT',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              ),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 backgroundColor: Theme.of(context).primaryColor,
