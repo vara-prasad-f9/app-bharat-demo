@@ -5,11 +5,15 @@ import 'package:go_router/go_router.dart';
 import '../providers/auth_provider.dart';
 
 class BottomCurvePainter extends CustomPainter {
+  final Color color;
+
+  const BottomCurvePainter({required this.color});
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color =
-          const Color(0xFFE63946) // Red color
+          color // Use passed color
       ..style = PaintingStyle.fill;
 
     final path = Path();
@@ -183,7 +187,11 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
             left: 0,
             right: 0,
             height: MediaQuery.of(context).size.height * 1.2,
-            child: CustomPaint(painter: BottomCurvePainter()),
+            child: CustomPaint(
+              painter: BottomCurvePainter(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
           ),
           Scaffold(
             backgroundColor: Colors.transparent,

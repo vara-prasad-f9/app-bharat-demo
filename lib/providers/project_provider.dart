@@ -31,7 +31,6 @@ class ProjectNotifier extends StateNotifier<List<ProjectModel>> {
         ..projectStatus = 'In Progress'
         ..city = 'Beverly Hills, CA'
         ..area = 'Beverly Hills'
-        ..price = '\$19,999'
         ..imageUrl =
             'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=800&auto=format&fit=crop',
       ProjectModel()
@@ -40,7 +39,6 @@ class ProjectNotifier extends StateNotifier<List<ProjectModel>> {
         ..projectStatus = 'In Progress'
         ..city = 'Malibu, CA'
         ..area = 'Malibu'
-        ..price = '\$39,999'
         ..imageUrl =
             'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop',
       ProjectModel()
@@ -49,7 +47,6 @@ class ProjectNotifier extends StateNotifier<List<ProjectModel>> {
         ..projectStatus = 'In Progress'
         ..city = 'Santa Monica, CA'
         ..area = 'Santa Monica'
-        ..price = '\$39,999'
         ..imageUrl =
             'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop',
       ProjectModel()
@@ -58,7 +55,6 @@ class ProjectNotifier extends StateNotifier<List<ProjectModel>> {
         ..projectStatus = 'In Progress'
         ..city = 'Newport Beach, CA'
         ..area = 'Newport Beach'
-        ..price = '\$59,999'
         ..imageUrl =
             'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=800&auto=format&fit=crop',
     ];

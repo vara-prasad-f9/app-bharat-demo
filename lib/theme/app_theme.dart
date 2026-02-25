@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Primary Colors
-  static const Color primary = Color(0xFF3F5141); // Premium Muted Green
+  static const Color primary = Color(0xFFD32F2F); // Premium Red to match logo
   static const Color secondary = Color(0xFF6B7280); // Slick Grey
 
   // Light Theme Colors

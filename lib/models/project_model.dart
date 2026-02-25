@@ -12,7 +12,6 @@ class ProjectModel {
   String? currentStage;
   String? projectStatus;
   String? imageUrl;
-  String? price;
 
   // Step 2: Location Details
   String country = 'India';
@@ -79,7 +78,6 @@ class ProjectModel {
     String? currentStage,
     String? projectStatus,
     String? imageUrl,
-    String? price,
     String? country,
     String? state,
     String? district,
@@ -109,7 +107,6 @@ class ProjectModel {
       ..currentStage = currentStage ?? this.currentStage
       ..projectStatus = projectStatus ?? this.projectStatus
       ..imageUrl = imageUrl ?? this.imageUrl
-      ..price = price ?? this.price
       ..country = country ?? this.country
       ..state = state ?? this.state
       ..district = district ?? this.district
@@ -141,7 +138,6 @@ class ProjectModel {
       'currentStage': currentStage,
       'projectStatus': projectStatus,
       'imageUrl': imageUrl,
-      'price': price,
       'country': country,
       'state': state,
       'district': district,
@@ -177,7 +173,6 @@ class ProjectModel {
       ..currentStage = json['currentStage']
       ..projectStatus = json['projectStatus']
       ..imageUrl = json['imageUrl']
-      ..price = json['price']
       ..country = json['country'] ?? 'India'
       ..state = json['state']
       ..district = json['district']

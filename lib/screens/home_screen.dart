@@ -73,7 +73,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 });
               },
               backgroundColor: const Color(0xFFF3F4F6),
-              selectedColor: const Color(0xFF3F5141), // Deep green from image
+              selectedColor: Theme.of(context).primaryColor,
               showCheckmark: false,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -184,19 +184,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        project.price ?? 'Contact',
-                        style: TextStyle(
-                          color: theme.primaryColor,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
@@ -223,7 +210,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         onPressed: _onAddPressed,
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 4,
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add, color: Color.fromARGB(255, 117, 110, 110)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

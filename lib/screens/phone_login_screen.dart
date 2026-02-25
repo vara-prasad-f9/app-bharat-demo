@@ -106,8 +106,8 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
             left: 0,
             right: 0,
             height: screenHeight * 0.45,
-            child: const CustomPaint(
-              painter: CurvePainter(color: Color(0xFFE63946)),
+            child: CustomPaint(
+              painter: CurvePainter(color: Theme.of(context).primaryColor),
               child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -209,7 +209,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _sendOtp,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFE63946),
+                        backgroundColor: Theme.of(context).primaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -234,11 +234,11 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                     ),
                   ),
                   if (_isLoading)
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: Center(
                         child: CircularProgressIndicator(
-                          color: Color(0xFFE63946),
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                     ),

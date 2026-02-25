@@ -16,13 +16,14 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
     required this.title,
     this.actions,
     this.showBackButton = false,
-    this.onBackPressed, required GlobalKey<ScaffoldState> scaffoldKey,
+    this.onBackPressed,
+    required GlobalKey<ScaffoldState> scaffoldKey,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return AppBar(
       title: Padding(
         padding: const EdgeInsets.only(left: 8.0),
@@ -31,6 +32,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
+            color: Colors.white,
           ),
         ),
       ),
@@ -43,9 +45,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
             )
           : Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ClipOval(
-                child: Image.asset('assets/images/logo.png'),
-              ),
+              child: ClipOval(child: Image.asset('assets/images/logo.png')),
             ),
       actions: [
         Stack(
@@ -55,7 +55,9 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const NotificationScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => const NotificationScreen(),
+                  ),
                 ).then((_) {
                   // Refresh the unread count when returning from notification screen
                   ref.refresh(notificationProvider);
@@ -64,7 +66,9 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
             ),
             Consumer(
               builder: (context, ref, _) {
-                final unreadCount = ref.watch(notificationProvider.notifier).unreadCount;
+                final unreadCount = ref
+                    .watch(notificationProvider.notifier)
+                    .unreadCount;
                 if (unreadCount == 0) return const SizedBox.shrink();
                 return Positioned(
                   right: 8,
